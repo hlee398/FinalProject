@@ -1,7 +1,11 @@
 import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.*;
-
+/**
+ * 
+ * @author Will
+ *
+ */
 public abstract class Entity {
 
 	private int x,y;

@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @author Will
+ *
+ */
 public abstract class MovingEntity extends Entity{
 
 	private float dir;

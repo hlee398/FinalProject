@@ -1,5 +1,8 @@
-
-
+/**
+ * 
+ * @author Will
+ * 
+ */
 import processing.core.PApplet;
 
 public class Survivor extends MovingEntity{
