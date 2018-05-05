@@ -41,7 +41,6 @@ public abstract class MovingEntity extends Entity{
 				dir = 0;
 			}
 		}
-		System.out.println(xDif + " , " + yDif + "   :   " + dir);
 		
 	}
 	
