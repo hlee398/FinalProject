@@ -40,6 +40,13 @@ public class DrawingSurface extends PApplet
 	public DrawingSurface()
 	{
 		s = new Survivor(100,100,"");
+		try {
+			myIP = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 	
