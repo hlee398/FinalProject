@@ -31,6 +31,8 @@ public class DrawingSurface extends PApplet
 	private int maxPerServer;
 	private NetworkListener clientProgram;
 	private JList<InetAddress> hostList, connectedList;
+	private NetworkMessenger nm;
+	private static final String messageTypePress = "MOUSE_PRESS";
 	
 	private static final int TCP_PORT = 4444;
 	private static final int BROADCAST_PORT = 4444;
@@ -60,7 +62,9 @@ public class DrawingSurface extends PApplet
 	{
 		if(key == 'w')
 		{
-			s.setYVelocity(-5);
+			// s.setYVelocity(-5);
+			if (nm != null)
+				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePress, 'w');
 		}
 		if(key == 'a')
 		{
@@ -171,6 +175,16 @@ public class DrawingSurface extends PApplet
 				System.out.println("\nDisconnected from " + ndo.dataSource);
 				connectedList.setListData(new InetAddress[]{});
 			}
+			else if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) 
+			{
+				if (ndo.message[0].equals(messageTypePress))
+				{
+					if(ndo.message[1].equals('w'))
+					{
+						s.setYVelocity(-5);
+					}
+				}
+			}
 
 		}
 
@@ -180,5 +194,4 @@ public class DrawingSurface extends PApplet
 		}
 
 	}
-	
 }
