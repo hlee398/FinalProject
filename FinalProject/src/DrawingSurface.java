@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -14,17 +15,21 @@ import javax.swing.JList;
 
 import networking.SchoolClient;
 import networking.SchoolServer;
+import networking.PeerDiscovery;
 import networking.NetworkDataObject;
 import networking.NetworkMessenger;
 import networking.NetworkListener;
 import processing.core.PApplet;
 
-public class DrawingSurface extends PApplet 
+public class DrawingSurface extends PApplet
 {
 
 	MovingEntity s;
+	
 	private InetAddress myIP;
+	private PeerDiscovery discover;
 	//private PeerDiscovery discover;
+	
 	private SchoolServer ss;
 	private SchoolClient sc;
 	private String programID;
@@ -39,13 +44,26 @@ public class DrawingSurface extends PApplet
 	
 	public DrawingSurface()
 	{
-		s = new Survivor(100,100,"");
+		programID = "Test";
+		
 		try {
 			myIP = InetAddress.getLocalHost();
+			System.out.println("Your Hostname/IP address is " + myIP);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			discover = new PeerDiscovery(InetAddress.getByName("255.255.255.255"),BROADCAST_PORT);
+			System.out.println("\nBroadcast discovery server running on " + BROADCAST_PORT);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			System.out.println("\nError starting broadcast discovery server on port " + BROADCAST_PORT + "\nCannot discover or be discovered.");
+			//discoverButton.setEnabled(false);
+		}
+		
+		s = new Survivor(100,100,"");
 
 	}
 	
@@ -87,12 +105,15 @@ public class DrawingSurface extends PApplet
 		}
 		if(key == 'p')
 		{
+			programID = "Test";
+			maxPerServer = 10;
+			
 			ss = new SchoolServer(programID, myIP);
 			ss.setMaxConnections(maxPerServer);
 			ss.waitForConnections(TCP_PORT);
 			System.out.println("\nTCP server running on " + TCP_PORT);
-			//if (discover != null)
-			//	discover.setDiscoverable(true);
+//			if (discover != null)
+//				discover.setDiscoverable(true);
 			connect(myIP);
 		}
 		if(key == 'o')
@@ -163,9 +184,11 @@ public class DrawingSurface extends PApplet
 				sc = null;
 			} else {
 				System.out.println("\nConnected to "+host+" on " + TCP_PORT);
-				sc.addNetworkListener(clientProgram);
+				
+				
+//				sc.addNetworkListener(clientProgram);
 				sc.addNetworkListener(new NetworkMessageHandler());
-				clientProgram.connectedToServer(sc);
+//				clientProgram.connectedToServer(sc);
 				//setButtons(false);
 			}
 		}
