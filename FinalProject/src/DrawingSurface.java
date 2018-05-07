@@ -88,8 +88,8 @@ public class DrawingSurface extends PApplet
 		if(key == 'w')
 		{
 			s.setYVelocity(-5);
-			//if (nm != null)
-			//	nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePress, 'w');
+			if (nm != null)
+				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePress, 'w');
 		}
 		if(key == 'a')
 		{
@@ -186,9 +186,9 @@ public class DrawingSurface extends PApplet
 				System.out.println("\nConnected to "+host+" on " + TCP_PORT);
 				
 				
-//				sc.addNetworkListener(clientProgram);
+				sc.addNetworkListener(clientProgram);
 				sc.addNetworkListener(new NetworkMessageHandler());
-//				clientProgram.connectedToServer(sc);
+				clientProgram.connectedToServer(sc);
 				//setButtons(false);
 			}
 		}
