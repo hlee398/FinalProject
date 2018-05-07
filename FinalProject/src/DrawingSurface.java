@@ -87,9 +87,9 @@ public class DrawingSurface extends PApplet
 	{
 		if(key == 'w')
 		{
-			// s.setYVelocity(-5);
-			if (nm != null)
-				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePress, 'w');
+			s.setYVelocity(-5);
+			//if (nm != null)
+			//	nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePress, 'w');
 		}
 		if(key == 'a')
 		{
