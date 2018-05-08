@@ -13,17 +13,21 @@ public class Survivor extends MovingEntity{
 	}
 	
 	
-	public void draw(PApplet drawer, float width, float height)
+	public void draw(PApplet drawer, int width, int height, int mouseX, int mouseY)
 	{
-		super.draw(drawer, width, height);
+		//TODO make compatible with images
+		super.draw(drawer, width, height, mouseX, mouseY);
 		
 		drawer.ellipse(getX(), getY(), 10, 10);
-		
-		
 		
 		drawer.line(getX(), getY(), (int)(10*Math.cos(super.getDir()) + getX()), (int)(10*Math.sin(super.getDir()) + getY()));
 		
 		
+	}
+	
+	public void shoot()
+	{
+		//TODO shoot method
 	}
 	
 }

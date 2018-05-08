@@ -6,11 +6,13 @@ import processing.core.PApplet;
 public class DrawingSurface extends PApplet{
 
 	MovingEntity s;
+	StaticEntity w;
 	
 
 	public DrawingSurface()
 	{
 		s = new Survivor(100,100,"");
+		w = new Wall(300, 200, 100, 10, "");
 	}
 	
 	
@@ -21,11 +23,9 @@ public class DrawingSurface extends PApplet{
 		background(255,255,255);
 		this.fill(255);
 		
-		s.draw(this, s.getX(), s.getY());
-		s.setDir(mouseX, mouseY);
+		s.draw(this, s.getX(), s.getY(), mouseX, mouseY);
 		s.move();
-		
-		
+		w.draw(this,(float) Math.PI/2);
 		
 	}
 
