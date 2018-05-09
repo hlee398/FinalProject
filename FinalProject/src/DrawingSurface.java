@@ -11,11 +11,9 @@ public class DrawingSurface extends PApplet{
 
 	public DrawingSurface()
 	{
-		s = new Survivor(100,100,"");
-		w = new Wall(300, 200, 100, 10, "");
+		s = new Survivor(100,100,30,60, "Stickman.png");
+		w = new Wall(200, 200, 100, 10, "Wall.jpg");
 	}
-	
-	
 	
 	public void draw() //draws all objects in world
 	{
@@ -25,8 +23,8 @@ public class DrawingSurface extends PApplet{
 		
 		s.draw(this, s.getX(), s.getY(), mouseX, mouseY);
 		s.move();
-		w.draw(this,(float) Math.PI/2);
 		
+		w.draw(this,1);
 	}
 
 	public void keyPressed()

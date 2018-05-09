@@ -1,16 +1,17 @@
-import processing.core.PApplet;
-
+/**
+ * 
+ * @author Will
+ *
+ */
 public class Wall extends StaticEntity{
 
 	public Wall(int xP, int yP, int width, int height, String img) {
 		super(xP, yP, width, height, img);
 	}
-
-	public void draw(PApplet drawer, float dir)
-	//TODO WALL ROTATION
+	
+	public boolean isPointInside(double x, double y)
 	{
-		super.draw(drawer, dir);
-		
-		drawer.rect(getX(), getY(), getWidth(), getHeight());
+		//TODO work with rotation
+		return false;
 	}
 }

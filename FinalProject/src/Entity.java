@@ -7,22 +7,30 @@ import processing.core.PApplet;
  */
 public abstract class Entity {
 
-	private int x,y;
+	private int x,y,width,height;
 	private float dir;
 	private String image;
 	
-	public Entity(int xP, int yP, String img)
+	public Entity(int xP, int yP,int width ,int height ,String img)
 	{
 		x = xP;
 		y = yP;
 		dir = 0;
 		image = img;
+		this.width = width;
+		this.height = height;
 	}
 	
-	public void draw(PApplet drawer, int width, int height)
+	public void draw(PApplet drawer)
 	{
-		//TODO
-		//drawer.image(drawer.loadImage(image), x, y, width, height);
+		drawer.pushMatrix();
+		
+		drawer.translate(x,y);
+		drawer.rotate((float) (dir + Math.PI/2));
+		drawer.image(drawer.loadImage(image), -width/2, -height/2, width, height);
+		drawer.rotate((float)-(dir + Math.PI/2));
+		
+		drawer.popMatrix();
 	}
 	
 	public int getX()
@@ -85,6 +93,26 @@ public abstract class Entity {
 	public void setImage(String img)
 	{
 		image = img;
+	}
+	
+	public int getWidth()
+	{
+		return width;
+	}
+	
+	public int getHeight()
+	{
+		return height;
+	}
+	
+	public void setWidth( int width)
+	{
+		this.width = width;
+	}
+	
+	public void setHeight( int height)
+	{
+		this.height = height;
 	}
 	
 	

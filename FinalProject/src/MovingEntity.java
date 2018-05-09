@@ -9,8 +9,8 @@ public abstract class MovingEntity extends Entity{
 
 	private int xVel,yVel;
 	
-	public MovingEntity(int xP, int yP, String img) {
-		super(xP, yP, img);
+	public MovingEntity(int xP, int yP, int width, int height, String img) {
+		super(xP, yP,width,height, img);
 		xVel = 0;
 		yVel = 0;
 	}
@@ -39,7 +39,7 @@ public abstract class MovingEntity extends Entity{
 	public void draw(PApplet drawer, int width, int height, int mouseX, int mouseY)
 	{
 		super.pointTowards(mouseX, mouseY);
-		super.draw(drawer, width, height);
+		super.draw(drawer);
 		
 	}
 }
