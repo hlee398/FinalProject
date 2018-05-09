@@ -1,14 +1,11 @@
-
-
 import processing.core.PApplet;
 
-
-public class DrawingSurface extends PApplet{
+public class DrawingSurface extends PApplet
+{
 
 	MovingEntity s;
 	StaticEntity w;
 	
-
 	public DrawingSurface()
 	{
 		s = new Survivor(100,100,30,60, "Stickman.png");
@@ -45,7 +42,6 @@ public class DrawingSurface extends PApplet{
 		{
 			s.setXVelocity(5);
 		}
-
 	}
 	
 	public void keyReleased()
@@ -79,8 +75,5 @@ public class DrawingSurface extends PApplet{
 	{
 		
 	}
-
-
-
 
 }
