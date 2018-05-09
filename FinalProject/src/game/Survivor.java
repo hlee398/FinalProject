@@ -3,9 +3,11 @@ import processing.core.PApplet;
 
 public class Survivor extends MovingEntity{
 
+	private String username;
 
-	public Survivor(int xP, int yP, String img) {
+	public Survivor(int xP, int yP, String img, String username) {
 		super(xP, yP, img);
+		this.setUsername(username);
 	}
 	
 	
@@ -21,5 +23,14 @@ public class Survivor extends MovingEntity{
 		
 		
 	}
-	
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

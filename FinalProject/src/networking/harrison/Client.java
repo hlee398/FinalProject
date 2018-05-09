@@ -37,7 +37,7 @@ public class Client {
 	private Game game;
 	
 	private final int MAX_PACKET_SIZE = 1024;
-	private byte[] recievedDataBuffer = new byte[MAX_PACKET_SIZE * 10];
+	private byte[] receivedDataBuffer = new byte[MAX_PACKET_SIZE * 10];
 	
 	/*
 	private final static byte[] PACKET_HEADER = new byte[] {0x40, 0x40};
@@ -123,7 +123,7 @@ public class Client {
 //			return false;
 //		}
 		
-		System.out.println("Client connected to " + socket.getInetAddress());
+//		System.out.println("Client connected to " + socket.getInetAddress());
 		sendConnectionPacket();
 		//Waits for server to reply here
 		return true;
@@ -155,7 +155,7 @@ public class Client {
 	{
 		//byte[] data = PACKET_HEADER;
 		//byte[] data = "ConnectionPacket".getBytes();
-		String cmd = "00," + username;
+		String cmd = "00," + username + "," + game.getDrawing().getME().getX() + "," + game.getDrawing().getME().getY() + "," + game.getDrawing().getME().getDir();
 		byte[] data = cmd.getBytes();
 		send(data);
 	}
@@ -163,7 +163,7 @@ public class Client {
 	public void listen() {
 		while (listening)
 		{
-			DatagramPacket packet = new DatagramPacket(recievedDataBuffer, MAX_PACKET_SIZE);
+			DatagramPacket packet = new DatagramPacket(receivedDataBuffer, MAX_PACKET_SIZE);
 			try {
 				socket.receive(packet);
 			} catch (IllegalBlockingModeException e) {
@@ -183,19 +183,23 @@ public class Client {
 	public void process(DatagramPacket packet)
 	{
 		String message = new String(packet.getData()).trim().substring(0, packet.getLength());
-		System.out.println("Client recieved message " + message);
+		System.out.println("Client received message " + message);
 		String[] dataArray = message.split(",");
 		String command = dataArray[0];
 		String username = dataArray[1];
-		System.out.println(command);
-		System.out.println(username);
+		int x = Integer.parseInt(dataArray[2]);
+		int y = Integer.parseInt(dataArray[3]);
+		float dir = Float.parseFloat(dataArray[4]);
+		//System.out.println(command);
+		//System.out.println(username);
 		
 		if (command.equals("00"))
 		{
-			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort());
+			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort(), x, y, dir);
 			
 			game.players.add(newPlayer);
 			System.out.println(game.players.toString());
+			game.getDrawing().addSurvivor(username, x, y, dir);
 		}
 	}
 }

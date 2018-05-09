@@ -8,11 +8,10 @@ import java.net.PortUnreachableException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.nio.channels.IllegalBlockingModeException;
-import java.util.ArrayList;
 
 import game.Game;
-import game.Main;
 import game.Player;
+import game.Survivor;
 
 public class Server{
 	
@@ -32,7 +31,7 @@ public class Server{
 	//public static ArrayList<Player> players = new ArrayList<Player>();
 	
 	private final int MAX_PACKET_SIZE = 1024;
-	private byte[] recievedDataBuffer = new byte[MAX_PACKET_SIZE * 10];
+	private byte[] receivedDataBuffer = new byte[MAX_PACKET_SIZE * 10];
 	
 	public Server(Game game, int port)
 	{
@@ -72,7 +71,7 @@ public class Server{
 	{
 		while (listening)
 		{
-			DatagramPacket packet = new DatagramPacket(recievedDataBuffer, MAX_PACKET_SIZE);
+			DatagramPacket packet = new DatagramPacket(receivedDataBuffer, MAX_PACKET_SIZE);
 			try {
 				socket.receive(packet);
 			} catch (IllegalBlockingModeException e) {
@@ -117,30 +116,45 @@ public class Server{
 		InetAddress address = packet.getAddress();
 		int port = packet.getPort();
 		*/
+		
+		
 		String message = new String(packet.getData()).trim().substring(0, packet.getLength());
-		System.out.println("Server recieved message " + message);
+		System.out.println("Server received message " + message);
 		String[] dataArray = message.split(",");
 		String command = dataArray[0];
 		String username = dataArray[1];
-		System.out.println(command);
-		System.out.println(username);
+		int x = Integer.parseInt(dataArray[2]);
+		int y = Integer.parseInt(dataArray[3]);
+		float dir = Float.parseFloat(dataArray[4]);
+		//System.out.println(command);
+		//System.out.println(username);
 		
-		String test = "Hello";
-		byte[] dat = test.getBytes();
-		send( dat, packet.getAddress(), packet.getPort() );
+//		String test = "xx,SendingMessageToClient";
+//		byte[] dat = test.getBytes();
+//		send( dat, packet.getAddress(), packet.getPort() );
 		
 		if (command.equals("00"))
 		{
-			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort());
+			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort(), x, y, dir);
+			String cmd = "00," + newPlayer.getUsername() + "," + x + "," + y + "," + dir;
+			byte[] data = cmd.getBytes();
 			
+			// Sends newplayer to everybody
 			for (int i = 0; i < game.players.size(); i++)
 			{
-				String cmd = "00," + game.players.get(i).getUsername();
-				byte[] data = cmd.getBytes();
 				send(data, game.players.get(i).getIpAddress(), game.players.get(i).getPort());
 			}
 			
+			// Send everybody to newplayer
+			for (int i = 0; i < game.players.size(); i++)
+			{
+				String cmd2 = "00," + game.players.get(i).getUsername() + "," + game.players.get(i).getX() + "," + game.players.get(i).getY() + "," + game.players.get(i).getDir();
+				byte[] data2 = cmd2.getBytes();
+				send(data2, newPlayer.getIpAddress(), newPlayer.getPort());
+			}
+			
 			game.players.add(newPlayer);
+
 			System.out.println(game.players.toString());
 		}
 	}

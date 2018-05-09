@@ -9,7 +9,7 @@ import processing.core.PApplet;
 
 public class Main {
 	
-	static Game game;
+	private static Game game;
 	
 	public static void main(String args[]) {
 		
@@ -20,13 +20,17 @@ public class Main {
 		
 		if (n == 1)
 		{
-			game = new Game(true);
+			game = new Game(true, "", null);
 		}
 		else 
 		{
-			game = new Game(false);
-			
-			DrawingSurface drawing = new DrawingSurface();
+			System.out.println("Enter Your Username");
+			String username = s.next();
+			//System.out.println(username);
+			DrawingSurface drawing = new DrawingSurface(username);
+			game = new Game(false, username, drawing);
+
+
 			PApplet.runSketch(new String[]{""}, drawing);
 			PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
 			PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
