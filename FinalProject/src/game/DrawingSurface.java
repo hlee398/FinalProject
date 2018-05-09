@@ -10,6 +10,11 @@ public class DrawingSurface extends PApplet
 	private String username;
 	private PFont f;
 	
+	
+	public DrawingSurface() {
+		s = new Survivor(100,100,"");
+	}
+	
 	public DrawingSurface(String username)
 	{
 		s = new Survivor(100,100,"", username);
@@ -28,7 +33,7 @@ public class DrawingSurface extends PApplet
 		background(255,255,255);
 		this.fill(255);
 		
-		String playerName = username;
+		//String playerName = username;
 		
 		for (int i = 0; i < otherPlayers.size(); i++)
 		{
@@ -40,7 +45,7 @@ public class DrawingSurface extends PApplet
 		}
 		
 		fill(0);
-		text(playerName, s.getX() + 15, s.getY() + 5);
+		//text(playerName, s.getX() + 15, s.getY() + 5);
 		fill(255);
 		s.draw(this, s.getX(), s.getY());
 		s.setDir(mouseX, mouseY);

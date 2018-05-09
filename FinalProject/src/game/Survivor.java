@@ -5,6 +5,12 @@ public class Survivor extends MovingEntity{
 
 	private String username;
 
+	
+	public Survivor(int xP, int yP, String img) {
+		super(xP, yP, img);
+	}
+	
+	
 	public Survivor(int xP, int yP, String img, String username) {
 		super(xP, yP, img);
 		this.setUsername(username);
