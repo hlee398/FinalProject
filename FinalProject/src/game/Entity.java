@@ -1,3 +1,4 @@
+package game;
 import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.*;

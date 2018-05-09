@@ -4,8 +4,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.PortUnreachableException;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.nio.channels.IllegalBlockingModeException;
+
+import game.Game;
+import game.Player;
 
 public class Client {
 	
@@ -14,18 +20,29 @@ public class Client {
 	 */
 	
 	public enum Error{
-		NONE, INVALID_HOST, SOECKET_EXCEPTION
+		NONE, INVALID_HOST, SOCKET_EXCEPTION
 	}
 	private Error errorCode = Error.NONE;
 	
 	private String ipAdress;
+	private String username;
 	private int port;
 	
 	private InetAddress serverAddress;	
 	private DatagramSocket socket;
+
+	private boolean listening = false;
+	private Thread thread;
 	
+	private Game game;
+	
+	private final int MAX_PACKET_SIZE = 1024;
+	private byte[] recievedDataBuffer = new byte[MAX_PACKET_SIZE * 10];
+	
+	/*
 	private final static byte[] PACKET_HEADER = new byte[] {0x40, 0x40};
 	private final static byte PACKET_TYPE_CONNECT = 0x01;
+	*/
 	
 	/**
 	 * Exampe format: 191.168.1.1:5000
@@ -59,6 +76,32 @@ public class Client {
 		ipAdress = host;
 	}
 	
+	public Client (int port, String host, String username, Game game)
+	{
+		this.port = port;
+		ipAdress = host;
+		this.username = username;
+		
+		this.game = game;
+		
+	}
+	
+	public void start()
+	{
+		//Creating a socket
+		try {
+			socket = new DatagramSocket();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		listening = true;
+		//Lambda function creating new thread for listening for sockets
+		thread = new Thread(() -> listen(), "Client-ListenThread");
+		thread.start();
+	}
+	
 	public boolean connect()
 	{
 		try {
@@ -76,10 +119,11 @@ public class Client {
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			errorCode = Error.SOECKET_EXCEPTION;
+			errorCode = Error.SOCKET_EXCEPTION;
 			return false;
 		}
 		
+		System.out.println("Client connected to " + socket.getInetAddress());
 		sendConnectionPacket();
 		//Waits for server to reply here
 		return true;
@@ -106,10 +150,52 @@ public class Client {
 		return errorCode;
 	}
 	
+	//Test method
 	private void sendConnectionPacket()
 	{
-		byte[] data = PACKET_HEADER;
+		//byte[] data = PACKET_HEADER;
 		//byte[] data = "ConnectionPacket".getBytes();
+		String cmd = "00," + username;
+		byte[] data = cmd.getBytes();
 		send(data);
+	}
+	
+	public void listen() {
+		while (listening)
+		{
+			DatagramPacket packet = new DatagramPacket(recievedDataBuffer, MAX_PACKET_SIZE);
+			try {
+				socket.receive(packet);
+			} catch (IllegalBlockingModeException e) {
+				e.printStackTrace();
+			} catch (PortUnreachableException e) {
+				e.printStackTrace();
+			} catch (SocketTimeoutException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			process(packet);
+		}
+	}
+	
+	public void process(DatagramPacket packet)
+	{
+		String message = new String(packet.getData()).trim().substring(0, packet.getLength());
+		System.out.println("Client recieved message " + message);
+		String[] dataArray = message.split(",");
+		String command = dataArray[0];
+		String username = dataArray[1];
+		System.out.println(command);
+		System.out.println(username);
+		
+		if (command.equals("00"))
+		{
+			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort());
+			
+			game.players.add(newPlayer);
+			System.out.println(game.players.toString());
+		}
 	}
 }

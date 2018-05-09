@@ -8,6 +8,11 @@ import java.net.PortUnreachableException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.nio.channels.IllegalBlockingModeException;
+import java.util.ArrayList;
+
+import game.Game;
+import game.Main;
+import game.Player;
 
 public class Server{
 	
@@ -22,12 +27,16 @@ public class Server{
 	private Thread thread;
 	private boolean listening = false;
 	private DatagramSocket socket;
+	private Game game;
+	
+	//public static ArrayList<Player> players = new ArrayList<Player>();
 	
 	private final int MAX_PACKET_SIZE = 1024;
 	private byte[] recievedDataBuffer = new byte[MAX_PACKET_SIZE * 10];
 	
-	public Server(int port)
+	public Server(Game game, int port)
 	{
+		this.game = game;
 		this.port = port;
 	}
 	
@@ -54,7 +63,7 @@ public class Server{
 		
 		listening = true;
 		//Lambda function creating new thread for listening for sockets
-		thread = new Thread(() -> listen(), "ListenThread");
+		thread = new Thread(() -> listen(), "Server-ListenThread");
 		thread.start();
 	}
 	
@@ -103,8 +112,36 @@ public class Server{
 	
 	public void process(DatagramPacket packet)
 	{
+		/*
 		byte[] data = packet.getData();
 		InetAddress address = packet.getAddress();
 		int port = packet.getPort();
+		*/
+		String message = new String(packet.getData()).trim().substring(0, packet.getLength());
+		System.out.println("Server recieved message " + message);
+		String[] dataArray = message.split(",");
+		String command = dataArray[0];
+		String username = dataArray[1];
+		System.out.println(command);
+		System.out.println(username);
+		
+		String test = "Hello";
+		byte[] dat = test.getBytes();
+		send( dat, packet.getAddress(), packet.getPort() );
+		
+		if (command.equals("00"))
+		{
+			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort());
+			
+			for (int i = 0; i < game.players.size(); i++)
+			{
+				String cmd = "00," + game.players.get(i).getUsername();
+				byte[] data = cmd.getBytes();
+				send(data, game.players.get(i).getIpAddress(), game.players.get(i).getPort());
+			}
+			
+			game.players.add(newPlayer);
+			System.out.println(game.players.toString());
+		}
 	}
 }

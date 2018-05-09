@@ -1,14 +1,17 @@
+package game;
+import java.util.ArrayList;
 import processing.core.PApplet;
 
 public class DrawingSurface extends PApplet
 {
 
 	MovingEntity s;
+	private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
 	
 	public DrawingSurface()
 	{
 		s = new Survivor(100,100,"");
-
+		movingEntities.add(s);
 	}
 	
 	
@@ -75,6 +78,11 @@ public class DrawingSurface extends PApplet
 	}
 	
 	public void mouseReleased()
+	{
+		
+	}
+	
+	public void addSurvivor()
 	{
 		
 	}

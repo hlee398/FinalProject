@@ -1,14 +1,10 @@
-/**
- * 
- * @author Will
- * 
- */
+package game;
 import processing.core.PApplet;
 
-public class Survivor extends MovingEntity{
+public class Zombie extends MovingEntity{
 
 
-	public Survivor(int xP, int yP, String img) {
+	public Zombie(int xP, int yP, String img) {
 		super(xP, yP, img);
 	}
 	

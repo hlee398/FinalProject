@@ -1,16 +1,18 @@
+package game;
 import java.awt.Dimension;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-import networking.harrison.Client;
-import networking.harrison.Server;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 
 public class Main {
 	
+	static Game game;
+	
 	public static void main(String args[]) {
+		
 		
 		System.out.println("Press 1 to start a server, Press 2 if you are a client of the server");
 		Scanner s = new Scanner(System.in);
@@ -18,16 +20,11 @@ public class Main {
 		
 		if (n == 1)
 		{
-			Server server = new Server(2048);
-			server.start();
+			game = new Game(true);
 		}
 		else 
 		{
-			Client client = new Client(2048, "localhost");
-			if (!client.connect())
-			{
-				System.out.println("Client did not connect");
-			}
+			game = new Game(false);
 			
 			DrawingSurface drawing = new DrawingSurface();
 			PApplet.runSketch(new String[]{""}, drawing);
