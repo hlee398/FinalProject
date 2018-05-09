@@ -114,14 +114,14 @@ public class Client {
 			return false;
 		}
 		
-		try {
-			socket = new DatagramSocket();
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			errorCode = Error.SOCKET_EXCEPTION;
-			return false;
-		}
+//		try {
+//			socket = new DatagramSocket();
+//		} catch (SocketException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			errorCode = Error.SOCKET_EXCEPTION;
+//			return false;
+//		}
 		
 		System.out.println("Client connected to " + socket.getInetAddress());
 		sendConnectionPacket();

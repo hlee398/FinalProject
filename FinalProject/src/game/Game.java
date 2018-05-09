@@ -28,11 +28,11 @@ public class Game {
 			scan.close();
 			
 			client = new Client(2048, "localhost", username, this);
+			client.start();
 			if (!client.connect())
 			{
 				System.out.println("Client did not connect");
 			}
-			client.start();
 			
 		}
 	}
