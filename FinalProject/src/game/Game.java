@@ -73,7 +73,7 @@ public class Game {
 			window.getHeight();
 			
 			window.setVisible(true);
-			client = new Client(2048, ipAddressServer, username, this);
+			client = new Client(4444, ipAddressServer, username, this);
 			client.start();
 			if (!client.connect())
 			{
