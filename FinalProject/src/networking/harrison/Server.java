@@ -12,6 +12,14 @@ import java.nio.channels.IllegalBlockingModeException;
 import game.Game;
 import game.Survivor;
 
+/**
+ * Server class that will make a server and recieve and send messages to clients connected to it
+ * All data that is passed into the server will be in the format 0n,username,x,y,dir where n is the command specified to do this task
+ * 00 = adding a new player
+ * 01 = moving players 
+ * @author Harrison
+ *
+ */
 public class Server{
 	
 	/*
@@ -32,6 +40,11 @@ public class Server{
 	private final int MAX_PACKET_SIZE = 1024;
 	private byte[] receivedDataBuffer = new byte[MAX_PACKET_SIZE * 10];
 	
+	/**
+	 * Creates a server
+	 * @param game a game object provided by the game class
+	 * @param port the port that the server will use (any port)
+	 */
 	public Server(Game game, int port)
 	{
 		this.game = game;
@@ -65,7 +78,9 @@ public class Server{
 		thread.start();
 	}
 	
-	//Listens for connections
+	/**
+	 * Lisetns for connections from clients
+	 */
 	private void listen()
 	{
 		while (listening)
@@ -89,7 +104,7 @@ public class Server{
 	
 	/**
 	 * Sends data from the server to a client
-	 * @param data 
+	 * @param data data in the format 0n,username,x,y,dir
 	 * @param address InetAddress of the client
 	 * @param port port number of the client
 	 */
@@ -108,6 +123,12 @@ public class Server{
 		}
 	}
 	
+	/**
+	 * Process incoming data based on what command is used
+	 * 00 = adding a player
+	 * 01 = moving a player
+	 * @param packet the incoming data
+	 */
 	public void process(DatagramPacket packet)
 	{
 		/*

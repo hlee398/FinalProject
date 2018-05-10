@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PFont;
 
+
+/**
+ * Draws all the things that will be displayed on the window
+ * @author Harrison, Will
+ *
+ */
 public class DrawingSurface extends PApplet
 {
 	private Survivor s;
@@ -17,6 +23,10 @@ public class DrawingSurface extends PApplet
 		s = new Survivor(100,100,"");
 	}
 	
+	/**
+	 * Creates a drawing surface 
+	 * @param game
+	 */
 	public DrawingSurface(Game game)
 	{
 		username = game.getUserName();
@@ -43,6 +53,7 @@ public class DrawingSurface extends PApplet
 		background(255,255,255);
 		this.fill(255);
 		
+		//Updates survivors
 		for (int i = 0; i < movingEntities.size(); i++)
 		{
 			if (movingEntities.get(i) instanceof Survivor) {
@@ -54,6 +65,7 @@ public class DrawingSurface extends PApplet
 			}
 		}
 		
+		//Checks if this is the server drawing surface (crashes because username will be null for servers)
 		if (!g.getisServer())
 		{
 			fill(0);

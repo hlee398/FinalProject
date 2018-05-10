@@ -47,6 +47,10 @@ public abstract class MovingEntity extends Entity{
 		
 	}
 	
+	/**
+	 * @author Harrison
+	 * @param dir sets direction
+	 */
 	public void setDir(float dir)
 	{
 		this.dir = dir;

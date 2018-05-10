@@ -13,6 +13,11 @@ import java.nio.channels.IllegalBlockingModeException;
 import game.Game;
 import game.Survivor;
 
+/**
+ * Connects a client computer to a main server
+ * @author Harrison
+ *
+ */
 public class Client {
 	
 	/*
@@ -45,8 +50,8 @@ public class Client {
 	*/
 	
 	/**
-	 * Exampe format: 191.168.1.1:5000
-	 * @param host
+	 * Example format: 191.168.1.1:5000
+	 * @param host the ip address of the host
 	 */
 	public Client (String host)
 	{
@@ -76,6 +81,13 @@ public class Client {
 		ipAdress = host;
 	}
 	
+	/**
+	 * 
+	 * @param port
+	 * @param host
+	 * @param username
+	 * @param game
+	 */
 	public Client (int port, String host, String username, Game game)
 	{
 		this.port = port;
@@ -86,6 +98,9 @@ public class Client {
 		
 	}
 	
+	/**
+	 * starts the client class
+	 */
 	public void start()
 	{
 		//Creating a socket
@@ -102,6 +117,12 @@ public class Client {
 		thread.start();
 	}
 	
+	/**
+	 * connects a client to a server
+	 * 
+	 * @return true if the client successfully connected
+	 * @return false if the client did not successfully connect
+	 */
 	public boolean connect()
 	{
 		try {

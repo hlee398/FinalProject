@@ -1,5 +1,11 @@
 package game;
 
+
+/**
+ * This class runs the game class
+ * @author Harrison, Will, Ran
+ *
+ */
 public class Main {
 	
 	private static Game game;

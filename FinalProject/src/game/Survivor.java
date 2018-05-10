@@ -3,6 +3,11 @@ import java.net.InetAddress;
 
 import processing.core.PApplet;
 
+/**
+ * 
+ * @author Will
+ *
+ */
 public class Survivor extends MovingEntity{
 
 	private String username;
@@ -20,7 +25,7 @@ public class Survivor extends MovingEntity{
 	}
 	
 	/**
-	 * 
+	 * @author Harrison
 	 * @param xP
 	 * @param yP
 	 * @param img

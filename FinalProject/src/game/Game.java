@@ -10,12 +10,17 @@ import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 import javax.swing.JOptionPane;
 
+/**
+ * Creates a server, client and drawing surface
+ * @author Harrison
+ *
+ */
 public class Game {
 
 	private Server server;
 	private Client client;
 	private DrawingSurface drawing;
-	private String username;
+	private String username, ipAddressServer;
 	private boolean isServer;
 	
 	public Game()
@@ -49,6 +54,7 @@ public class Game {
 		else
 		{
 			username = JOptionPane.showInputDialog("Enter a username", "");
+			ipAddressServer = JOptionPane.showInputDialog("Enter IP Address of server", "localhost");
 			
 			drawing = new DrawingSurface(this);
 			PApplet.runSketch(new String[]{""}, drawing);
@@ -65,7 +71,7 @@ public class Game {
 			window.getHeight();
 			
 			window.setVisible(true);
-			client = new Client(2048, "localhost", username, this);
+			client = new Client(2048, ipAddressServer, username, this);
 			client.start();
 			if (!client.connect())
 			{
