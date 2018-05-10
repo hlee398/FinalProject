@@ -1,7 +1,6 @@
 package game;
 import processing.core.PApplet;
-import processing.core.PShape;
-import processing.core.*;
+
 /**
  * 
  * @author Will
@@ -9,21 +8,30 @@ import processing.core.*;
  */
 public abstract class Entity {
 
-	protected int x,y;
-	protected String image;
+	private int x,y,width,height;
+	private float dir;
+	private String image;
 	
-	public Entity(int xP, int yP, String img)
+	public Entity(int xP, int yP,int width ,int height)
 	{
 		x = xP;
 		y = yP;
-		image = img;
+		this.width = width;
+		this.height = height;
 	}
 	
-	public void draw(PApplet drawer, float width, float height)
+	public void draw(PApplet drawer, String img)
 	{
-		//drawer.image(drawer.loadImage(image), x, y, width, height);
+		drawer.pushMatrix();
+
+		drawer.translate(x, y);
+		drawer.rotate((float) (dir + Math.PI / 2));
+		drawer.image(drawer.loadImage(img), -width / 2, -height / 2, width, height);
+		drawer.rotate((float) -(dir + Math.PI / 2));
+
+		drawer.popMatrix();
 	}
-	
+
 	public int getX()
 	{
 		return x;
@@ -49,7 +57,59 @@ public abstract class Entity {
 		this.y = y;
 	}
 	
+	public void pointTowards(int xPos, int yPos)
+ 	{
+ 		float xDif = (float) (x - xPos);
+ 		float yDif = (float) (y - yPos);
+ 		
+ 		dir = (float) Math.atan(yDif/xDif);
+ 		
+ 		if(xDif > 0)
+ 		{
+ 			dir += Math.PI;
+ 		}
+ 
+ 		if(xDif == 0)
+ 		{
+ 			dir += Math.PI;
+ 			if(yDif == 0)
+ 			{
+ 				dir = 0;
+ 			}
+ 		}
+ 	}
 	
+	public void setDir(float radians)
+ 	{
+ 		dir = radians;
+ 	}
+ 	
+ 	public float getDir()
+ 	{
+ 		return dir;
+ 	}
+ 	
+ 	public int getWidth()
+ 	{
+ 		return width;
+ 	}
+ 	
+ 	public int getHeight()
+ 	{
+ 		return height;
+ 	}
+ 	
+ 	public void setWidth( int width)
+ 	{
+ 		this.width = width;
+ 	}
+ 		
+ 	public void setHeight( int height)
+ 	{
+ 		this.height = height;
+ 	}
+ 		
+ 	
 	public void setImage(String img)
 	{
 		image = img;

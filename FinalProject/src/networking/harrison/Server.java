@@ -184,7 +184,7 @@ public class Server{
 			//Adds new player to drawing surface
 			game.getDrawing().addSurvivor(newSurvivor);
 
-			System.out.println(game.getDrawing().toString());
+			System.out.println(game.getDrawing().toString() + " Player " + newSurvivor.getUsername() + " has connected");
 		}
 		else if (command.equals("01"))
 		{

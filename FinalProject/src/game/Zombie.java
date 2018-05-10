@@ -4,14 +4,20 @@ import processing.core.PApplet;
 public class Zombie extends MovingEntity{
 
 
-	public Zombie(int xP, int yP, String img) {
-		super(xP, yP, img);
+	/**
+	 * 
+	 * @param xP
+	 * @param yP
+	 * @param img
+	 */
+	public Zombie(int xP, int yP, int width, int height) {
+		super(xP, yP, width, height);
 	}
 	
 	
-	public void draw(PApplet drawer, float width, float height)
+	public void draw(PApplet drawer, int mouseX, int mouseY, String img)
 	{
-		super.draw(drawer, width, height);
+		super.draw(drawer, mouseX, mouseY, img);
 		
 		drawer.ellipse(getX(), getY(), 10, 10);
 		

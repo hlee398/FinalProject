@@ -14,13 +14,18 @@ import processing.core.PFont;
 public class DrawingSurface extends PApplet
 {
 	private Survivor s;
+	
 	private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
 	private Game g;
 	
+	public static final String SURVIVOR_IMAGE = "Stickman.png";
+	public static final String WALL_IMAGE = "Wall.jpg";
+	public static final String ZOMBIE_IMAGE = "this has no image... enjoy the error";
+	
 	public DrawingSurface() {
-		s = new Survivor(100,100,"");
+		
 	}
 	
 	/**
@@ -37,7 +42,7 @@ public class DrawingSurface extends PApplet
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		s = new Survivor(username, 100,100, 0, localhost, 4444,"");
+		s = new Survivor(username, 100,100, 0, localhost, 4444,"Stickman.png");
 		g = game;
 	}
 	
@@ -61,7 +66,7 @@ public class DrawingSurface extends PApplet
 				fill(0);
 				text(sOther.getUsername(), sOther.getX() + 15, sOther.getY() + 5);
 				fill(255);
-				sOther.draw(this, sOther.getX(), sOther.getY());
+				sOther.draw(this, sOther.getDir(), SURVIVOR_IMAGE);
 			}
 		}
 		
@@ -71,12 +76,11 @@ public class DrawingSurface extends PApplet
 			fill(0);
 			text(username, s.getX() + 15, s.getY() + 5);
 			fill(255);
-			s.draw(this, s.getX(), s.getY());
-			s.setDir(mouseX, mouseY);
+			s.draw(this, mouseX, mouseY, SURVIVOR_IMAGE);
 			s.move();
 			
 			// Send a message to the server with our (s) new coordinate
-			String cmd = "01," + username + "," + s.x + "," + s.y + "," + s.dir;
+			String cmd = "01," + username + "," + s.getX() + "," + s.getY() + "," + s.getDir();
 			byte[] data = cmd.getBytes();
 			g.getClient().send(data);
 		}

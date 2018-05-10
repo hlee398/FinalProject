@@ -1,5 +1,7 @@
 package game;
 
+import processing.core.PApplet;
+
 /**
  * 
  * @author Will
@@ -7,12 +9,10 @@ package game;
  */
 public abstract class MovingEntity extends Entity{
 
-	protected float dir;
-	protected int xVel,yVel;
+	private int xVel,yVel;
 	
-	public MovingEntity(int xP, int yP, String img) {
-		super(xP, yP, img);
-		dir = 0;
+	public MovingEntity(int xP, int yP, int width, int height) {
+		super(xP, yP,width,height);
 		xVel = 0;
 		yVel = 0;
 	}
@@ -22,45 +22,7 @@ public abstract class MovingEntity extends Entity{
 		super.setX(x);
 		super.setY(y);
 	}	
-	public void setDir(int mouseX, int mouseY)
-	{
-		//TODO  arctan math wrong -pi to pi 
-		float xDif = (float) (getX() - mouseX);
-		float yDif = (float) (getY() - mouseY);
-		
-		dir = (float) Math.atan(yDif/xDif);
-		
-		if(xDif > 0)
-		{
-			dir += Math.PI;
-		}
 
-		if(xDif == 0)
-		{
-			dir += Math.PI;
-			if(yDif == 0)
-			{
-				dir = 0;
-			}
-		}
-		//System.out.println(xDif + " , " + yDif + "   :   " + dir);
-		
-	}
-	
-	/**
-	 * @author Harrison
-	 * @param dir sets direction
-	 */
-	public void setDir(float dir)
-	{
-		this.dir = dir;
-	}
-	
-	public float getDir()
-	{
-		return dir;
-	}
-	
 	public void setXVelocity(int x) // sets players movement velocity
 	{
 		xVel = x;
@@ -75,4 +37,32 @@ public abstract class MovingEntity extends Entity{
 		super.setX(getX() + xVel);
 		super.setY(getY() + yVel);
 	}
+	
+	/**
+	 * Draws a survivor looking at point (mouseX, mouseY)
+	 * 
+	 * @param drawer The object used to draw
+	 * @param mouseX x coordinate of the point that the survivor will point towards
+	 * @param mouseY y coordinate of the point that the survivor will point towards
+	 * @param img The name of the image that will represent the survivor
+	 */
+	public void draw(PApplet drawer, int mouseX, int mouseY, String img)
+ 	{
+ 		super.pointTowards(mouseX, mouseY);
+		super.draw(drawer, img);
+ 	}
+	/**
+	 * Draws a survivor using a direction
+	 * 
+	 * @param drawer The object used to draw
+	 * @param dir the direction in radians which to draw the survivor
+	 * @param img The name of the image that will represent the survivor
+	 */
+	public void draw(PApplet drawer, float dir, String img)
+ 	{
+ 		super.setDir(dir);
+		super.draw(drawer, img);
+ 	}
+	
+	
 }
