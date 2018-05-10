@@ -9,8 +9,8 @@ import processing.core.*;
  */
 public abstract class Entity {
 
-	private int x,y;
-	private String image;
+	protected int x,y;
+	protected String image;
 	
 	public Entity(int xP, int yP, String img)
 	{

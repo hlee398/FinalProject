@@ -1,20 +1,25 @@
 package game;
 
-import java.util.ArrayList;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
 
 import networking.harrison.Client;
 import networking.harrison.Server;
+import processing.awt.PSurfaceAWT;
+import processing.core.PApplet;
 
 public class Game {
-	
-	public ArrayList<Player> players = new ArrayList<Player>();
+
 	private Server server;
 	private Client client;
 	private DrawingSurface drawing;
+	private String username;
 	
-	public Game(boolean isServer, String username, DrawingSurface drawing)
+	public Game(boolean isServer, String username)
 	{
-		this.drawing = drawing;
+		this.username = username;
+		drawing = new DrawingSurface(this);
 		
 		if (isServer)
 		{
@@ -23,7 +28,19 @@ public class Game {
 		}
 		else
 		{
+			PApplet.runSketch(new String[]{""}, drawing);
+			PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
+			PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
+			JFrame window = (JFrame)canvas.getFrame();
 			
+			window.setSize(400, 300);
+			window.setMinimumSize(new Dimension(100,100));
+			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.setResizable(true);
+	
+			window.getHeight();
+			
+			window.setVisible(true);
 			client = new Client(2048, "localhost", username, this);
 			client.start();
 			if (!client.connect())
@@ -40,5 +57,10 @@ public class Game {
 	public Client getClient()
 	{
 		return client;
+	}
+	
+	public String getUserName()
+	{
+		return username;
 	}
 }

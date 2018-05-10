@@ -1,4 +1,6 @@
 package game;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -6,19 +8,27 @@ import processing.core.PFont;
 public class DrawingSurface extends PApplet
 {
 	private Survivor s;
-	private ArrayList<Survivor> otherPlayers = new ArrayList<>();
+	private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
-	
+	private Game g;
 	
 	public DrawingSurface() {
 		s = new Survivor(100,100,"");
 	}
 	
-	public DrawingSurface(String username)
+	public DrawingSurface(Game game)
 	{
-		s = new Survivor(100,100,"", username);
-		this.username = username;
+		username = game.getUserName();
+		InetAddress localhost = null;
+		try {
+			localhost = InetAddress.getByName("localhost");
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		s = new Survivor(username, 100,100, 0, localhost, 0,"");
+		g = game;
 	}
 	
 	public void setup()
@@ -33,25 +43,28 @@ public class DrawingSurface extends PApplet
 		background(255,255,255);
 		this.fill(255);
 		
-		//String playerName = username;
-		
-		for (int i = 0; i < otherPlayers.size(); i++)
+		for (int i = 0; i < movingEntities.size(); i++)
 		{
-			Survivor sOther = otherPlayers.get(i);
-			fill(0);
-			text(sOther.getUsername(), sOther.getX() + 15, sOther.getY() + 5);
-			fill(255);
-			sOther.draw(this, sOther.getX(), sOther.getY());
+			if (movingEntities.get(i) instanceof Survivor) {
+				Survivor sOther = (Survivor)movingEntities.get(i);
+				fill(0);
+				text(sOther.getUsername(), sOther.getX() + 15, sOther.getY() + 5);
+				fill(255);
+				sOther.draw(this, sOther.getX(), sOther.getY());
+			}
 		}
 		
 		fill(0);
-		//text(playerName, s.getX() + 15, s.getY() + 5);
+		text(username, s.getX() + 15, s.getY() + 5);
 		fill(255);
 		s.draw(this, s.getX(), s.getY());
 		s.setDir(mouseX, mouseY);
 		s.move();
 		
 		// Send a message to the server with our (s) new coordinate
+		String cmd = "01," + username + "," + s.x + "," + s.y + "," + s.dir;
+		byte[] data = cmd.getBytes();
+		g.getClient().send(data);
 	}
 
 	public void keyPressed()
@@ -101,15 +114,20 @@ public class DrawingSurface extends PApplet
 		
 	}
 	
-	public void mouseReleased()
+	public void mouseReleased() 
 	{
 		
 	}
-	
-	public void addSurvivor(String username, int x, int y, float dir)
+
+	public void addSurvivor(Survivor s)
 	{
-		Survivor sNew = new Survivor(x,y, "", username);
-		otherPlayers.add(sNew);
+		movingEntities.add(s);
+	}
+	
+	public void addSurvivor(String username, int x, int y, float dir, InetAddress ip, int port)
+	{
+		Survivor sNew = new Survivor(username, x,y, dir, ip, port, "");
+		movingEntities.add(sNew);
 	}
 	
 	public MovingEntity getME()
@@ -117,8 +135,8 @@ public class DrawingSurface extends PApplet
 		return s;
 	}
 
-	public ArrayList<Survivor> getOtherPlayers()
+	public ArrayList<MovingEntity> getMovingEntities()
 	{
-		return otherPlayers;
+		return movingEntities;
 	}
 }

@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 import java.nio.channels.IllegalBlockingModeException;
 
 import game.Game;
-import game.Player;
+import game.Survivor;
 
 public class Client {
 	
@@ -183,7 +183,7 @@ public class Client {
 	public void process(DatagramPacket packet)
 	{
 		String message = new String(packet.getData()).trim().substring(0, packet.getLength());
-		System.out.println("Client received message " + message);
+		//System.out.println("Client received message " + message);
 		String[] dataArray = message.split(",");
 		String command = dataArray[0];
 		String username = dataArray[1];
@@ -193,13 +193,24 @@ public class Client {
 		//System.out.println(command);
 		//System.out.println(username);
 		
+		// Gets message from server and adds survivor to Client side array
 		if (command.equals("00"))
 		{
-			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort(), x, y, dir);
-			
-			game.players.add(newPlayer);
-			System.out.println(game.players.toString());
-			game.getDrawing().addSurvivor(username, x, y, dir);
+			Survivor newSurvivor = new Survivor(username, x, y, dir, packet.getAddress(), packet.getPort(), "");	
+			game.getDrawing().addSurvivor(newSurvivor);
+		}
+		else if (command.equals("01"))
+		{
+			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			{
+				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
+				{
+					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
+					s.setX(x);
+					s.setY(y);
+					s.setDir(dir);
+				}
+			}
 		}
 	}
 }

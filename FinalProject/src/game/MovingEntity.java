@@ -7,8 +7,8 @@ package game;
  */
 public abstract class MovingEntity extends Entity{
 
-	private float dir;
-	private int xVel,yVel;
+	protected float dir;
+	protected int xVel,yVel;
 	
 	public MovingEntity(int xP, int yP, String img) {
 		super(xP, yP, img);
@@ -45,6 +45,11 @@ public abstract class MovingEntity extends Entity{
 		}
 		//System.out.println(xDif + " , " + yDif + "   :   " + dir);
 		
+	}
+	
+	public void setDir(float dir)
+	{
+		this.dir = dir;
 	}
 	
 	public float getDir()

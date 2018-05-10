@@ -10,7 +10,6 @@ import java.net.SocketTimeoutException;
 import java.nio.channels.IllegalBlockingModeException;
 
 import game.Game;
-import game.Player;
 import game.Survivor;
 
 public class Server{
@@ -117,9 +116,9 @@ public class Server{
 		int port = packet.getPort();
 		*/
 		
-		
+		//Parses out information to be interpreted
 		String message = new String(packet.getData()).trim().substring(0, packet.getLength());
-		System.out.println("Server received message " + message);
+		//System.out.println("Server received message " + message);
 		String[] dataArray = message.split(",");
 		String command = dataArray[0];
 		String username = dataArray[1];
@@ -135,27 +134,60 @@ public class Server{
 		
 		if (command.equals("00"))
 		{
-			Player newPlayer = new Player(username, packet.getAddress(), packet.getPort(), x, y, dir);
-			String cmd = "00," + newPlayer.getUsername() + "," + x + "," + y + "," + dir;
+			Survivor newSurvivor = new Survivor(username, x, y, dir, packet.getAddress(), packet.getPort(), "");
+			String cmd = "00," + newSurvivor.getUsername() + "," + x + "," + y + "," + dir;
 			byte[] data = cmd.getBytes();
 			
 			// Sends newplayer to everybody
-			for (int i = 0; i < game.players.size(); i++)
+			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
 			{
-				send(data, game.players.get(i).getIpAddress(), game.players.get(i).getPort());
+				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
+				{
+					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
+					send(data, s.getIpAddress(), s.getPort());
+				}
 			}
-			
+		
 			// Send everybody to newplayer
-			for (int i = 0; i < game.players.size(); i++)
+			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
 			{
-				String cmd2 = "00," + game.players.get(i).getUsername() + "," + game.players.get(i).getX() + "," + game.players.get(i).getY() + "," + game.players.get(i).getDir();
-				byte[] data2 = cmd2.getBytes();
-				send(data2, newPlayer.getIpAddress(), newPlayer.getPort());
+				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
+				{
+					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
+					String cmd2 = "00," + s.getUsername() + "," + s.getX() + "," + s.getY() + "," + s.getDir();
+					byte[] data2 = cmd2.getBytes();
+					send(data2, newSurvivor.getIpAddress(), newSurvivor.getPort());
+				}
 			}
 			
-			game.players.add(newPlayer);
+			//Adds new player to drawing surface
+			game.getDrawing().addSurvivor(newSurvivor);
 
-			System.out.println(game.players.toString());
+			System.out.println(game.getDrawing().toString());
+		}
+		else if (command.equals("01"))
+		{
+			//Updates the coordinate positions of the clients
+			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			{
+				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
+				{
+					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
+					if (s.getUsername().equals(username))
+					{
+						s.setX(x);
+						s.setY(y);
+						s.setDir(dir);
+						break;
+					}
+					else
+					{
+						byte[] data = message.getBytes();
+						send(data, s.getIpAddress(), s.getPort());
+					}
+				}
+			}
+			
 		}
 	}
 }
