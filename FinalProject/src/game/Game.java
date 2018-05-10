@@ -8,6 +8,7 @@ import networking.harrison.Client;
 import networking.harrison.Server;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
+import javax.swing.JOptionPane;
 
 public class Game {
 
@@ -15,23 +16,46 @@ public class Game {
 	private Client client;
 	private DrawingSurface drawing;
 	private String username;
+	private boolean isServer;
 	
-	public Game(boolean isServer, String username)
+	public Game()
 	{
-		this.username = username;
-		drawing = new DrawingSurface(this);
+		
+		int nReply = JOptionPane.showConfirmDialog(null, "Run Server?");
+		
+		this.isServer = (nReply == 0);
 		
 		if (isServer)
 		{
 			server = new Server(this, 2048);
 			server.start();
-		}
-		else
-		{
+			
+			drawing = new DrawingSurface(this);
 			PApplet.runSketch(new String[]{""}, drawing);
 			PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
 			PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
 			JFrame window = (JFrame)canvas.getFrame();
+			window.setTitle("Server");
+			
+			window.setSize(400, 300);
+			window.setMinimumSize(new Dimension(100,100));
+			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.setResizable(true);
+	
+			window.getHeight();
+			
+			window.setVisible(true);
+		}
+		else
+		{
+			username = JOptionPane.showInputDialog("Enter a username", "");
+			
+			drawing = new DrawingSurface(this);
+			PApplet.runSketch(new String[]{""}, drawing);
+			PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
+			PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
+			JFrame window = (JFrame)canvas.getFrame();
+			window.setTitle(username);
 			
 			window.setSize(400, 300);
 			window.setMinimumSize(new Dimension(100,100));
@@ -62,5 +86,10 @@ public class Game {
 	public String getUserName()
 	{
 		return username;
+	}
+	
+	public boolean getisServer()
+	{
+		return isServer;
 	}
 }

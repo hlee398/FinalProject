@@ -206,9 +206,13 @@ public class Client {
 				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
 				{
 					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
-					s.setX(x);
-					s.setY(y);
-					s.setDir(dir);
+					if (s.getUsername().equals(username))
+					{
+						s.setX(x);
+						s.setY(y);
+						s.setDir(dir);
+						break;
+					}
 				}
 			}
 		}

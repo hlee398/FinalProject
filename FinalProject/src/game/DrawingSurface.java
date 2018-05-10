@@ -54,17 +54,20 @@ public class DrawingSurface extends PApplet
 			}
 		}
 		
-		fill(0);
-		text(username, s.getX() + 15, s.getY() + 5);
-		fill(255);
-		s.draw(this, s.getX(), s.getY());
-		s.setDir(mouseX, mouseY);
-		s.move();
-		
-		// Send a message to the server with our (s) new coordinate
-		String cmd = "01," + username + "," + s.x + "," + s.y + "," + s.dir;
-		byte[] data = cmd.getBytes();
-		g.getClient().send(data);
+		if (!g.getisServer())
+		{
+			fill(0);
+			text(username, s.getX() + 15, s.getY() + 5);
+			fill(255);
+			s.draw(this, s.getX(), s.getY());
+			s.setDir(mouseX, mouseY);
+			s.move();
+			
+			// Send a message to the server with our (s) new coordinate
+			String cmd = "01," + username + "," + s.x + "," + s.y + "," + s.dir;
+			byte[] data = cmd.getBytes();
+			g.getClient().send(data);
+		}
 	}
 
 	public void keyPressed()

@@ -178,7 +178,6 @@ public class Server{
 						s.setX(x);
 						s.setY(y);
 						s.setDir(dir);
-						break;
 					}
 					else
 					{
