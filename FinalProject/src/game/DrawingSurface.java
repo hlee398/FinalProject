@@ -42,7 +42,7 @@ public class DrawingSurface extends PApplet
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		s = new Survivor(username, 100,100, 0, localhost, 4444,"Stickman.png");
+		s = new Survivor(username, 100,100, 0, localhost, 4444,"SURVIVOR_IMAGE");
 		g = game;
 	}
 	

@@ -2,7 +2,7 @@ package game;
 import processing.core.PApplet;
 
 /**
- * 
+ * Defines an entity that is drawn onto the world map and can interact with other entities
  * @author Will
  *
  */
@@ -12,6 +12,13 @@ public abstract class Entity {
 	private float dir;
 	private String image;
 	
+	/**
+	 * Construct an entity at position (xP,yP) with width and height
+	 * @param xP the x coordinate of the entity
+	 * @param yP the y coordinate of the entity
+	 * @param width The width of the entity, used to draw image
+	 * @param height The height of the entity, used to draw image
+	 */
 	public Entity(int xP, int yP,int width ,int height)
 	{
 		x = xP;
@@ -19,7 +26,11 @@ public abstract class Entity {
 		this.width = width;
 		this.height = height;
 	}
-	
+	/**
+	 * Draws an entity at (getX(), getY()) , getWidth() wide and getHeight() tall, rotated by getDir() radians about the center
+	 * @param drawer the obejct used to draw the entity
+	 * @param img the String containing the image name to be used to draw the entity
+	 */
 	public void draw(PApplet drawer, String img)
 	{
 		drawer.pushMatrix();
@@ -56,7 +67,11 @@ public abstract class Entity {
 	{
 		this.y = y;
 	}
-	
+	/**
+	 * Sets the getDir() value equal to radian value of angle from (getX(),getY()) to (xPos,Ypos)
+	 * @param xPos the x coordinate of the directional point
+	 * @param yPos the y coordinate of the directional point
+	 */
 	public void pointTowards(int xPos, int yPos)
  	{
  		float xDif = (float) (x - xPos);

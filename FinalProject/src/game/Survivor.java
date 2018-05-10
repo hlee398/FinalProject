@@ -4,7 +4,7 @@ import java.net.InetAddress;
 import processing.core.PApplet;
 
 /**
- * 
+ * A MovingEntity that can interact with other Entities
  * @author Will
  *
  */
@@ -15,11 +15,11 @@ public class Survivor extends MovingEntity{
 	private int port;
 	
 /**
- * 
- * @param xP
- * @param yP
- * @param width
- * @param height
+ * Construct a Survivor at (xP, yP) with dimensions width and height
+ * @param xP the x coordinate of the survivor
+ * @param yP the y coordinate of the survivor
+ * @param width the width of the survivor
+ * @param height the height of the survivor
  */
 	public Survivor(int xP, int yP, int width, int height) {
 		super(xP, yP, width, height);
