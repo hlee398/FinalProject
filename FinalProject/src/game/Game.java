@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
  *
  */
 public class Game {
+	
+	//Port number for School computers is 4444
 
 	private Server server;
 	private Client client;
@@ -32,7 +34,7 @@ public class Game {
 		
 		if (isServer)
 		{
-			server = new Server(this, 2048);
+			server = new Server(this, 4444);
 			server.start();
 			
 			drawing = new DrawingSurface(this);

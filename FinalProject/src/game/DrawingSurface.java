@@ -37,7 +37,7 @@ public class DrawingSurface extends PApplet
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		s = new Survivor(username, 100,100, 0, localhost, 0,"");
+		s = new Survivor(username, 100,100, 0, localhost, 4444,"");
 		g = game;
 	}
 	
