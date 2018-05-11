@@ -18,12 +18,17 @@ import javax.swing.JOptionPane;
 public class Game {
 	
 	//Port number for School computers is 4444
+	  
+	  public static final int screenWidth = (java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+	  public static final int screenHeight = (java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
 
 	private Server server;
 	private Client client;
 	private DrawingSurface drawing;
 	private String username, ipAddressServer;
 	private boolean isServer;
+	
+	
 	
 	public Game()
 	{
@@ -44,7 +49,7 @@ public class Game {
 			JFrame window = (JFrame)canvas.getFrame();
 			window.setTitle("Server");
 			
-			window.setSize(400, 300);
+			window.setBounds(0, 0, screenWidth, screenHeight);
 			window.setMinimumSize(new Dimension(100,100));
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);
@@ -65,7 +70,7 @@ public class Game {
 			JFrame window = (JFrame)canvas.getFrame();
 			window.setTitle(username);
 			
-			window.setSize(400, 300);
+			window.setBounds(0, 0, screenWidth, screenHeight);
 			window.setMinimumSize(new Dimension(100,100));
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);
