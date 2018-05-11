@@ -16,8 +16,8 @@ public abstract class MovingEntity extends Entity{
 	 * @param width the width of the MovingEntity
 	 * @param height the height of the MovingEntity
 	 */
-	public MovingEntity(int xP, int yP, int width, int height) {
-		super(xP, yP,width,height);
+	public MovingEntity(int xP, int yP, int radius) {
+		super(xP, yP,radius);
 		xVel = 0;
 		yVel = 0;
 	}

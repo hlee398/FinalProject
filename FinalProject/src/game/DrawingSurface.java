@@ -128,6 +128,11 @@ public class DrawingSurface extends PApplet
 			
 	}
 	
+	public void mouseClicked()
+	{
+		
+	}
+	
 	public void mouseDragged()
 	{
 		

@@ -27,6 +27,19 @@ public abstract class Entity {
 		this.height = height;
 	}
 	/**
+	 * Construct an entity at position (xP,yP) with width and height equal to radius
+	 * @param xP the x coordinate of the entity
+	 * @param yP the y coordinate of the entity
+	 * @param radius the radius of the Entity which translates into the width and the height
+	 */
+	public Entity(int xP, int yP, int radius)
+	{
+		x = xP;
+		y = yP;
+		width = radius;
+		height = radius;
+	}
+	/**
 	 * Draws an entity at (getX(), getY()) , getWidth() wide and getHeight() tall, rotated by getDir() radians about the center
 	 * @param drawer the obejct used to draw the entity
 	 * @param img the String containing the image name to be used to draw the entity

@@ -21,8 +21,8 @@ public class Survivor extends MovingEntity{
  * @param width the width of the survivor
  * @param height the height of the survivor
  */
-	public Survivor(int xP, int yP, int width, int height) {
-		super(xP, yP, width, height);
+	public Survivor(int xP, int yP, int radius) {
+		super(xP, yP, radius);
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class Survivor extends MovingEntity{
 	 * @param port
 	 */
 	public Survivor(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
-		super(xP, yP, 10, 10); // HARDCODED WIDTH AND HEIGHT TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
+		super(xP, yP, 10); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
 		this.setUsername(username);
 		this.setIpAddress(ipAddress);
 		this.setPort(port);
