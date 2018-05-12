@@ -47,7 +47,7 @@ public class DrawingSurface extends PApplet
 		s = new Survivor(username, 100,100, 0, localhost, 4444,"SURVIVOR_IMAGE");
 		g = game;
 		
-		w = new Wall(100, 200, 10, 100);
+		w = new Wall(100, 150, 50, 300);
 		staticEntities.add(w);
 	}
 	
@@ -91,10 +91,7 @@ public class DrawingSurface extends PApplet
 		
 		w.draw(this, WALL_IMAGE);
 		
-		if(s.getBounds().intersects(w.getBounds()))
-		{
-			//TODO COLLISION CONSEQUENCE
-		}
+
 	}
 
 	public void keyPressed()

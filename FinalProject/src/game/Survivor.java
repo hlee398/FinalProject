@@ -35,7 +35,7 @@ public class Survivor extends MovingEntity{
 	 * @param port
 	 */
 	public Survivor(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
-		super(xP, yP, 10); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
+		super(xP, yP, 30); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
 		this.setUsername(username);
 		this.setIpAddress(ipAddress);
 		this.setPort(port);

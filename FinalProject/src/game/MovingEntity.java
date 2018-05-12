@@ -20,16 +20,6 @@ public abstract class MovingEntity extends Entity{
 		super(xP, yP,radius);
 		xVel = 0;
 		yVel = 0;
-	}
-/**
- * Moves the sets the getX() to x and the getY() to y
- * @param x the new getX() value
- * @param y the new getY() value
- */
-	public void moveTo(int x, int y)
-	{
-		super.setX(x);
-		super.setY(y);
 	}	
 
 	public void setXVelocity(int x) // sets players movement velocity
@@ -56,6 +46,7 @@ public abstract class MovingEntity extends Entity{
 	{
 		super.setX(getX() + xVel);
 		super.setY(getY() + yVel);
+		
 	}
 	
 	/**
@@ -83,6 +74,53 @@ public abstract class MovingEntity extends Entity{
  		super.setDir(dir);
 		super.draw(drawer, img);
  	}
+	/**
+	 * Checks to see if this MovingEntity has hit the specified wall
+	 * @param w the wall that is to be checked with for a collision with this MovingEntity
+	 * @post The MovingEntity will be moved out of the wall
+	 */
+	public void checkWall(Wall w)
+	{
+		if(getBounds().intersects(w.getBounds()))
+		{
+			int wX = w.getX() + w.getWidth()/2;
+			int wY = w.getY() + w.getHeight()/2;
+			int sX = getX() + getWidth()/2;
+			int sY = getY() + getHeight()/2;
+			
+			if(Math.abs(sX - wX) < w.getWidth()/2) // colliding vertically
+			{
+				if(sY - wY == 0)
+				{
+					
+				}
+				if(sY > wY) // contact from bottom
+				{
+					setY(wY + w.getHeight()/2);
+				}
+				else // contact from top
+				{
+					setY(wY - (getHeight()+w.getHeight()/2));
+				}
+			}
+			if(Math.abs(sY - wY) < w.getHeight()/2) // colliding horizontally
+			{
+				if(sX - wX == 0)
+				{
+					
+				}
+				if(sX > wX) // contact from right
+				{
+					setX(wX + w.getWidth()/2);
+				}
+				else // contact from left
+				{
+					setX(wX - (w.getWidth()/2 + getWidth()));
+				}
+			}
+			
+		}
+	}
 	
 	
 }

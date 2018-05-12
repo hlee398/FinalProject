@@ -53,11 +53,15 @@ public abstract class Entity {
 	 */
 	public void draw(PApplet drawer, String img)
 	{
-		drawer.pushMatrix();
+		int tempX = x;
+		int tempY = y;
 		
-		drawer.image(drawer.loadImage(img), x, y, width, height);
-		drawer.translate(x + width, y + height);
-		drawer.rotate((float)dir);
+		drawer.pushMatrix();
+		drawer.translate(x + width/2,y + height/2);
+		drawer.rotate((float)dir);	
+		drawer.image(drawer.loadImage(img), - width/2, -height/2, width, height);
+			
+		
 		
 		bounds.setFrame(x, y, bounds.getWidth(), bounds.getHeight());
 		
@@ -155,6 +159,16 @@ public abstract class Entity {
 	{
 		return bounds;
 	}
+	/**
+	 * Moves the sets the getX() to x and the getY() to y
+	 * @param x the new getX() value
+	 * @param y the new getY() value
+	 */
+		public void moveTo(int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
 	
 	
 }
