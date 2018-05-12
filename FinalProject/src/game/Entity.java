@@ -1,4 +1,6 @@
 package game;
+import java.awt.geom.Rectangle2D;
+
 import processing.core.PApplet;
 
 /**
@@ -11,6 +13,7 @@ public abstract class Entity {
 	private int x,y,width,height;
 	private float dir;
 	private String image;
+	private Rectangle2D bounds = new Rectangle2D.Float();
 	
 	/**
 	 * Construct an entity at position (xP,yP) with width and height
@@ -25,6 +28,8 @@ public abstract class Entity {
 		y = yP;
 		this.width = width;
 		this.height = height;
+		
+		bounds.setRect(xP, yP, width, height);
 	}
 	/**
 	 * Construct an entity at position (xP,yP) with width and height equal to radius
@@ -38,6 +43,8 @@ public abstract class Entity {
 		y = yP;
 		width = radius;
 		height = radius;
+		
+		bounds.setRect(xP, yP, width, height);
 	}
 	/**
 	 * Draws an entity at (getX(), getY()) , getWidth() wide and getHeight() tall, rotated by getDir() radians about the center
@@ -47,12 +54,13 @@ public abstract class Entity {
 	public void draw(PApplet drawer, String img)
 	{
 		drawer.pushMatrix();
-
-		drawer.translate(x, y);
-		drawer.rotate((float) (dir + Math.PI / 2));
-		drawer.image(drawer.loadImage(img), -width / 2, -height / 2, width, height);
-		drawer.rotate((float) -(dir + Math.PI / 2));
-
+		
+		drawer.image(drawer.loadImage(img), x, y, width, height);
+		drawer.translate(x + width, y + height);
+		drawer.rotate((float)dir);
+		
+		bounds.setFrame(x, y, bounds.getWidth(), bounds.getHeight());
+		
 		drawer.popMatrix();
 	}
 
@@ -141,6 +149,11 @@ public abstract class Entity {
 	public void setImage(String img)
 	{
 		image = img;
+	}
+	
+	public Rectangle2D getBounds()
+	{
+		return bounds;
 	}
 	
 	

@@ -14,8 +14,10 @@ import processing.core.PFont;
 public class DrawingSurface extends PApplet
 {
 	private Survivor s;
+	private Wall w;
 	
 	private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
+	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
 	private Game g;
@@ -44,6 +46,9 @@ public class DrawingSurface extends PApplet
 		}
 		s = new Survivor(username, 100,100, 0, localhost, 4444,"SURVIVOR_IMAGE");
 		g = game;
+		
+		w = new Wall(100, 200, 10, 100);
+		staticEntities.add(w);
 	}
 	
 	public void setup()
@@ -54,7 +59,6 @@ public class DrawingSurface extends PApplet
 	
 	public void draw() //draws all objects in world
 	{
-		
 		background(255,255,255);
 		this.fill(255);
 		
@@ -83,6 +87,13 @@ public class DrawingSurface extends PApplet
 			String cmd = "01," + username + "," + s.getX() + "," + s.getY() + "," + s.getDir();
 			byte[] data = cmd.getBytes();
 			g.getClient().send(data);
+		}
+		
+		w.draw(this, WALL_IMAGE);
+		
+		if(s.getBounds().intersects(w.getBounds()))
+		{
+			//TODO COLLISION CONSEQUENCE
 		}
 	}
 

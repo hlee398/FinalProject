@@ -23,7 +23,7 @@ public class StaticEntity extends Entity{
 	 * @param dir the direction in radians which to draw the StaticEntity
 	 * @param img The name of the image that will represent the StaticEntity
 	 */
-	public void draw(PApplet drawer, float dir, String img)
+	public void draw(PApplet drawer, String img)
 	{
 		super.setDir(getDir());
 		super.draw(drawer, img);

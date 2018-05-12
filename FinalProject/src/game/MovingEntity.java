@@ -40,6 +40,15 @@ public abstract class MovingEntity extends Entity{
 	{
 		yVel = y;
 	}
+	
+	public int getXVelocity() 
+	{
+		return xVel;
+	}
+	public int getYVelocity() 
+	{
+		return yVel;
+	}
 	/**
 	 * moves the entity by setXVelocty value and setYVelocity value
 	 */

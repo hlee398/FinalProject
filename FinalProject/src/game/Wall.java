@@ -6,9 +6,8 @@ package game;
  */
 public class Wall extends StaticEntity{
 
-	public Wall(int xP, int yP, int width, int height, float dir) {
+	public Wall(int xP, int yP, int width, int height) {
 		super(xP, yP, width, height);
-		setDir(dir);
 	}
 	
 	public boolean isPointInside(double x, double y)
