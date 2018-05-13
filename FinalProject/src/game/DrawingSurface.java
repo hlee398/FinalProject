@@ -28,6 +28,7 @@ public class DrawingSurface extends PApplet
 	public static final String SURVIVOR_IMAGE = "Stickman.png";
 	public static final String WALL_IMAGE = "Wall.jpg";
 	public static final String ZOMBIE_IMAGE = "this has no image... enjoy the error";
+	//Dimensions of image are 1024 x 640
 	public static final String BACKGROUND_IMAGE = "cbble.png";
 	
 	public DrawingSurface() {
@@ -68,6 +69,9 @@ public class DrawingSurface extends PApplet
 	{
 		//background(background);
 		image(background, 0, 0);
+		image(background, 1024, 640);
+		image(background, 0, 640);
+		image(background, 1024, 0);
 		//this.fill(255);
 		
 		//Updates survivors
@@ -82,6 +86,11 @@ public class DrawingSurface extends PApplet
 			}
 		}
 		
+		s.checkWall(w);
+		s.checkWall(w2);
+		w.draw(this, WALL_IMAGE);
+		w2.draw(this, WALL_IMAGE);		
+		
 		//Checks if this is the server drawing surface (crashes because username will be null for servers)
 		if (!g.getisServer())
 		{
@@ -95,16 +104,9 @@ public class DrawingSurface extends PApplet
 			String cmd = "01," + username + "," + s.getX() + "," + s.getY() + "," + s.getDir();
 			byte[] data = cmd.getBytes();
 			g.getClient().send(data);
+			generateBlindSpot(s, w);
+			generateBlindSpot(s, w2);	
 		}
-		
-		s.checkWall(w);
-		s.checkWall(w2);
-		w.draw(this, WALL_IMAGE);
-		w2.draw(this, WALL_IMAGE);
-
-		generateBlindSpot(s, w);
-		generateBlindSpot(s, w2);	
-				
 	}
 
 	public void keyPressed()
