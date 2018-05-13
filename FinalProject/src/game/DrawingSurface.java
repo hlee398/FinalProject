@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 
 
 /**
@@ -21,11 +22,13 @@ public class DrawingSurface extends PApplet
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
+	private PImage background;
 	private Game g;
 	
 	public static final String SURVIVOR_IMAGE = "Stickman.png";
 	public static final String WALL_IMAGE = "Wall.jpg";
 	public static final String ZOMBIE_IMAGE = "this has no image... enjoy the error";
+	public static final String BACKGROUND_IMAGE = "cbble.png";
 	
 	public DrawingSurface() {
 		
@@ -58,12 +61,13 @@ public class DrawingSurface extends PApplet
 	{
 		f = createFont("Arial", 12,true);
 		textFont(f);
+		background = loadImage(BACKGROUND_IMAGE);
 	}
 	
 	public void draw() //draws all objects in world
 	{
-		background(255,255,255);
-		this.fill(255);
+		background(background);
+		//this.fill(255);
 		
 		//Updates survivors
 		for (int i = 0; i < movingEntities.size(); i++)
