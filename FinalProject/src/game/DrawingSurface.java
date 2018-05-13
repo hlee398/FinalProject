@@ -27,6 +27,7 @@ public class DrawingSurface extends PApplet
 	private PImage background;
 	private Game g;
 	
+	public static final int MAX_SHOT_DIST = 200; // The farthest a shot can travel by a survivor - Should be slightly more than their vision limit
 	public static final String SURVIVOR_IMAGE = "Stickman.png";
 	public static final String WALL_IMAGE = "Wall.jpg";
 	public static final String ZOMBIE_IMAGE = "this has no image... enjoy the error";
@@ -96,6 +97,10 @@ public class DrawingSurface extends PApplet
 		w.draw(this, WALL_IMAGE);
 		w2.draw(this, WALL_IMAGE);
 		testZ.draw(this, 0, SURVIVOR_IMAGE);
+		if(testZ.canAttack(s))
+		{
+			s.damage(2);
+		}
 		
 		//Checks if this is the server drawing surface (crashes because username will be null for servers)
 		if (!g.getisServer())
@@ -157,16 +162,19 @@ public class DrawingSurface extends PApplet
 			
 	}
 	
-	public void mouseClicked()
+	public void mouseClicked() 
 	{
 		int sX = s.getX() + s.getWidth()/2;
 		int sY = s.getY() + s.getHeight()/2;
 		int difX =  mouseX - sX;
 		int difY = mouseY - sY;
+		float scaler = (float) (MAX_SHOT_DIST / (Math.sqrt(difY*difY + difX * difX)));
+		float x2 = (float) (sX + scaler*difX);
+		float y2 = (float) (sY + scaler*difY);
 		float minDist = -1;
 		Zombie closest = null;
 		
-		Line2D.Float shot = new Line2D.Float(sX, sY ,(float) (sX + 1.5*difX) ,(float) (sY + 1.5*difY));
+		Line2D.Float shot = new Line2D.Float(sX, sY ,x2 ,y2);
 		
 		
 		for(int i = 0; i < getMovingEntities().size(); i++)
@@ -191,7 +199,7 @@ public class DrawingSurface extends PApplet
 			
 		}
 		// TODO REMOVE BELOW
-		line(sX, sY ,(float) (sX + 5*difX) ,(float) (sY + 5*difY)); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
+		line(sX, sY ,x2 ,y2); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
 	}
 	
 	public void mouseDragged()
