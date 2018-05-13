@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.geom.Line2D;
 import java.net.InetAddress;
 
 import willB.Shapes.Line;
@@ -40,10 +41,12 @@ public class Zombie extends MovingEntity{
 		
 	}
 	
-	public boolean isHit(Line shot)
+	public boolean isHit(Line2D.Float shot)
 	{
-		float shotSlope = (float) ((shot.getX2() - shot.getX()) / (shot.getY2() - shot.getY()));
-		Line hitDetector;
+		if(getBounds().intersectsLine(shot))
+		{
+			return true;
+		}
 		return false;
 	}
 	

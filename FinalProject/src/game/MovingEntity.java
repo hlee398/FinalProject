@@ -8,18 +8,20 @@ import processing.core.PApplet;
  */
 public abstract class MovingEntity extends Entity{
 
-	private int xVel,yVel;
+	private int xVel,yVel,health;
+	private boolean isAlive;
 	/**
-	 * Construct a MovingEntity at (xP, yP) with dimensions width and height
+	 * Construct a MovingEntity at (xP, yP) with dimensions width and height equal to radius
 	 * @param xP the x coordinate of the MovingEntity
 	 * @param yP the y coordinate of the MovingEntity
-	 * @param width the width of the MovingEntity
-	 * @param height the height of the MovingEntity
+	 * @param radius the width and height of the MovingEntity
 	 */
 	public MovingEntity(int xP, int yP, int radius) {
 		super(xP, yP,radius);
 		xVel = 0;
 		yVel = 0;
+		health = 100;
+		isAlive = true;
 	}	
 
 	public void setXVelocity(int x) // sets players movement velocity
@@ -119,6 +121,15 @@ public abstract class MovingEntity extends Entity{
 				}
 			}
 			
+		}
+	}
+	
+	public void damage(int dmg)
+	{
+		health -= dmg;
+		if(health <= 0)
+		{
+			isAlive = false;
 		}
 	}
 	

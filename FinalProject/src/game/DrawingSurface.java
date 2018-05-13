@@ -1,5 +1,6 @@
 package game;
 import java.awt.Point;
+import java.awt.geom.Line2D;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class DrawingSurface extends PApplet
 {
 	private Survivor s;
 	private Wall w,w2;
+	private Zombie testZ;
 	
 	private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
@@ -56,6 +58,9 @@ public class DrawingSurface extends PApplet
 		staticEntities.add(w);
 		w2 = new Wall(600,300,200,100);
 		staticEntities.add(w2);
+		
+		testZ = new Zombie(50, 50, 30);
+		addZombie(testZ);
 	}
 	
 	public void setup()
@@ -89,7 +94,8 @@ public class DrawingSurface extends PApplet
 		s.checkWall(w);
 		s.checkWall(w2);
 		w.draw(this, WALL_IMAGE);
-		w2.draw(this, WALL_IMAGE);		
+		w2.draw(this, WALL_IMAGE);
+		testZ.draw(this, 0, SURVIVOR_IMAGE);
 		
 		//Checks if this is the server drawing surface (crashes because username will be null for servers)
 		if (!g.getisServer())
@@ -153,7 +159,39 @@ public class DrawingSurface extends PApplet
 	
 	public void mouseClicked()
 	{
+		int sX = s.getX() + s.getWidth()/2;
+		int sY = s.getY() + s.getHeight()/2;
+		int difX =  mouseX - sX;
+		int difY = mouseY - sY;
+		float minDist = -1;
+		Zombie closest = null;
 		
+		Line2D.Float shot = new Line2D.Float(sX, sY ,(float) (sX + 1.5*difX) ,(float) (sY + 1.5*difY));
+		
+		
+		for(int i = 0; i < getMovingEntities().size(); i++)
+		{
+			if(movingEntities.get(i) instanceof Zombie)
+			{
+				Zombie target = (Zombie) movingEntities.get(i);
+				if(target.isHit(shot))// IF TARGET IS HIT BY SHOT
+				{
+					float dist = dist(sX, sY, target.getX() + target.getWidth()/2, target.getY() + target.getHeight()/2);
+					if(minDist == -1 || dist < minDist)
+					{
+						minDist = dist;
+						closest = target;
+					}
+				}
+			}
+			if(closest != null)
+			{
+				closest.damage((int) (30 + Math.random()*20)); // does 30 - 50 damage
+			}
+			
+		}
+		// TODO REMOVE BELOW
+		line(sX, sY ,(float) (sX + 5*difX) ,(float) (sY + 5*difY)); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
 	}
 	
 	public void mouseDragged()
