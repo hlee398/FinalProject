@@ -66,7 +66,8 @@ public class DrawingSurface extends PApplet
 	
 	public void draw() //draws all objects in world
 	{
-		background(background);
+		//background(background);
+		image(background, 0, 0);
 		//this.fill(255);
 		
 		//Updates survivors
