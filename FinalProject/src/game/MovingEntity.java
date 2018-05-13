@@ -48,9 +48,11 @@ public abstract class MovingEntity extends Entity{
 	 */
 	public void move() // moves the player
 	{
-		super.setX(getX() + xVel);
-		super.setY(getY() + yVel);
-		
+		if(isAlive)
+		{
+			super.setX(getX() + xVel);
+			super.setY(getY() + yVel);
+		}
 	}
 	
 	/**
