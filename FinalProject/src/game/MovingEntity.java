@@ -1,4 +1,6 @@
 package game;
+import java.awt.geom.Point2D;
+
 import processing.core.PApplet;
 
 /**
@@ -120,7 +122,28 @@ public abstract class MovingEntity extends Entity{
 					setX(wX - (w.getWidth()/2 + getWidth()));
 				}
 			}
+			Point2D.Float p = new Point2D.Float(sX,sY);
 			
+			Point2D.Float p1 = new Point2D.Float(w.getX(),w.getY());
+			Point2D.Float p2 = new Point2D.Float(w.getX() + w.getWidth(),w.getY());
+			Point2D.Float p3 = new Point2D.Float(w.getX() + w.getWidth(),w.getY() + w.getHeight());
+			Point2D.Float p4 = new Point2D.Float(w.getX(),w.getY() + w.getHeight());
+			if(p.distance(p1) < this.getWidth())
+			{
+				moveTo(getX() - 2, getY() - 2);
+			}
+			else if(p.distance(p2) < this.getWidth())
+			{
+				moveTo(getX() + 2, getY() - 2);
+			}
+			else if(p.distance(p3) < this.getWidth())
+			{
+				moveTo(getX() + 2, getY() + 2);
+			}
+			else if(p.distance(p4) < this.getWidth())
+			{
+				moveTo(getX() - 2, getY() + 2);
+			}
 		}
 	}
 	
