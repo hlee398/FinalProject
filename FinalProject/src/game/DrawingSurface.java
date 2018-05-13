@@ -180,6 +180,11 @@ public class DrawingSurface extends PApplet
 		return movingEntities;
 	}
 	
+	/**
+	 * @author William (thank you for your pain and suffering)
+	 * @param player
+	 * @param w
+	 */
 	public void generateBlindSpot(MovingEntity player, Wall w)
 	{
 		
