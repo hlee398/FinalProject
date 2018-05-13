@@ -191,7 +191,7 @@ public class DrawingSurface extends PApplet
 		Point p3 = new Point(w.getX() + w.getWidth(), w.getY() + w.getHeight()); // bottom r
 		Point p4 = new Point(w.getX(), w.getY() + w.getHeight()); // bottom l
 
-		if(pX < w.getX())
+		if(pX <= w.getX())
 		{
 			if(pY < w.getY()) // top left
 			{
@@ -217,7 +217,7 @@ public class DrawingSurface extends PApplet
 				
 				endShape(CLOSE);
 			}
-			else if(pY > w.getY() + w.getHeight()) // bottom left
+			else if(pY >= w.getY() + w.getHeight()) // bottom left
 			{
 				
 				beginShape();
@@ -269,7 +269,7 @@ public class DrawingSurface extends PApplet
 				
 			}
 		}
-		else if(pX < w.getX() + w.getWidth()) 
+		else if(pX < w.getX() + w.getWidth() && pX > w.getX()) 
 		{
 			if(pY < w.getY()) // direct top
 			{
@@ -324,7 +324,7 @@ public class DrawingSurface extends PApplet
 		}
 		else if(pX >= w.getX() + w.getWidth())
 		{
-			if(pY < w.getY()) // top right
+			if(pY <= w.getY()) // top right
 			{
 				beginShape();
 				
@@ -348,7 +348,7 @@ public class DrawingSurface extends PApplet
 				
 				endShape(CLOSE);
 			}
-			else if(pY > w.getY() + w.getHeight()) // bottom Right
+			else if(pY >= w.getY() + w.getHeight()) // bottom Right
 			{
 				beginShape();
 				
