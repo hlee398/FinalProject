@@ -53,16 +53,11 @@ public abstract class Entity {
 	 */
 	public void draw(PApplet drawer, String img)
 	{
-		int tempX = x;
-		int tempY = y;
-		
 		drawer.pushMatrix();
 		drawer.translate(x + width/2,y + height/2);
 		drawer.rotate((float)dir);	
 		drawer.image(drawer.loadImage(img), - width/2, -height/2, width, height);
-			
-		
-		
+
 		bounds.setFrame(x, y, bounds.getWidth(), bounds.getHeight());
 		
 		drawer.popMatrix();
