@@ -177,6 +177,17 @@ public class DrawingSurface extends PApplet
 		movingEntities.add(sNew);
 	}
 	
+	public void addZombie(Zombie z)
+	{
+		movingEntities.add(z);
+	}
+	
+	public void addZombie(String username, int x, int y, float dir, InetAddress ip, int port)
+	{
+		Zombie zNew = new Zombie(username, x,y, dir, ip, port, "");
+		movingEntities.add(zNew);
+	}
+	
 	public MovingEntity getME()
 	{
 		return s;

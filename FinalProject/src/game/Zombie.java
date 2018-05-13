@@ -1,5 +1,7 @@
 package game;
 
+import java.net.InetAddress;
+
 import willB.Shapes.Line;
 
 /**
@@ -9,6 +11,10 @@ import willB.Shapes.Line;
  */
 public class Zombie extends MovingEntity{
 
+	
+	private String username;
+	private InetAddress ipAddress;
+	private int port;
 
 /**
  * Construct a Zombie at (xP, yP) with dimensions width and height
@@ -21,6 +27,13 @@ public class Zombie extends MovingEntity{
 		super(xP, yP, radius);
 	}
 	
+	public Zombie(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img)
+	{
+		super(xP, yP, 30);
+		this.username = username;
+		this.setIpAddress(ipAddress);
+		this.setPort(port);
+	}
 	
 	public void attack()
 	{
@@ -33,4 +46,31 @@ public class Zombie extends MovingEntity{
 		Line hitDetector;
 		return false;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public InetAddress getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(InetAddress ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	
 }

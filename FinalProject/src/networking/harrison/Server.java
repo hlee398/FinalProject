@@ -11,6 +11,7 @@ import java.nio.channels.IllegalBlockingModeException;
 
 import game.Game;
 import game.Survivor;
+import game.Zombie;
 
 /**
  * Server class that will make a server and recieve and send messages to clients connected to it
@@ -184,7 +185,7 @@ public class Server{
 			//Adds new player to drawing surface
 			game.getDrawing().addSurvivor(newSurvivor);
 
-			System.out.println(game.getDrawing().toString() + " Player " + newSurvivor.getUsername() + " has connected");
+			//System.out.println(game.getDrawing().toString() + " Player " + newSurvivor.getUsername() + " has connected");
 		}
 		else if (command.equals("01"))
 		{
@@ -208,6 +209,37 @@ public class Server{
 				}
 			}
 			
+		}
+		else if (command.equals("02"))
+		{
+			Zombie newZombie = new Zombie(username, x, y, dir, packet.getAddress(), packet.getPort(), "");
+			String cmd = "02," + newZombie.getUsername() + "," + x + "," + y + "," + dir;
+			byte[] data = cmd.getBytes();
+			
+			// Sends newplayer to everybody
+			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			{
+				if (game.getDrawing().getMovingEntities().get(i) instanceof Zombie)
+				{
+					Zombie z = (Zombie)game.getDrawing().getMovingEntities().get(i);
+					send(data, z.getIpAddress(), z.getPort());
+				}
+			}
+		
+			// Send everybody to newplayer
+			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			{
+				if (game.getDrawing().getMovingEntities().get(i) instanceof Zombie)
+				{
+					Zombie z = (Zombie)game.getDrawing().getMovingEntities().get(i);
+					String cmd2 = "02," + z.getUsername() + "," + z.getX() + "," + z.getY() + "," + z.getDir();
+					byte[] data2 = cmd2.getBytes();
+					send(data2, newZombie.getIpAddress(), newZombie.getPort());
+				}
+			}
+			
+			//Adds new player to drawing surface
+			game.getDrawing().addZombie(newZombie);
 		}
 	}
 }

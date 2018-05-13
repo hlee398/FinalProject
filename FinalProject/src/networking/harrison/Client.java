@@ -12,6 +12,7 @@ import java.nio.channels.IllegalBlockingModeException;
 
 import game.Game;
 import game.Survivor;
+import game.Zombie;
 
 /**
  * Connects a client computer to a main server
@@ -235,7 +236,22 @@ public class Client {
 						break;
 					}
 				}
+				else {
+					Zombie z = (Zombie)game.getDrawing().getMovingEntities().get(i);
+					if (z.getUsername().equals(username))
+					{
+						z.setX(x);
+						z.setY(y);
+						z.setDir(dir);
+						break;
+					}
+				}
 			}
+		}
+		else if (command.equals("02"))
+		{
+			Zombie newZombie = new Zombie(username, x, y, dir, packet.getAddress(), packet.getPort(), "");	
+			game.getDrawing().addZombie(newZombie);
 		}
 	}
 }
