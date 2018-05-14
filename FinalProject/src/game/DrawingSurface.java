@@ -87,6 +87,7 @@ public class DrawingSurface extends PApplet
 	
 	public void draw() //draws all objects in world
 	{
+		translate(this.width/2 - p.getX(),this.height/2 - p.getY());
 		//background(background);
 		//1st column
 		image(background, 0, 0);
@@ -151,7 +152,7 @@ public class DrawingSurface extends PApplet
 				text(username + " " + p.getHealth(), p.getX(), p.getY() + 60);
 				fill(255);
 				
-				p.draw(this, mouseX, mouseY, p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE );
+				p.draw(this,mouseX - (this.width/2 - p.getX()), mouseY - (this.height/2 - p.getY()),p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE );
 			}
 			else {
 				//Draws a black screen with a game over message
@@ -261,8 +262,8 @@ public class DrawingSurface extends PApplet
 		{
 			int sX = p.getX() + p.getWidth()/2;
 			int sY = p.getY() + p.getHeight()/2;
-			int difX =  mouseX - sX;
-			int difY = mouseY - sY;
+			int difX =  mouseX - (this.width/2 - p.getX()) - sX;
+			int difY =  mouseY - (this.height/2 - p.getY()) - sY;
 			float scaler = (float) (MAX_SHOT_DIST / (Math.sqrt(difY*difY + difX * difX)));
 			float x2 = (float) (sX + scaler*difX);
 			float y2 = (float) (sY + scaler*difY);
