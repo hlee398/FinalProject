@@ -255,7 +255,7 @@ public class DrawingSurface extends PApplet
 		}
 	}
 	
-	public void mouseClicked() 
+	public void mousePressed() 
 	{
 		if (p instanceof Survivor)
 		{
