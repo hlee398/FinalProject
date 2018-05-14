@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.nio.channels.IllegalBlockingModeException;
 
 import game.Game;
+import game.Player;
 import game.Survivor;
 import game.Zombie;
 
@@ -177,7 +178,8 @@ public class Client {
 	{
 		//byte[] data = PACKET_HEADER;
 		//byte[] data = "ConnectionPacket".getBytes();
-		String cmd = "00," + username + "," + game.getDrawing().getME().getX() + "," + game.getDrawing().getME().getY() + "," + game.getDrawing().getME().getDir();
+		Player p = game.getDrawing().getME();
+		String cmd = (p instanceof Survivor ? "00," : "02,") + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
 		byte[] data = cmd.getBytes();
 		send(data);
 	}
@@ -223,28 +225,15 @@ public class Client {
 		}
 		else if (command.equals("01"))
 		{
-			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
-				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
+				Player p = game.getDrawing().getPlayers().get(i);
+				if (p.getUsername().equals(username))
 				{
-					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
-					if (s.getUsername().equals(username))
-					{
-						s.setX(x);
-						s.setY(y);
-						s.setDir(dir);
-						break;
-					}
-				}
-				else {
-					Zombie z = (Zombie)game.getDrawing().getMovingEntities().get(i);
-					if (z.getUsername().equals(username))
-					{
-						z.setX(x);
-						z.setY(y);
-						z.setDir(dir);
-						break;
-					}
+					p.setX(x);
+					p.setY(y);
+					p.setDir(dir);
+					break;
 				}
 			}
 		}
@@ -252,6 +241,17 @@ public class Client {
 		{
 			Zombie newZombie = new Zombie(username, x, y, dir, packet.getAddress(), packet.getPort(), "");	
 			game.getDrawing().addZombie(newZombie);
+		}
+		else if (command.equals("03"))
+		{
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				if (game.getDrawing().getPlayers().get(i).getUsername().equals(username))
+				{
+					game.getDrawing().getPlayers().remove(i);
+					break;
+				}
+			}
 		}
 	}
 }

@@ -9,12 +9,7 @@ import java.net.InetAddress;
  * @author Will
  *
  */
-public class Zombie extends MovingEntity{
-
-	
-	private String username;
-	private InetAddress ipAddress;
-	private int port;
+public class Zombie extends Player{
 
 /**
  * Construct a Zombie at (xP, yP) with dimensions width and height
@@ -29,10 +24,7 @@ public class Zombie extends MovingEntity{
 	
 	public Zombie(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img)
 	{
-		super(xP, yP, 30);
-		this.username = username;
-		this.setIpAddress(ipAddress);
-		this.setPort(port);
+		super(username, xP, yP, dir, ipAddress, port, img);
 	}
 	/**
 	 * Tells whether or not the zombie can attack the survivor
@@ -64,31 +56,4 @@ public class Zombie extends MovingEntity{
 		}
 		return false;
 	}
-	
-	public String getUsername() {
-		return username;
-	}
-
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public InetAddress getIpAddress() {
-		return ipAddress;
-	}
-
-	public void setIpAddress(InetAddress ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-	
 }

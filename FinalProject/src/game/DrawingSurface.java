@@ -16,23 +16,25 @@ import processing.core.PImage;
  */
 public class DrawingSurface extends PApplet
 {
-	private Survivor s;
+	private Player p;
 	private Wall w,w2;
-	private Zombie testZ;
 	
-	private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
+	private ArrayList<Player> players = new ArrayList<>();
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
 	private PImage background;
 	private Game g;
+	private boolean isSurvivor;
 	
 	public static final int MAX_SHOT_DIST = 200; // The farthest a shot can travel by a survivor - Should be slightly more than their vision limit
 	public static final String SURVIVOR_IMAGE = "Stickman.png";
 	public static final String WALL_IMAGE = "Wall.jpg";
-	public static final String ZOMBIE_IMAGE = "this has no image... enjoy the error";
+	public static final String ZOMBIE_IMAGE = "Zombie.png";
 	//Dimensions of image are 1024 x 640
 	public static final String BACKGROUND_IMAGE = "cbble.png";
+	//Dimensions of image are 470 x 402
+	public static final String BACKGROUND_IMAGE2 = "cobble.png";
 	
 	public DrawingSurface() {
 		
@@ -42,9 +44,11 @@ public class DrawingSurface extends PApplet
 	 * Creates a drawing surface 
 	 * @param game
 	 */
-	public DrawingSurface(Game game)
+	public DrawingSurface(Game game, boolean isSurvivor)
 	{
-		username = game.getUserName();
+		g = game;
+		username = g.getUserName();
+		this.isSurvivor = isSurvivor;
 		InetAddress localhost = null;
 		try {
 			localhost = InetAddress.getByName("localhost");
@@ -52,71 +56,114 @@ public class DrawingSurface extends PApplet
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		s = new Survivor(username, 100,100, 0, localhost, 4444,"SURVIVOR_IMAGE");
-		g = game;
+		
+		
+		if (this.isSurvivor)
+		{
+			p = new Survivor(username, 100,100, 0, localhost, 4444,"SURVIVOR_IMAGE");
+		}
+		else 
+		{
+			p = new Zombie(username, 50, 50, 0, localhost, 4444, ZOMBIE_IMAGE);
+		}
 		
 		w = new Wall(300, 350, 50, 300);
 		staticEntities.add(w);
 		w2 = new Wall(600,300,200,100);
 		staticEntities.add(w2);
 		
-		testZ = new Zombie(50, 50, 30);
-		addZombie(testZ);
+		//testZ = new Zombie(50, 50, 30);
+		//addZombie(testZ);
 	}
 	
 	public void setup()
 	{
 		f = createFont("Arial", 12,true);
 		textFont(f);
-		background = loadImage(BACKGROUND_IMAGE);
+		background = loadImage(BACKGROUND_IMAGE2);
 	}
 	
 	public void draw() //draws all objects in world
 	{
 		//background(background);
+		//1st column
 		image(background, 0, 0);
-		image(background, 1024, 640);
-		image(background, 0, 640);
-		image(background, 1024, 0);
+		image(background, 0, 402);
+		image(background, 0, 402*2);
+		
+		//2nd column
+		image(background, 470,0);
+		image(background, 470,402);
+		image(background, 470,402*2);
+		
+		//3rd column
+		image(background, 470*2,0);
+		image(background, 470*2,402);
+		image(background, 470*2,402*2);
+		
+		//4th column
+		image(background, 470*3,0);
+		image(background, 470*3,402);
+		image(background, 470*3,402*2);
+		
+		//4th column
+		image(background, 470*4,0);
+		image(background, 470*4,402);
+		image(background, 470*4,402*2);
+
 		//this.fill(255);
 		
 		//Updates survivors
-		for (int i = 0; i < movingEntities.size(); i++)
+		for (int i = 0; i < players.size(); i++)
 		{
-			if (movingEntities.get(i) instanceof Survivor) {
-				Survivor sOther = (Survivor)movingEntities.get(i);
+			if (players.get(i) instanceof Survivor) {
+				Survivor sOther = (Survivor)players.get(i);
 				fill(0);
 				text(sOther.getUsername(), sOther.getX() + 15, sOther.getY() + 5);
 				fill(255);
 				sOther.draw(this, sOther.getDir(), SURVIVOR_IMAGE);
 			}
+			else
+			{
+				Zombie zOther = (Zombie)players.get(i);
+				fill(0);
+				text(zOther.getUsername(), zOther.getX() + 15, zOther.getY() + 5);
+				fill(255);
+				zOther.draw(this, zOther.getDir(), ZOMBIE_IMAGE);
+			}
 		}
 		
-		s.checkWall(w);
-		s.checkWall(w2);
+		p.checkWall(w);
+		p.checkWall(w2);
+		
 		w.draw(this, WALL_IMAGE);
 		w2.draw(this, WALL_IMAGE);
-		testZ.draw(this, 0, SURVIVOR_IMAGE);
+		
+		//testZ.draw(this, 0, ZOMBIE_IMAGE);
+		
+		/*
 		if(testZ.canAttack(s))
 		{
 			s.damage(2);
 		}
+		*/
 		
-		//Checks if this is the server drawing surface (crashes because username will be null for servers)
+		//Checks if this is the server drawing surface 
 		if (!g.getisServer())
 		{
 			fill(0);
-			text(username, s.getX() + 15, s.getY() + 5);
+			text(username, p.getX() + 15, p.getY() + 5);
 			fill(255);
-			s.draw(this, mouseX, mouseY, SURVIVOR_IMAGE);
-			s.move();
 			
+			p.draw(this, mouseX, mouseY, p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE );
+			p.move();
+
 			// Send a message to the server with our (s) new coordinate
-			String cmd = "01," + username + "," + s.getX() + "," + s.getY() + "," + s.getDir();
+			String cmd = "01," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
 			byte[] data = cmd.getBytes();
 			g.getClient().send(data);
-			generateBlindSpot(s, w);
-			generateBlindSpot(s, w2);	
+			generateBlindSpot(p, w);
+			generateBlindSpot(p, w2);	
 		}
 	}
 
@@ -124,19 +171,19 @@ public class DrawingSurface extends PApplet
 	{
 		if(key == 'w')
 		{
-			s.setYVelocity(-5);
+			p.setYVelocity(-5);
 		}
 		if(key == 'a')
 		{
-			s.setXVelocity(-5);
+			p.setXVelocity(-5);
 		}
 		if(key == 's')
 		{
-			s.setYVelocity(5);
+			p.setYVelocity(5);
 		}
 		if(key == 'd')
 		{
-			s.setXVelocity(5);
+			p.setXVelocity(5);
 		}
 	}
 	
@@ -144,62 +191,63 @@ public class DrawingSurface extends PApplet
 	{
 		if(key == 'w')
 		{
-			s.setYVelocity(0);
+			p.setYVelocity(0);
 		}
 		if(key == 'a')
 		{
-			s.setXVelocity(0);
+			p.setXVelocity(0);
 		}
 		if(key == 's')
 		{
-			s.setYVelocity(0);
+			p.setYVelocity(0);
 		}
 		if(key == 'd')
 		{
-			s.setXVelocity(0);
+			p.setXVelocity(0);
 		}
-
-			
 	}
 	
 	public void mouseClicked() 
 	{
-		int sX = s.getX() + s.getWidth()/2;
-		int sY = s.getY() + s.getHeight()/2;
-		int difX =  mouseX - sX;
-		int difY = mouseY - sY;
-		float scaler = (float) (MAX_SHOT_DIST / (Math.sqrt(difY*difY + difX * difX)));
-		float x2 = (float) (sX + scaler*difX);
-		float y2 = (float) (sY + scaler*difY);
-		float minDist = -1;
-		Zombie closest = null;
-		
-		Line2D.Float shot = new Line2D.Float(sX, sY ,x2 ,y2);
-		
-		
-		for(int i = 0; i < getMovingEntities().size(); i++)
+		if (p instanceof Survivor)
 		{
-			if(movingEntities.get(i) instanceof Zombie)
+			int sX = p.getX() + p.getWidth()/2;
+			int sY = p.getY() + p.getHeight()/2;
+			int difX =  mouseX - sX;
+			int difY = mouseY - sY;
+			float scaler = (float) (MAX_SHOT_DIST / (Math.sqrt(difY*difY + difX * difX)));
+			float x2 = (float) (sX + scaler*difX);
+			float y2 = (float) (sY + scaler*difY);
+			float minDist = -1;
+			Zombie closest = null;
+			
+			Line2D.Float shot = new Line2D.Float(sX, sY ,x2 ,y2);
+			
+			
+			for(int i = 0; i < getPlayers().size(); i++)
 			{
-				Zombie target = (Zombie) movingEntities.get(i);
-				if(target.isHit(shot))// IF TARGET IS HIT BY SHOT
+				if(players.get(i) instanceof Zombie)
 				{
-					float dist = dist(sX, sY, target.getX() + target.getWidth()/2, target.getY() + target.getHeight()/2);
-					if(minDist == -1 || dist < minDist)
+					Zombie target = (Zombie) players.get(i);
+					if(target.isHit(shot))// IF TARGET IS HIT BY SHOT
 					{
-						minDist = dist;
-						closest = target;
+						float dist = dist(sX, sY, target.getX() + target.getWidth()/2, target.getY() + target.getHeight()/2);
+						if(minDist == -1 || dist < minDist)
+						{
+							minDist = dist;
+							closest = target;
+						}
 					}
 				}
+				if(closest != null)
+				{
+					closest.damage((int) (30 + Math.random()*20)); // does 30 - 50 damage
+				}
+				
 			}
-			if(closest != null)
-			{
-				closest.damage((int) (30 + Math.random()*20)); // does 30 - 50 damage
-			}
-			
+			// TODO REMOVE BELOW
+			line(sX, sY ,x2 ,y2); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
 		}
-		// TODO REMOVE BELOW
-		line(sX, sY ,x2 ,y2); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
 	}
 	
 	public void mouseDragged()
@@ -214,34 +262,34 @@ public class DrawingSurface extends PApplet
 
 	public void addSurvivor(Survivor s)
 	{
-		movingEntities.add(s);
+		players.add(s);
 	}
 	
 	public void addSurvivor(String username, int x, int y, float dir, InetAddress ip, int port)
 	{
 		Survivor sNew = new Survivor(username, x,y, dir, ip, port, "");
-		movingEntities.add(sNew);
+		players.add(sNew);
 	}
 	
 	public void addZombie(Zombie z)
 	{
-		movingEntities.add(z);
+		players.add(z);
 	}
 	
 	public void addZombie(String username, int x, int y, float dir, InetAddress ip, int port)
 	{
 		Zombie zNew = new Zombie(username, x,y, dir, ip, port, "");
-		movingEntities.add(zNew);
+		players.add(zNew);
 	}
 	
-	public MovingEntity getME()
+	public Player getME()
 	{
-		return s;
+		return p;
 	}
 
-	public ArrayList<MovingEntity> getMovingEntities()
+	public ArrayList<Player> getPlayers()
 	{
-		return movingEntities;
+		return players;
 	}
 	
 	/**
@@ -249,7 +297,7 @@ public class DrawingSurface extends PApplet
 	 * @param player
 	 * @param w
 	 */
-	public void generateBlindSpot(MovingEntity player, Wall w)
+	public void generateBlindSpot(Player player, Wall w)
 	{
 		
 		int pX = player.getX() + player.getWidth()/2;
@@ -466,6 +514,18 @@ public class DrawingSurface extends PApplet
 				
 				endShape(CLOSE);
 			}
+			
 		}
+	}
+	
+	public void exit()
+	{
+		if (!g.getisServer()) {
+			String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+			byte[] data = cmd.getBytes();
+			g.getClient().send(data);
+		}
+		
+		super.exit();
 	}
 }

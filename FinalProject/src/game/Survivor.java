@@ -8,11 +8,7 @@ import processing.core.PApplet;
  * @author Will
  *
  */
-public class Survivor extends MovingEntity{
-
-	private String username;
-	private InetAddress ipAddress;
-	private int port;
+public class Survivor extends Player{
 	
 /**
  * Construct a Survivor at (xP, yP) with dimensions width and height
@@ -35,38 +31,6 @@ public class Survivor extends MovingEntity{
 	 * @param port
 	 */
 	public Survivor(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
-		super(xP, yP, 30); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
-		this.setUsername(username);
-		this.setIpAddress(ipAddress);
-		this.setPort(port);
-	}
-	
-	public String getUsername() {
-		return username;
-	}
-
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-
-	public InetAddress getIpAddress() {
-		return ipAddress;
-	}
-
-
-	public void setIpAddress(InetAddress ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-
-
-	public int getPort() {
-		return port;
-	}
-
-
-	public void setPort(int port) {
-		this.port = port;
+		super(username, xP, yP, dir, ipAddress, port, img);
 	}
 }

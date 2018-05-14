@@ -10,6 +10,7 @@ import java.net.SocketTimeoutException;
 import java.nio.channels.IllegalBlockingModeException;
 
 import game.Game;
+import game.Player;
 import game.Survivor;
 import game.Zombie;
 
@@ -161,25 +162,19 @@ public class Server{
 			byte[] data = cmd.getBytes();
 			
 			// Sends newplayer to everybody
-			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
-				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
-				{
-					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
-					send(data, s.getIpAddress(), s.getPort());
-				}
+				Player p = game.getDrawing().getPlayers().get(i);
+				send(data, p.getIpAddress(), p.getPort());
 			}
 		
 			// Send everybody to newplayer
-			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
-				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
-				{
-					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
-					String cmd2 = "00," + s.getUsername() + "," + s.getX() + "," + s.getY() + "," + s.getDir();
-					byte[] data2 = cmd2.getBytes();
-					send(data2, newSurvivor.getIpAddress(), newSurvivor.getPort());
-				}
+				Player p = game.getDrawing().getPlayers().get(i);
+				String cmd2 = (p instanceof Survivor ? "00," : "02,") + p.getUsername() + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+				byte[] data2 = cmd2.getBytes();
+				send(data2, newSurvivor.getIpAddress(), newSurvivor.getPort());
 			}
 			
 			//Adds new player to drawing surface
@@ -190,11 +185,11 @@ public class Server{
 		else if (command.equals("01"))
 		{
 			//Updates the coordinate positions of the clients
-			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
-				if (game.getDrawing().getMovingEntities().get(i) instanceof Survivor)
+				if (game.getDrawing().getPlayers().get(i) instanceof Survivor)
 				{
-					Survivor s = (Survivor)game.getDrawing().getMovingEntities().get(i);
+					Survivor s = (Survivor)game.getDrawing().getPlayers().get(i);
 					if (s.getUsername().equals(username))
 					{
 						s.setX(x);
@@ -207,6 +202,20 @@ public class Server{
 						send(data, s.getIpAddress(), s.getPort());
 					}
 				}
+				else {
+					Zombie z = (Zombie)game.getDrawing().getPlayers().get(i);
+					if (z.getUsername().equals(username))
+					{
+						z.setX(x);
+						z.setY(y);
+						z.setDir(dir);
+					}
+					else
+					{
+						byte[] data = message.getBytes();
+						send(data, z.getIpAddress(), z.getPort());
+					}
+				}
 			}
 			
 		}
@@ -216,30 +225,45 @@ public class Server{
 			String cmd = "02," + newZombie.getUsername() + "," + x + "," + y + "," + dir;
 			byte[] data = cmd.getBytes();
 			
-			// Sends newplayer to everybody
-			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			// Sends new Zombie to everybody
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
-				if (game.getDrawing().getMovingEntities().get(i) instanceof Zombie)
-				{
-					Zombie z = (Zombie)game.getDrawing().getMovingEntities().get(i);
-					send(data, z.getIpAddress(), z.getPort());
-				}
+				Player p = game.getDrawing().getPlayers().get(i);
+				send(data, p.getIpAddress(), p.getPort());
 			}
 		
-			// Send everybody to newplayer
-			for (int i = 0; i < game.getDrawing().getMovingEntities().size(); i++)
+			// Send everybody to new Zombie
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
-				if (game.getDrawing().getMovingEntities().get(i) instanceof Zombie)
-				{
-					Zombie z = (Zombie)game.getDrawing().getMovingEntities().get(i);
-					String cmd2 = "02," + z.getUsername() + "," + z.getX() + "," + z.getY() + "," + z.getDir();
-					byte[] data2 = cmd2.getBytes();
-					send(data2, newZombie.getIpAddress(), newZombie.getPort());
-				}
+				Player p = game.getDrawing().getPlayers().get(i);
+				String cmd2 = (p instanceof Survivor ? "00," : "02,") + p.getUsername() + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+				byte[] data2 = cmd2.getBytes();
+				send(data2, newZombie.getIpAddress(), newZombie.getPort());
 			}
 			
 			//Adds new player to drawing surface
 			game.getDrawing().addZombie(newZombie);
+		}
+		else if (command.equals("03"))
+		{	
+			//Removes player from the array list
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				if (game.getDrawing().getPlayers().get(i).getUsername().equals(username))
+				{
+					game.getDrawing().getPlayers().remove(i);
+					break;
+				}
+			}
+			
+			//Sending information about removal to every other client
+			for (int j = 0; j < game.getDrawing().getPlayers().size(); j++)
+			{
+				Player p = game.getDrawing().getPlayers().get(j);
+				String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+				byte[] data = cmd.getBytes();
+				send(data, p.getIpAddress(), p.getPort());
+			}
 		}
 	}
 }
