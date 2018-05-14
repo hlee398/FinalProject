@@ -225,6 +225,7 @@ public class Client {
 		}
 		else if (command.equals("01"))
 		{
+			//int health = Integer.parseInt(dataArray[5]);
 			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
 				Player p = game.getDrawing().getPlayers().get(i);
@@ -233,6 +234,7 @@ public class Client {
 					p.setX(x);
 					p.setY(y);
 					p.setDir(dir);
+					//p.setHealth(health);
 					break;
 				}
 			}
@@ -251,6 +253,31 @@ public class Client {
 					game.getDrawing().getPlayers().remove(i);
 					break;
 				}
+			}
+		}
+		else if (command.equals("04"))
+		{
+			int health = Integer.parseInt(dataArray[5]);
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				Player p = game.getDrawing().getPlayers().get(i);
+				if (p.getUsername().equals(username))
+				{
+					p.setX(x);
+					p.setY(y);
+					p.setDir(dir);
+					p.setHealth(health);
+					break;
+				}
+			}
+			
+			if (game.getDrawing().getME().getUsername().equals(username))
+			{
+				Player p = game.getDrawing().getME();
+				p.setX(x);
+				p.setY(y);
+				p.setDir(dir);
+				p.setHealth(health);
 			}
 		}
 	}

@@ -23,7 +23,7 @@ public class DrawingSurface extends PApplet
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
-	private PImage background;
+	private PImage background, gameOverImage;
 	private Game g;
 	private boolean isSurvivor;
 	
@@ -35,6 +35,7 @@ public class DrawingSurface extends PApplet
 	public static final String BACKGROUND_IMAGE = "cbble.png";
 	//Dimensions of image are 470 x 402
 	public static final String BACKGROUND_IMAGE2 = "cobble.png";
+	public static final String GAME_OVER_IMAGE = "GameOverScreen.png";
 	
 	public DrawingSurface() {
 		
@@ -78,9 +79,10 @@ public class DrawingSurface extends PApplet
 	
 	public void setup()
 	{
-		f = createFont("Arial", 12,true);
+		f = createFont("Arial", 20,true);
 		textFont(f);
 		background = loadImage(BACKGROUND_IMAGE2);
+		gameOverImage = loadImage(GAME_OVER_IMAGE);
 	}
 	
 	public void draw() //draws all objects in world
@@ -118,8 +120,8 @@ public class DrawingSurface extends PApplet
 		{
 			if (players.get(i) instanceof Survivor) {
 				Survivor sOther = (Survivor)players.get(i);
-				fill(0);
-				text(sOther.getUsername(), sOther.getX() + 15, sOther.getY() + 5);
+				fill(255,25,0);
+				text(sOther.getUsername() + " " + sOther.getHealth(), sOther.getX() , sOther.getY() + 60);
 				fill(255);
 				sOther.draw(this, sOther.getDir(), SURVIVOR_IMAGE);
 			}
@@ -127,7 +129,7 @@ public class DrawingSurface extends PApplet
 			{
 				Zombie zOther = (Zombie)players.get(i);
 				fill(0);
-				text(zOther.getUsername(), zOther.getX() + 15, zOther.getY() + 5);
+				text(zOther.getUsername() + " " + zOther.getHealth(), zOther.getX() + 15, zOther.getY() + 60);
 				fill(255);
 				zOther.draw(this, zOther.getDir(), ZOMBIE_IMAGE);
 			}
@@ -139,31 +141,77 @@ public class DrawingSurface extends PApplet
 		w.draw(this, WALL_IMAGE);
 		w2.draw(this, WALL_IMAGE);
 		
-		//testZ.draw(this, 0, ZOMBIE_IMAGE);
-		
-		/*
-		if(testZ.canAttack(s))
-		{
-			s.damage(2);
-		}
-		*/
-		
 		//Checks if this is the server drawing surface 
 		if (!g.getisServer())
 		{
-			fill(0);
-			text(username, p.getX() + 15, p.getY() + 5);
-			fill(255);
+			//Drawing yourself if alive
+			if (p.getisAlive())
+			{
+				fill(0, 255, 216);
+				text(username + " " + p.getHealth(), p.getX(), p.getY() + 60);
+				fill(255);
+				
+				p.draw(this, mouseX, mouseY, p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE );
+			}
+			else {
+				//Draws a black screen with a game over message
+				image(gameOverImage, 0, 0);
+			}
 			
-			p.draw(this, mouseX, mouseY, p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE );
-			p.move();
+			//Checks if a zombie is in range, attacks and decreases health of player if the zombie hits
+			boolean survivorDamage = false;
+			if (p instanceof Survivor)
+			{
+				Survivor s = (Survivor)p;
+				for (int i = 0; i < players.size(); i++)
+				{
+					Player tempPlayer = players.get(i);
+					if (tempPlayer instanceof Zombie)
+					{
+						Zombie tempZombie = (Zombie)tempPlayer;
+						if (tempZombie.canAttack(s))
+						{
+							s.damage(1);
+							survivorDamage = true;
+						}
+					}
+				}
+			}
+			
+			//Allows player to move and send server messages if the player is alive
+			if (p.getHealth() > 0)
+			{
+				if (p.isMoving())
+				{
+					p.move();
+					// Send a message to the server with our (s) new coordinate
+					String cmd = (survivorDamage ? "04," : "01,") + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
+					byte[] data = cmd.getBytes();
+					g.getClient().send(data);
+				}
+				else if (survivorDamage)
+				{
+					String cmd = "04," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
+					byte[] data = cmd.getBytes();
+					g.getClient().send(data);
+				}
+				generateBlindSpot(p, w);
+				generateBlindSpot(p, w2);	
 
-			// Send a message to the server with our (s) new coordinate
-			String cmd = "01," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
-			byte[] data = cmd.getBytes();
-			g.getClient().send(data);
-			generateBlindSpot(p, w);
-			generateBlindSpot(p, w2);	
+			}
+			else
+			{
+				//If the player died, then he can no longer move and is removed from the game
+				if (p.getisAlive())
+				{
+					// Set isAlive false
+					p.setisAlive(false);
+					// Send 03 msg to server
+					String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+					byte[] data = cmd.getBytes();
+					g.getClient().send(data);
+				}
+			}
 		}
 	}
 
@@ -242,6 +290,9 @@ public class DrawingSurface extends PApplet
 				if(closest != null)
 				{
 					closest.damage((int) (30 + Math.random()*20)); // does 30 - 50 damage
+					String cmd = "04," + closest.getUsername() + "," + closest.getX() + "," + closest.getY() + "," + closest.getDir() + "," + closest.getHealth();
+					byte[] data = cmd.getBytes();
+					g.getClient().send(data);
 				}
 				
 			}
@@ -521,9 +572,12 @@ public class DrawingSurface extends PApplet
 	public void exit()
 	{
 		if (!g.getisServer()) {
-			String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
-			byte[] data = cmd.getBytes();
-			g.getClient().send(data);
+			if (p.getisAlive())
+			{
+				String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+				byte[] data = cmd.getBytes();
+				g.getClient().send(data);
+			}
 		}
 		
 		super.exit();

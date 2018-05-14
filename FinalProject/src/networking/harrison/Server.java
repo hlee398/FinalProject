@@ -184,37 +184,22 @@ public class Server{
 		}
 		else if (command.equals("01"))
 		{
+			//int health = Integer.parseInt(dataArray[5]);
 			//Updates the coordinate positions of the clients
 			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
-				if (game.getDrawing().getPlayers().get(i) instanceof Survivor)
+				Player p = game.getDrawing().getPlayers().get(i);
+				if (p.getUsername().equals(username))
 				{
-					Survivor s = (Survivor)game.getDrawing().getPlayers().get(i);
-					if (s.getUsername().equals(username))
-					{
-						s.setX(x);
-						s.setY(y);
-						s.setDir(dir);
-					}
-					else
-					{
-						byte[] data = message.getBytes();
-						send(data, s.getIpAddress(), s.getPort());
-					}
+					p.setX(x);
+					p.setY(y);
+					p.setDir(dir);
+					//p.setHealth(health);
 				}
-				else {
-					Zombie z = (Zombie)game.getDrawing().getPlayers().get(i);
-					if (z.getUsername().equals(username))
-					{
-						z.setX(x);
-						z.setY(y);
-						z.setDir(dir);
-					}
-					else
-					{
-						byte[] data = message.getBytes();
-						send(data, z.getIpAddress(), z.getPort());
-					}
+				else
+				{
+					byte[] data = message.getBytes();
+					send(data, p.getIpAddress(), p.getPort());
 				}
 			}
 			
@@ -263,6 +248,28 @@ public class Server{
 				String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
 				byte[] data = cmd.getBytes();
 				send(data, p.getIpAddress(), p.getPort());
+			}
+		}
+		else if (command.equals("04"))
+		{
+			int health = Integer.parseInt(dataArray[5]);
+			//Updates the coordinate positions of the clients
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				Player p = game.getDrawing().getPlayers().get(i);
+				if (p.getUsername().equals(username))
+				{
+					p.setX(x);
+					p.setY(y);
+					p.setDir(dir);
+					p.setHealth(health);
+				}
+				
+				if (packet.getAddress() != p.getIpAddress())
+				{
+					byte[] data = message.getBytes();
+					send(data, p.getIpAddress(), p.getPort());
+				}
 			}
 		}
 	}

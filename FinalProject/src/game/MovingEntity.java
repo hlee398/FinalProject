@@ -151,14 +151,40 @@ public abstract class MovingEntity extends Entity{
 	
 	public void damage(int dmg)
 	{
-		health -= dmg;
-		if(health <= 0)
+		if (health > 0)
 		{
-			isAlive = false;
+			health -= dmg;
+			if (health <= 0)
+			{
+				health = 0;
+			}
 		}
 		
-		System.out.println(health + " isAlive " + isAlive);
+		//System.out.println(health + " isAlive " + isAlive);
 	}
 	
+	public int getHealth()
+	{
+		return health;
+	}
 	
+	public void setHealth(int health)
+	{
+		this.health = health;
+	}
+	
+	public boolean getisAlive()
+	{
+		return isAlive;
+	}
+	
+	public void setisAlive(boolean alive)
+	{
+		this.isAlive = alive;
+	}
+	
+	public boolean isMoving()
+	{
+		return xVel != 0 || yVel != 0;
+	}
 }
