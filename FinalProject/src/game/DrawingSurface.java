@@ -182,20 +182,11 @@ public class DrawingSurface extends PApplet
 			//Allows player to move and send server messages if the player is alive
 			if (p.getHealth() > 0)
 			{
-				if (p.isMoving())
-				{
-					p.move();
-					// Send a message to the server with our (s) new coordinate
-					String cmd = (survivorDamage ? "04," : "01,") + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
-					byte[] data = cmd.getBytes();
-					g.getClient().send(data);
-				}
-				else if (survivorDamage)
-				{
-					String cmd = "04," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
-					byte[] data = cmd.getBytes();
-					g.getClient().send(data);
-				}
+				p.move();
+				// Send a message to the server with our (s) new coordinate
+				String cmd = (survivorDamage ? "04," : "01,") + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
+				byte[] data = cmd.getBytes();
+				g.getClient().send(data);
 				generateBlindSpot(p, w);
 				generateBlindSpot(p, w2);	
 
