@@ -209,21 +209,22 @@ public class DrawingSurface extends PApplet
 
 	public void keyPressed()
 	{
+		int speed = (p instanceof Survivor) ? (3) : (5);
 		if(key == 'w')
 		{
-			p.setYVelocity(-5);
+			p.setYVelocity(-speed);
 		}
 		if(key == 'a')
 		{
-			p.setXVelocity(-5);
+			p.setXVelocity(-speed);
 		}
 		if(key == 's')
 		{
-			p.setYVelocity(5);
+			p.setYVelocity(speed);
 		}
 		if(key == 'd')
 		{
-			p.setXVelocity(5);
+			p.setXVelocity(speed);
 		}
 	}
 	
