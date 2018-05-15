@@ -1,8 +1,6 @@
 package game;
 import java.net.InetAddress;
 
-import processing.core.PApplet;
-
 /**
  * A MovingEntity that can interact with other Entities
  * @author Will
