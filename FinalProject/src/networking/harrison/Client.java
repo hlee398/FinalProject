@@ -17,6 +17,14 @@ import game.Zombie;
 
 /**
  * Connects a client computer to a main server
+ * All data that is passed into the server will be in the format 0n,username,x,y,dir where n is the command specified to do this task
+ * 00 = adding a new player
+ * 01 = moving players 
+ * 02 = adding a new zombie
+ * 03 = disconnecting a player
+ * 04 = updating health
+ * 05 = Checks win condition
+ * 06 = Checks if the game has started
  * @author Harrison
  *
  */

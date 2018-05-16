@@ -2,6 +2,11 @@ package game;
 
 import java.net.InetAddress;
 
+/**
+ * Represents a player and has survivor and zombie as a subclass
+ * @author hlee398
+ *
+ */
 public abstract class Player extends MovingEntity{
 
 	protected String username;
