@@ -274,6 +274,8 @@ public class DrawingSurface extends PApplet
 						}
 					}
 				}
+				
+				//System.out.println(s.getLoadedBullets() + " / " + s.getBullets());
 			}
 			
 			//Allows player to move and send server messages if the player is alive
@@ -314,6 +316,10 @@ public class DrawingSurface extends PApplet
 	public void keyPressed()
 	{
 		int speed = (p instanceof Survivor) ? (3) : (5);
+		if(speed == 3 && key == 'r')
+		{
+			((Survivor)p).reload();
+		}
 		if(key == 'w')
 		{
 			p.setYVelocity(-speed);
@@ -354,8 +360,10 @@ public class DrawingSurface extends PApplet
 	
 	public void mousePressed() 
 	{
-		if (p instanceof Survivor)
+		if (p instanceof Survivor && ((Survivor)p).getLoadedBullets() > 0)
 		{
+			((Survivor)p).shootBullet();
+			
 			int sX = p.getX() + p.getWidth()/2;
 			int sY = p.getY() + p.getHeight()/2;
 			int difX =  mouseX - (this.width/2 - p.getX()) - sX;
@@ -395,6 +403,10 @@ public class DrawingSurface extends PApplet
 			}
 			// TODO REMOVE BELOW
 			line(sX, sY ,x2 ,y2); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
+		}
+		else // no loaded bullets
+		{
+			//play click noise
 		}
 	}
 	
