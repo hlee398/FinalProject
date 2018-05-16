@@ -33,17 +33,22 @@ public class Zombie extends Player{
 	 */
 	public boolean canAttack(Survivor s)
 	{
-		int zX = getX() + getWidth()/2;
-		int zY = getY() + getHeight()/2;
-		int sX = s.getX() + s.getWidth()/2;
-		int sY = s.getY() + s.getHeight()/2;
-		
-		Point2D.Float sCenter = new Point2D.Float(sX,sY);
-		Point2D.Float zCenter = new Point2D.Float(zX,zY);
-		
-		if(zCenter.distance(sCenter) < getWidth()/2 + s.getWidth()/2)
-		{
-			return true;
+		if(this.getisAlive()) {
+			int zX = getX() + getWidth()/2;
+			int zY = getY() + getHeight()/2;
+			int sX = s.getX() + s.getWidth()/2;
+			int sY = s.getY() + s.getHeight()/2;
+			
+			Point2D.Float sCenter = new Point2D.Float(sX,sY);
+			Point2D.Float zCenter = new Point2D.Float(zX,zY);
+			
+			if(zCenter.distance(sCenter) < getWidth()/2 + s.getWidth()/2)
+			{
+				return true;
+			}
+		}
+		else {
+			return false;
 		}
 		return false;
 	}

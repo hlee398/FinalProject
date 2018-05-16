@@ -29,12 +29,16 @@ public class Game {
 	private Client client;
 	private DrawingSurface drawing;
 	private String username, ipAddressServer;
-	private boolean isServer, isSurvivor;
+	private boolean isServer, isSurvivor, gameStart, zombieWin, playerWin, tie;
 	
 	
 	
 	public Game()
 	{
+		setGameStart(false);
+		setZombieWin(false);
+		setPlayerWin(false);
+		setTie(false);
 		
 		int nReply = JOptionPane.showConfirmDialog(null, "Run Server?");
 		this.isServer = (nReply == 0);
@@ -123,8 +127,45 @@ public class Game {
 		return isServer;
 	}
 	
+	public Server getServer()
+	{
+		return server;
+	}
+	
 	public boolean getisSurvivor()
 	{
 		return isSurvivor;
+	}
+
+	public boolean isGameStart() {
+		return gameStart;
+	}
+
+	public void setGameStart(boolean gameStart) {
+		this.gameStart = gameStart;
+	}
+
+	public boolean isZombieWin() {
+		return zombieWin;
+	}
+
+	public void setZombieWin(boolean zombieWin) {
+		this.zombieWin = zombieWin;
+	}
+
+	public boolean isPlayerWin() {
+		return playerWin;
+	}
+
+	public void setPlayerWin(boolean playerWin) {
+		this.playerWin = playerWin;
+	}
+
+	public boolean isTie() {
+		return tie;
+	}
+
+	public void setTie(boolean tie) {
+		this.tie = tie;
 	}
 }

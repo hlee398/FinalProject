@@ -155,7 +155,7 @@ public class Server{
 //		byte[] dat = test.getBytes();
 //		send( dat, packet.getAddress(), packet.getPort() );
 		
-		if (command.equals("00"))
+		if (command.equals("00")) //Adding survivors
 		{
 			Survivor newSurvivor = new Survivor(username, x, y, dir, packet.getAddress(), packet.getPort(), "");
 			String cmd = "00," + newSurvivor.getUsername() + "," + x + "," + y + "," + dir;
@@ -182,7 +182,7 @@ public class Server{
 
 			//System.out.println(game.getDrawing().toString() + " Player " + newSurvivor.getUsername() + " has connected");
 		}
-		else if (command.equals("01"))
+		else if (command.equals("01")) //Moving players
 		{
 			//int health = Integer.parseInt(dataArray[5]);
 			//Updates the coordinate positions of the clients
@@ -204,7 +204,7 @@ public class Server{
 			}
 			
 		}
-		else if (command.equals("02"))
+		else if (command.equals("02")) //Adding a zombie 
 		{
 			Zombie newZombie = new Zombie(username, x, y, dir, packet.getAddress(), packet.getPort(), "");
 			String cmd = "02," + newZombie.getUsername() + "," + x + "," + y + "," + dir;
@@ -229,7 +229,7 @@ public class Server{
 			//Adds new player to drawing surface
 			game.getDrawing().addZombie(newZombie);
 		}
-		else if (command.equals("03"))
+		else if (command.equals("03")) // Disconnects player from the server
 		{	
 			//Removes player from the array list
 			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
@@ -250,7 +250,7 @@ public class Server{
 				send(data, p.getIpAddress(), p.getPort());
 			}
 		}
-		else if (command.equals("04"))
+		else if (command.equals("04")) //Has health so if player is hit, they will die once health = 0
 		{
 			int health = Integer.parseInt(dataArray[5]);
 			//Updates the coordinate positions of the clients

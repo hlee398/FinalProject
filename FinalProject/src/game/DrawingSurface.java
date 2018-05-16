@@ -1,4 +1,5 @@
 package game;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.net.InetAddress;
@@ -23,7 +24,7 @@ public class DrawingSurface extends PApplet
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
-	private PImage background, gameOverImage;
+	private PImage background, gameOverImage, tempImage;
 	private Game g;
 	private boolean isSurvivor;
 	
@@ -82,11 +83,81 @@ public class DrawingSurface extends PApplet
 		f = createFont("Arial", 20,true);
 		textFont(f);
 		background = loadImage(BACKGROUND_IMAGE2);
+		tempImage = loadImage(BACKGROUND_IMAGE);
 		gameOverImage = loadImage(GAME_OVER_IMAGE);
 	}
 	
 	public void draw() //draws all objects in world
 	{
+		if (g.getisServer()) {
+			//Checks to start game if there are at least 1 zombie and 1 survivor
+			if (!g.isGameStart()) {
+				int zombieCount = 0;
+				int survivorCount = 0;
+				for (int i = 0; i < players.size(); i++) {
+					Player p = players.get(i);
+					if (p instanceof Survivor)
+					{
+						survivorCount++;
+					}
+					else {
+						zombieCount++;
+					}
+				}
+				if (zombieCount > 0 && survivorCount > 0)
+				{
+					g.setGameStart(true);
+					String cmd = "06," + "(null)," + 0 + "," + 0 + "," + 0;
+					byte[] data = cmd.getBytes();
+					for (int i = 0; i < players.size(); i++)
+					{
+						Player p = players.get(i);
+						g.getServer().send(data, p.getIpAddress(), p.getPort());
+					}
+				}
+			}
+			//Checks if a team has won
+			if (g.isGameStart())
+			{
+				int zombieCount = 0;
+				int survivorCount = 0;
+				for (int i = 0; i < players.size(); i++) {
+					Player p = players.get(i);
+					if (p instanceof Survivor)
+					{
+						if (p.getHealth() > 0)
+							survivorCount++;
+					}
+					else {
+						if (p.getHealth() > 0)
+							zombieCount++;
+					}
+				}
+				if (zombieCount <= 0 || survivorCount <= 0)
+				{
+					g.setGameStart(false);
+					String cmd = "";
+					if (zombieCount <= 0 && survivorCount <= 0) // tie
+					{
+						cmd = "05," + "(null)," + 0 + "," + 0 + "," + 0 + "," + 0;
+					}
+					else if (zombieCount <= 0) // Survivor win
+					{
+						cmd = "05," + "(null)," + 0 + "," + 0 + "," + 0 + "," + 1;
+					}
+					else { //zombie win
+						cmd = "05," + "(null)," + 0 + "," + 0 + "," + 0 + "," + -1;
+					}
+					byte[] data = cmd.getBytes();
+					for (int i = 0; i < players.size(); i++)
+					{
+						Player p = players.get(i);
+						g.getServer().send(data, p.getIpAddress(), p.getPort());
+					}
+				}
+			}
+		}
+		
 		translate(this.width/2 - p.getX(),this.height/2 - p.getY());
 		//background(background);
 		//1st column
@@ -153,8 +224,35 @@ public class DrawingSurface extends PApplet
 				fill(255);
 				
 				p.draw(this,mouseX - (this.width/2 - p.getX()), mouseY - (this.height/2 - p.getY()),p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE );
+				
+				if (g.isGameStart())
+				{
+					fill(0,255,0);
+					rect(0,0,50,50);
+				}
+				else {
+					fill(255,0,0);
+					rect(0,0,50,50);
+
+				}
 			}
 			else {
+				//Draws a black screen with a game over message
+				//image(gameOverImage, 0, 0);
+			}
+			
+			if (g.isPlayerWin())
+			{
+				//Draws a black screen with a game over message
+				image(gameOverImage, 0, 0);
+			}
+			if (g.isZombieWin())
+			{
+				//Draws a black screen with a game over message
+				image(tempImage, 0, 0);
+			}
+			if (g.isTie())
+			{
 				//Draws a black screen with a game over message
 				image(gameOverImage, 0, 0);
 			}
@@ -187,9 +285,12 @@ public class DrawingSurface extends PApplet
 				String cmd = (survivorDamage ? "04," : "01,") + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
 				byte[] data = cmd.getBytes();
 				g.getClient().send(data);
-				generateBlindSpot(p, w);
-				generateBlindSpot(p, w2);	
-
+				//Shoudl replace with isGameOver method but this is just a temp thing
+				if(g.isGameStart())
+				{
+					generateBlindSpot(p, w);
+					generateBlindSpot(p, w2);	
+				}
 			}
 			else
 			{
@@ -199,7 +300,11 @@ public class DrawingSurface extends PApplet
 					// Set isAlive false
 					p.setisAlive(false);
 					// Send 03 msg to server
-					String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+					//String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+					//byte[] data = cmd.getBytes();
+					//g.getClient().send(data);
+					
+					String cmd = "04," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
 					byte[] data = cmd.getBytes();
 					g.getClient().send(data);
 				}
@@ -565,12 +670,9 @@ public class DrawingSurface extends PApplet
 	public void exit()
 	{
 		if (!g.getisServer()) {
-			if (p.getisAlive())
-			{
-				String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
-				byte[] data = cmd.getBytes();
-				g.getClient().send(data);
-			}
+			String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+			byte[] data = cmd.getBytes();
+			g.getClient().send(data);
 		}
 		
 		super.exit();

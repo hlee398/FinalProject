@@ -218,12 +218,12 @@ public class Client {
 		//System.out.println(username);
 		
 		// Gets message from server and adds survivor to Client side array
-		if (command.equals("00"))
+		if (command.equals("00")) // Adding a new survivor
 		{
 			Survivor newSurvivor = new Survivor(username, x, y, dir, packet.getAddress(), packet.getPort(), "");	
 			game.getDrawing().addSurvivor(newSurvivor);
 		}
-		else if (command.equals("01"))
+		else if (command.equals("01")) // Moving players
 		{
 			//int health = Integer.parseInt(dataArray[5]);
 			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
@@ -239,12 +239,12 @@ public class Client {
 				}
 			}
 		}
-		else if (command.equals("02"))
+		else if (command.equals("02")) // Adding zombies
 		{
 			Zombie newZombie = new Zombie(username, x, y, dir, packet.getAddress(), packet.getPort(), "");	
 			game.getDrawing().addZombie(newZombie);
 		}
-		else if (command.equals("03"))
+		else if (command.equals("03")) //disconnect a player
 		{
 			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
 			{
@@ -255,7 +255,7 @@ public class Client {
 				}
 			}
 		}
-		else if (command.equals("04"))
+		else if (command.equals("04")) // Updating health and movement
 		{
 			int health = Integer.parseInt(dataArray[5]);
 			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
@@ -279,6 +279,26 @@ public class Client {
 				p.setDir(dir);
 				p.setHealth(health);
 			}
+		}
+		else if (command.equals("05")) // Checking win conditions
+		{
+			game.setGameStart(false);
+			int win = Integer.parseInt(dataArray[5]);
+			if (win == 0)
+			{
+				game.setTie(true);
+			}
+			else if (win == 1)
+			{
+				game.setPlayerWin(true);
+			}
+			else {
+				game.setZombieWin(true);
+			}
+		}
+		else if (command.equals("06")) // checking if game has stared
+		{
+			game.setGameStart(true);
 		}
 	}
 }
