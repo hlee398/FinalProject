@@ -25,7 +25,8 @@ public class DrawingSurface extends PApplet
 	private PFont f;
 	private PImage background, gameOverImage, tempImage;
 	private Game g;
-	private boolean isSurvivor, clientInitialized;
+	private boolean isSurvivor, clientInitialized, isReloading;
+	private long lastShot;
 	
 	public static final int MAX_SHOT_DIST = 200; // The farthest a shot can travel by a survivor - Should be slightly more than their vision limit
 	public static final String SURVIVOR_IMAGE = "Stickman.png";
@@ -36,6 +37,7 @@ public class DrawingSurface extends PApplet
 	//Dimensions of image are 470 x 402
 	public static final String BACKGROUND_IMAGE2 = "cobble.png";
 	public static final String GAME_OVER_IMAGE = "GameOverScreen.png";
+	public final int TIME_BETWEEN_SHOTS = 500;
 	
 	public DrawingSurface() {
 		
@@ -380,8 +382,11 @@ public class DrawingSurface extends PApplet
 	
 	public void mousePressed() 
 	{
-		if (p instanceof Survivor && ((Survivor)p).getLoadedBullets() > 0)
+		long currentTime = System.currentTimeMillis();
+		
+		if (p instanceof Survivor && ((Survivor)p).getLoadedBullets() > 0 && currentTime - lastShot >= TIME_BETWEEN_SHOTS)
 		{
+			lastShot = System.currentTimeMillis();
 			((Survivor)p).shootBullet();
 			
 			int sX = p.getX() + p.getWidth()/2;
