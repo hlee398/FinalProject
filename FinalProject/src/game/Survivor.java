@@ -18,7 +18,7 @@ public class Survivor extends Player{
  */
 	public Survivor(int xP, int yP, int radius) {
 		super(xP, yP, radius);
-		bullets = 0;
+		bullets = 5;
 		loadedBullets = MAX_LOADED;
 	}
 	
@@ -33,7 +33,7 @@ public class Survivor extends Player{
 	 */
 	public Survivor(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
 		super(username, xP, yP, dir, ipAddress, port, img);
-		bullets = 0;
+		bullets = 5;
 		loadedBullets = MAX_LOADED;
 	}
 	
