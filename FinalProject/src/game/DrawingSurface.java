@@ -37,7 +37,7 @@ public class DrawingSurface extends PApplet
 	//Dimensions of image are 470 x 402
 	public static final String BACKGROUND_IMAGE2 = "cobble.png";
 	public static final String GAME_OVER_IMAGE = "GameOverScreen.png";
-	public final int TIME_BETWEEN_SHOTS = 500;
+	public final int TIME_BETWEEN_SHOTS = 500; 
 	
 	public DrawingSurface() {
 		
