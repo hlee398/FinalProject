@@ -1,17 +1,23 @@
 package game;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.Dialog;
 
-public class Menu extends JPanel{
+import javax.swing.*;
+
+public class Menu {
+
+	private JFrame frame;
+	private JDialog dialog;
 	
-	
-	public Menu ()
+	public Menu()
 	{
-		JFrame window = new JFrame("Client Configuration");
-		window.setBounds(300, 300, 700, 480);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.add(this);
-		window.setVisible(true);
+		frame = new JFrame("Client Configuration");
+		frame.setBounds(0, 0, 400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.add(this);
+
+		
+		dialog = new JDialog(frame, "Client Configuration", Dialog.ModalityType.APPLICATION_MODAL);
+		frame.setVisible(true);
 	}
 }

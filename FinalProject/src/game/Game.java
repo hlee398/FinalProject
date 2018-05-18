@@ -80,11 +80,12 @@ public class Game {
 		{
 			Menu menu = new Menu();
 			
+			/*
 			username = JOptionPane.showInputDialog("Enter a username", "");
 			int playertype = JOptionPane.showConfirmDialog(null, "Are you a player?");
 			this.isSurvivor = (playertype == 0);
 			ipAddressServer = JOptionPane.showInputDialog("Enter IP Address of server", "localhost");
-			
+			*/
 			
 			drawing = new DrawingSurface(this, isSurvivor);
 			PApplet.runSketch(new String[]{""}, drawing);
