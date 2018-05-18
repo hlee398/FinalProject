@@ -78,8 +78,17 @@ public class Game {
 		}
 		else
 		{
-			Menu menu = new Menu();
-			
+			//Object someVar = new Object();
+			Menu menu = new Menu(this);
+
+			/*
+			try {
+				someVar.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
 			/*
 			username = JOptionPane.showInputDialog("Enter a username", "");
 			int playertype = JOptionPane.showConfirmDialog(null, "Are you a player?");
@@ -87,28 +96,32 @@ public class Game {
 			ipAddressServer = JOptionPane.showInputDialog("Enter IP Address of server", "localhost");
 			*/
 			
-			drawing = new DrawingSurface(this, isSurvivor);
-			PApplet.runSketch(new String[]{""}, drawing);
-			PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
-			PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
-			JFrame window = (JFrame)canvas.getFrame();
-			window.setTitle(username);		
 			
-			window.setBounds(0, 0, screenWidth, screenHeight);
-			window.setMinimumSize(new Dimension(100,100));
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
+		}
+	}
 	
-			window.getHeight();
-			
-			window.setVisible(true);
-			client = new Client(4444, ipAddressServer, username, this);
-			client.start();
-			if (!client.connect())
-			{
-				System.out.println("Client did not connect");
-			}
-			
+	public void done() {
+
+		drawing = new DrawingSurface(this, isSurvivor);
+		PApplet.runSketch(new String[]{""}, drawing);
+		PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
+		PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
+		JFrame window = (JFrame)canvas.getFrame();
+		window.setTitle(username);		
+		
+		window.setBounds(0, 0, screenWidth, screenHeight);
+		window.setMinimumSize(new Dimension(100,100));
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setResizable(true);
+
+		window.getHeight();
+		
+		window.setVisible(true);
+		client = new Client(4444, ipAddressServer, username, this);
+		client.start();
+		if (!client.connect())
+		{
+			System.out.println("Client did not connect");
 		}
 	}
 
