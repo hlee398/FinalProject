@@ -19,7 +19,7 @@ public class Menu extends JPanel {
 		frame.setVisible(true);
 		
 		//JPanel p = new JPanel(new BorderLayout());
-		
+		m.done();
 	}
 	
 	

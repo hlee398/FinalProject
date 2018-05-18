@@ -89,12 +89,7 @@ public class Game {
 				e.printStackTrace();
 			}
 			*/
-			/*
-			username = JOptionPane.showInputDialog("Enter a username", "");
-			int playertype = JOptionPane.showConfirmDialog(null, "Are you a player?");
-			this.isSurvivor = (playertype == 0);
-			ipAddressServer = JOptionPane.showInputDialog("Enter IP Address of server", "localhost");
-			*/
+
 			
 			
 		}
@@ -102,6 +97,12 @@ public class Game {
 	
 	public void done() {
 
+		
+		username = JOptionPane.showInputDialog("Enter a username", "");
+		int playertype = JOptionPane.showConfirmDialog(null, "Are you a player?");
+		this.isSurvivor = (playertype == 0);
+		ipAddressServer = JOptionPane.showInputDialog("Enter IP Address of server", "localhost");
+		
 		drawing = new DrawingSurface(this, isSurvivor);
 		PApplet.runSketch(new String[]{""}, drawing);
 		PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
