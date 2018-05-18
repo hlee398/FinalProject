@@ -20,8 +20,6 @@ public class Pickupable extends StaticEntity{
 		this.health = health;
 		this.bullets = bullets;	
 	}
-
-	
 	public int getHealth()
 	{
 		return health;

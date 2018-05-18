@@ -206,11 +206,20 @@ public class DrawingSurface extends PApplet
 			}
 		}
 		
-		p.checkWall(w);
-		p.checkWall(w2);
 		
-		w.draw(this, WALL_IMAGE);
-		w2.draw(this, WALL_IMAGE);
+		for(int i = 0; i < staticEntities.size(); i++) // STATICENTITY LOOP
+		{
+			if(staticEntities.get(i) instanceof Wall)
+			{
+				Wall current = ((Wall)staticEntities.get(i));
+				p.checkWall(current);
+				current.draw(this,  WALL_IMAGE);
+			}
+			else if(staticEntities.get(i) instanceof Pickupable) // give health or bullets - need to check if p is Survivor or Zombie
+			{
+				
+			}
+		}
 		
 		//Checks if this is the server drawing surface 
 		if (!g.getisServer())
@@ -453,9 +462,10 @@ public class DrawingSurface extends PApplet
 	}
 	
 	/**
+	 * Creates a shadow behind the Wall from the perspective of the Player
 	 * @author William (thank you for your pain and suffering)
-	 * @param player
-	 * @param w
+	 * @param player player to create shadows for
+	 * @param w wall to create shadows for
 	 */
 	public void generateBlindSpot(Player player, Wall w)
 	{
