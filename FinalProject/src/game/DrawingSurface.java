@@ -28,9 +28,9 @@ public class DrawingSurface extends PApplet
 	private boolean isSurvivor, clientInitialized;
 	
 	public static final int MAX_SHOT_DIST = 200; // The farthest a shot can travel by a survivor - Should be slightly more than their vision limit
-	public static final String SURVIVOR_IMAGE = "Stickman.png";
-	public static final String WALL_IMAGE = "Wall.jpg";
-	public static final String ZOMBIE_IMAGE = "Zombie.png";
+	public static final String SURVIVOR_IMAGE = "pics/survivor.png";
+	public static final String WALL_IMAGE = "pics/8TileWall.png";
+	public static final String ZOMBIE_IMAGE = "pics/zombie.png";
 	//Dimensions of image are 1024 x 640
 	public static final String BACKGROUND_IMAGE = "cbble.png";
 	//Dimensions of image are 470 x 402
