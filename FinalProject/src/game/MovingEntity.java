@@ -157,7 +157,7 @@ public abstract class MovingEntity extends Entity{
 			if (health <= 0)
 			{
 				health = 0;
-				isAlive = false;
+				//isAlive = false;
 			}
 		}
 		

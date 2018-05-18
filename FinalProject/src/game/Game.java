@@ -33,7 +33,6 @@ public class Game {
 	private boolean isServer, isSurvivor, gameStart, zombieWin, playerWin, tie;
 	
 	
-	
 	public Game()
 	{
 		setGameStart(false);
@@ -79,10 +78,13 @@ public class Game {
 		}
 		else
 		{
+			Menu menu = new Menu();
+			
 			username = JOptionPane.showInputDialog("Enter a username", "");
 			int playertype = JOptionPane.showConfirmDialog(null, "Are you a player?");
 			this.isSurvivor = (playertype == 0);
 			ipAddressServer = JOptionPane.showInputDialog("Enter IP Address of server", "localhost");
+			
 			
 			drawing = new DrawingSurface(this, isSurvivor);
 			PApplet.runSketch(new String[]{""}, drawing);
@@ -168,5 +170,10 @@ public class Game {
 
 	public void setTie(boolean tie) {
 		this.tie = tie;
+	}
+	
+	public boolean isGameInProgess()
+	{
+		return !playerWin && !zombieWin && !tie;
 	}
 }

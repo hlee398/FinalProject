@@ -25,7 +25,7 @@ public class DrawingSurface extends PApplet
 	private PFont f;
 	private PImage background, gameOverImage, tempImage;
 	private Game g;
-	private boolean isSurvivor;
+	private boolean isSurvivor, clientInitialized;
 	
 	public static final int MAX_SHOT_DIST = 200; // The farthest a shot can travel by a survivor - Should be slightly more than their vision limit
 	public static final String SURVIVOR_IMAGE = "Stickman.png";
@@ -50,6 +50,7 @@ public class DrawingSurface extends PApplet
 		g = game;
 		username = g.getUserName();
 		this.isSurvivor = isSurvivor;
+		this.clientInitialized = false;
 		InetAddress localhost = null;
 		try {
 			localhost = InetAddress.getByName("localhost");
@@ -115,6 +116,7 @@ public class DrawingSurface extends PApplet
 					}
 				}
 			}
+			
 			//Checks if a team has won
 			if (g.isGameStart())
 			{
@@ -157,6 +159,7 @@ public class DrawingSurface extends PApplet
 			}
 		}
 		
+		//Moving the window code
 		translate(this.width/2 - p.getX(),this.height/2 - p.getY());
 		//background(background);
 		//1st column
@@ -292,15 +295,15 @@ public class DrawingSurface extends PApplet
 			{
 				p.move();
 				// Send a message to the server with our (s) new coordinate
-				String cmd = (survivorDamage ? "04," : "01,") + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
+				String cmd = "04," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
 				byte[] data = cmd.getBytes();
 				g.getClient().send(data);
 				//Shoudl replace with isGameOver method but this is just a temp thing
-				if(g.isGameStart())
-				{
+				//if(g.isGameStart())
+				//{
 					generateBlindSpot(p, w);
 					generateBlindSpot(p, w2);	
-				}
+				//}
 			}
 			else
 			{
@@ -344,6 +347,14 @@ public class DrawingSurface extends PApplet
 		if(key == 'd')
 		{
 			p.setXVelocity(speed);
+		}
+		if(key == 'p')
+		{
+			if (!p.getisAlive() && g.isGameInProgess())
+			{
+				p.setisAlive(true);
+				p.setHealth(100);
+			}
 		}
 	}
 	
