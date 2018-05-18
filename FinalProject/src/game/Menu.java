@@ -36,7 +36,7 @@ public class Menu extends JPanel {
 		frame.add(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		//m.done();
+		m.done();
 	}
 	
 	
