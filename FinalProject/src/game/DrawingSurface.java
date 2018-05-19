@@ -86,6 +86,7 @@ public class DrawingSurface extends PApplet {
 		background = loadImage(BACKGROUND_IMAGE2);
 		tempImage = loadImage(BACKGROUND_IMAGE);
 		gameOverImage = loadImage(GAME_OVER_IMAGE);
+		
 	}
 
 	public void draw() // draws all objects in world
@@ -225,7 +226,7 @@ public class DrawingSurface extends PApplet {
 				text(username + " " + p.getHealth(), p.getX(), p.getY() + 60);
 				fill(255);
 
-				p.draw(this, mouseX - (this.width / 2 - p.getX()), mouseY - (this.height / 2 - p.getY()),
+				p.draw(this, mouseX - (this.width / 2 - p.getX() + p.getWidth()/2), mouseY - (this.height / 2 - p.getY()) - p.getHeight()/2,
 						p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE);
 
 				if (g.isGameStart()) {
@@ -365,7 +366,7 @@ public class DrawingSurface extends PApplet {
 		long currentTime = System.currentTimeMillis();
 
 		if (p instanceof Survivor && ((Survivor) p).getLoadedBullets() > 0
-				&& currentTime - lastShot >= TIME_BETWEEN_SHOTS && !isReloading) {
+				&& currentTime - lastShot >= TIME_BETWEEN_SHOTS && !isReloading && p.getisAlive()) {
 
 			lastShot = System.currentTimeMillis();
 			((Survivor) p).shootBullet();

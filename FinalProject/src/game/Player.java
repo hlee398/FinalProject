@@ -19,7 +19,7 @@ public abstract class Player extends MovingEntity{
 	}
 	
 	public Player(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
-		super(xP, yP, 30); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
+		super(xP, yP, 50); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
 		this.setUsername(username);
 		this.setIpAddress(ipAddress);
 		this.setPort(port);
