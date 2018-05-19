@@ -310,33 +310,40 @@ public class DrawingSurface extends PApplet {
 	}
 
 	public void keyPressed() {
-		int speed = (p instanceof Survivor) ? (3) : (5);
-		if (speed == 3 && key == 'r') {
-			((Survivor) p).reload();
+		if(g.isPlayerWin() || g.isZombieWin() || g.isTie())
+		{
 			
-			System.out.println("RELOADING");
-			
-			isReloading = true;
-			reloadStart = System.currentTimeMillis();
 		}
-		if (key == 'w') {
-			p.setYVelocity(-speed);
-		}
-		if (key == 'a') {
-			p.setXVelocity(-speed);
-		}
-		if (key == 's') {
-			p.setYVelocity(speed);
-		}
-		if (key == 'd') {
-			p.setXVelocity(speed);
-		}
-		if (key == 'p') {
-			if (!p.getisAlive() && g.isGameInProgess()) {
-				p.setisAlive(true);
-				p.setHealth(100);
+		else {
+			int speed = (p instanceof Survivor) ? (3) : (5);
+			if (speed == 3 && key == 'r') {
+				((Survivor) p).reload();
+
+				//System.out.println("RELOADING");
+
+				isReloading = true;
+				reloadStart = System.currentTimeMillis();
+			}
+			if (key == 'w') {
+				p.setYVelocity(-speed);
+			}
+			if (key == 'a') {
+				p.setXVelocity(-speed);
+			}
+			if (key == 's') {
+				p.setYVelocity(speed);
+			}
+			if (key == 'd') {
+				p.setXVelocity(speed);
+			}
+			if (key == 'p') {
+				if (!p.getisAlive() && g.isGameInProgess()) {
+					p.setisAlive(true);
+					p.setHealth(100);
+				}
 			}
 		}
+
 	}
 
 	public void keyReleased() {
@@ -400,8 +407,8 @@ public class DrawingSurface extends PApplet {
 			// TODO REMOVE BELOW
 			line(sX, sY, x2, y2); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
 
-			System.out.println("SHOOT");
-			System.out.println(((Survivor) p).getLoadedBullets() + " / " + ((Survivor) p).getBullets());
+			//System.out.println("SHOOT");
+			//System.out.println(((Survivor) p).getLoadedBullets() + " / " + ((Survivor) p).getBullets());
 		} else // no loaded bullets -- or reloading -- or shooting too fast
 		{
 			// play click noise
