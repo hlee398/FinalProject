@@ -241,18 +241,7 @@ public class DrawingSurface extends PApplet {
 				// image(gameOverImage, 0, 0);
 			}
 
-			if (g.isPlayerWin()) {
-				// Draws a black screen with a game over message
-				image(gameOverImage, 0, 0);
-			}
-			if (g.isZombieWin()) {
-				// Draws a black screen with a game over message
-				image(tempImage, 0, 0);
-			}
-			if (g.isTie()) {
-				// Draws a black screen with a game over message
-				image(gameOverImage, 0, 0);
-			}
+		
 
 			// Checks if a zombie is in range, attacks and decreases health of player if the
 			// zombie hits
@@ -303,6 +292,19 @@ public class DrawingSurface extends PApplet {
 					byte[] data = cmd.getBytes();
 					g.getClient().send(data);
 				}
+			}
+			
+			if (g.isPlayerWin()) {
+				// Draws a black screen with a game over message
+				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
+			}
+			if (g.isZombieWin()) {
+				// Draws a black screen with a game over message
+				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
+			}
+			if (g.isTie()) {
+				// Draws a black screen with a game over message
+				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 			}
 		}
 	}
