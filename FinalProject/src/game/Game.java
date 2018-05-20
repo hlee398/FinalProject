@@ -32,7 +32,6 @@ public class Game {
 	private String username, ipAddressServer;
 	private boolean isServer, isSurvivor, gameStart, zombieWin, playerWin, tie;
 	
-	
 	public Game()
 	{
 		setGameStart(false);
