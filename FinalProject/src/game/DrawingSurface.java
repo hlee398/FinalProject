@@ -40,7 +40,8 @@ public class DrawingSurface extends PApplet {
 	// Dimensions of image are 470 x 402
 	public static final String BACKGROUND_IMAGE2 = "cobble.png";
 	public static final String GAME_OVER_IMAGE = "GameOverScreen.png";
-	public final int TIME_BETWEEN_SHOTS = 500;
+	public static final String MUZZLE_FLASH = "MuzzleFlash.png";
+	public final int TIME_BETWEEN_SHOTS = 300;
 	public final int RELOAD_TIME = 2000;
 
 	public DrawingSurface() {
@@ -378,10 +379,17 @@ public class DrawingSurface extends PApplet {
 			float scaler = (float) (MAX_SHOT_DIST / (Math.sqrt(difY * difY + difX * difX)));
 			float x2 = (float) (sX + scaler * difX);
 			float y2 = (float) (sY + scaler * difY);
+			
+			pushMatrix();
+			translate(p.getX() + p.getWidth()/2, p.getY() + p.getHeight()/2);
+			rotate((float) (p.getDir() - Math.PI/2));
+			image(loadImage(MUZZLE_FLASH), -p.getHeight()/4, p.getWidth()/2);
+			popMatrix();
+			Line2D.Float shot = new Line2D.Float(sX, sY, x2, y2);
 			float minDist = -1;
 			Zombie closest = null;
 
-			Line2D.Float shot = new Line2D.Float(sX, sY, x2, y2);
+		
 
 			for (int i = 0; i < getPlayers().size(); i++) {
 				if (players.get(i) instanceof Zombie) {
