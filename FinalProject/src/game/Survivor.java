@@ -21,7 +21,7 @@ public class Survivor extends Player{
 		bullets = 5;
 		loadedBullets = MAX_LOADED;
 	}
-	
+	 
 	/**
 	 * @author Harrison
 	 * @param xP

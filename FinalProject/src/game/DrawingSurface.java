@@ -79,7 +79,7 @@ public class DrawingSurface extends PApplet {
 
 		// testZ = new Zombie(50, 50, 30);
 		// addZombie(testZ);
-	}
+	} 
 
 	public void setup() {
 		f = createFont("Arial", 20, true);
