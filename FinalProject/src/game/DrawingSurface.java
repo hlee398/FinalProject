@@ -17,7 +17,7 @@ import processing.core.PImage;
  */
 public class DrawingSurface extends PApplet {
 	private Player p;
-	private Wall w, w2;
+	private Wall w, w2, w3, w4, w5, w6, w7, topWall, leftWall, rightWall, bottomWall;
 
 	private ArrayList<Player> players = new ArrayList<>();
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
@@ -76,6 +76,16 @@ public class DrawingSurface extends PApplet {
 		staticEntities.add(w);
 		w2 = new Wall(600, 300, 200, 100);
 		staticEntities.add(w2);
+		
+		//Border walls
+		topWall = new Wall(0,0, 470*5, 50);
+		staticEntities.add(topWall);
+		leftWall = new Wall (0,0, 50, 402*3);
+		staticEntities.add(leftWall);
+		rightWall = new Wall (470*5-50, 0, 50, 402*3);
+		staticEntities.add(rightWall);
+		bottomWall = new Wall (0, 403*3, 470*5, 50);
+		staticEntities.add(bottomWall);
 
 		// testZ = new Zombie(50, 50, 30);
 		// addZombie(testZ);
@@ -259,7 +269,7 @@ public class DrawingSurface extends PApplet {
 						Zombie tempZombie = (Zombie) tempPlayer;
 						if (tempZombie.canAttack(s)) {
 							s.damage(10);
-							survivorDamage = true;
+						survivorDamage = true;
 						}
 					}
 				}
