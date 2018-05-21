@@ -8,7 +8,7 @@ import java.net.InetAddress;
  */
 public class Survivor extends Player{
 	private int bullets,loadedBullets;
-	private final int MAX_LOADED = 8;
+	private final int MAX_LOADED = 20;
 	private String username, img;
 	private int xP, yP, port;
 	private float dir;

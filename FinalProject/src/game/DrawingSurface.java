@@ -45,7 +45,7 @@ public class DrawingSurface extends PApplet {
 	public static final String BACKGROUND_IMAGE3 = "pics/cobble2.png";
 	public static final String GAME_OVER_IMAGE = "pics/GameOverScreen.png";
 	public static final String MUZZLE_FLASH = "pics/MuzzleFlash.png";
-	public final int TIME_BETWEEN_SHOTS = 300;
+	public final int TIME_BETWEEN_SHOTS = 100;
 	public final int RELOAD_TIME = 2000;
 
 	public DrawingSurface() {
@@ -432,8 +432,8 @@ public class DrawingSurface extends PApplet {
 			// do nothing
 		}
 		else {
-			int speed = (p instanceof Survivor) ? (3) : (5);
-			if (speed == 3 && key == 'r') {
+			int speed = (p instanceof Survivor) ? (5) : (7);
+			if (speed == 5 && key == 'r') {
 				((Survivor) p).reload();
 
 				//System.out.println("RELOADING");
@@ -518,8 +518,8 @@ public class DrawingSurface extends PApplet {
 			int difX = mouseX - (this.width / 2 - p.getX()) - sX;
 			int difY = mouseY - (this.height / 2 - p.getY()) - sY;
 			float scaler = (float) (MAX_SHOT_DIST / (Math.sqrt(difY * difY + difX * difX)));
-			float x2 = (float) (sX + scaler * difX);
-			float y2 = (float) (sY + scaler * difY);
+			float x2 = (float) (sX + scaler * difX + (Math.random()*200 - 100));
+			float y2 = (float) (sY + scaler * difY + (Math.random()*200 - 100));
 			
 			pushMatrix();
 			translate(p.getX() + p.getWidth()/2, p.getY() + p.getHeight()/2);
@@ -546,7 +546,7 @@ public class DrawingSurface extends PApplet {
 					}
 				}
 				if (closest != null) {
-					closest.damage((int) (30 + Math.random() * 20)); // does 30 - 50 damage
+					closest.damage((int) (5 + Math.random() * 5)); // does 5 - 10 damage
 					String cmd = "04," + closest.getUsername() + "," + closest.getX() + "," + closest.getY() + ","
 							+ closest.getDir() + "," + closest.getHealth();
 					byte[] data = cmd.getBytes();
