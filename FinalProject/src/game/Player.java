@@ -12,7 +12,7 @@ public abstract class Player extends MovingEntity{
 	protected String username;
 	protected InetAddress ipAddress;
 	protected int port;
-	
+
 	public Player(int xP, int yP, int radius) {
 		super(xP, yP, radius);
 		// TODO Auto-generated constructor stub

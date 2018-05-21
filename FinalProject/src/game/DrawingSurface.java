@@ -5,6 +5,8 @@ import java.awt.geom.Line2D;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
@@ -30,18 +32,19 @@ public class DrawingSurface extends PApplet {
 	public static final String ZOMBIE_IMAGE = "pics/zombie.png";
 	//Dimensions of image are 1024 x 640
 
-	private boolean isSurvivor, clientInitialized, isReloading;
-	private long lastShot, reloadStart;
+	private boolean isSurvivor, clientInitialized, isReloading, timeStartCheck;
+	private long lastShot, reloadStart, startTime, endTime, totalTime;
+	private int sPoints, zPoints, sTotalPoints, zTotalPoints;
 
 	public static final int MAX_SHOT_DIST = 1000; // The farthest a shot can travel by a survivor - Should be slightly
 													// more than their vision limit
 	// Dimensions of image are 1024 x 640
-	public static final String BACKGROUND_IMAGE = "cbble.png";
+	public static final String BACKGROUND_IMAGE = "pics/cbble.png";
 	// Dimensions of image are 470 x 402
-	public static final String BACKGROUND_IMAGE2 = "cobble.png";
-	public static final String BACKGROUND_IMAGE3 = "cobble2.png";
-	public static final String GAME_OVER_IMAGE = "GameOverScreen.png";
-	public static final String MUZZLE_FLASH = "MuzzleFlash.png";
+	public static final String BACKGROUND_IMAGE2 = "pics/cobble.png";
+	public static final String BACKGROUND_IMAGE3 = "pics/cobble2.png";
+	public static final String GAME_OVER_IMAGE = "pics/GameOverScreen.png";
+	public static final String MUZZLE_FLASH = "pics/MuzzleFlash.png";
 	public final int TIME_BETWEEN_SHOTS = 300;
 	public final int RELOAD_TIME = 2000;
 
@@ -59,6 +62,12 @@ public class DrawingSurface extends PApplet {
 		username = g.getUserName();
 		this.isSurvivor = isSurvivor;
 		this.clientInitialized = false;
+		timeStartCheck = true;
+		sTotalPoints = 5;
+		sPoints = 0;
+		zTotalPoints = 5;
+		zPoints = 0;
+		
 		InetAddress localhost = null;
 		try {
 			localhost = InetAddress.getByName("localhost");
@@ -113,6 +122,18 @@ public class DrawingSurface extends PApplet {
 
 	public void draw() // draws all objects in world
 	{
+		
+		long totalseconds = endTime;
+		long minutes = 0;
+		long seconds = 0;
+		
+		if (g.isGameStart()) {
+			totalseconds = (endTime - System.currentTimeMillis()) / 1000;
+			minutes = totalseconds / 60;
+			seconds = totalseconds % 60;
+		}
+		
+		
 		if (isReloading) {
 
 			if (System.currentTimeMillis() - reloadStart >= RELOAD_TIME) {
@@ -136,6 +157,15 @@ public class DrawingSurface extends PApplet {
 				}
 				if (zombieCount > 0 && survivorCount > 0) {
 					g.setGameStart(true);
+					if (timeStartCheck)
+					{
+						startTime = System.currentTimeMillis();
+						//Sets end time to 3 minutes after the game has started
+						endTime = System.currentTimeMillis() + 180000;
+						//totalTime = endTime - startTime;
+						timeStartCheck = false;
+					}
+					
 					String cmd = "06," + "(null)," + 0 + "," + 0 + "," + 0;
 					byte[] data = cmd.getBytes();
 					for (int i = 0; i < players.size(); i++) {
@@ -144,9 +174,10 @@ public class DrawingSurface extends PApplet {
 					}
 				}
 			}
-
+			
 			// Checks if a team has won
 			if (g.isGameStart()) {
+				/*
 				int zombieCount = 0;
 				int survivorCount = 0;
 				for (int i = 0; i < players.size(); i++) {
@@ -158,18 +189,24 @@ public class DrawingSurface extends PApplet {
 						if (p.getHealth() > 0)
 							zombieCount++;
 					}
+					
 				}
-				if (zombieCount <= 0 || survivorCount <= 0) {
+				*/
+				
+				if (zPoints >= zTotalPoints || sPoints >= sTotalPoints || (endTime - System.currentTimeMillis() <= 0)) {
 					g.setGameStart(false);
 					String cmd = "";
-					if (zombieCount <= 0 && survivorCount <= 0) // tie
+					if (zPoints >= zTotalPoints && sPoints >= sTotalPoints) // tie
 					{
 						cmd = "05," + "(null)," + 0 + "," + 0 + "," + 0 + "," + 0;
-					} else if (zombieCount <= 0) // Survivor win
+					} 
+					else if (sPoints >= sTotalPoints) // Zombies win
 					{
-						cmd = "05," + "(null)," + 0 + "," + 0 + "," + 0 + "," + 1;
-					} else { // zombie win
 						cmd = "05," + "(null)," + 0 + "," + 0 + "," + 0 + "," + -1;
+					} 
+					else if (zPoints >= zTotalPoints || endTime - System.currentTimeMillis() <= 0)// Survivors win
+					{ 
+						cmd = "05," + "(null)," + 0 + "," + 0 + "," + 0 + "," + 1;
 					}
 					byte[] data = cmd.getBytes();
 					for (int i = 0; i < players.size(); i++) {
@@ -254,23 +291,34 @@ public class DrawingSurface extends PApplet {
 				p.draw(this, mouseX - (this.width / 2 - p.getX() + p.getWidth()/2), mouseY - (this.height / 2 - p.getY()) - p.getHeight()/2,
 						p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE);
 
-				if (g.isGameStart()) {
-					fill(0);
-					textFont(gameStartFont);
-					text("GAME HAS STARTED!", 470*3/2, 40);
-					textFont(f);
-					
-				} else {
-					fill(0);
-					textFont(gameStartFont);
-					text("GAME HAS NOT STARTED", 470*3/2, 40);
-					textFont(f);
-				}
-			} else {
-				// Draws a black screen with a game over message
-				// image(gameOverImage, 0, 0);
-			}
 
+			} else {
+				//String time = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+				//text(time, 470*3 - 100, 40);
+			}
+			
+			if (g.isGameStart()) {
+				fill(0);
+				textFont(gameStartFont);
+				text("GAME HAS STARTED!", 470*3/2, 40);
+				//long minutes = totalTime / 1000 / 60;
+				//long seconds = (totalTime / 1000) % 60;
+				String time = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+				text(time, 470*3 - 100, 40);
+				
+				String survivorPoints = sPoints + "/" + sTotalPoints;
+				text(survivorPoints, 50, 40);
+				
+				String zombiePoints = zPoints + "/" + zTotalPoints;
+				text(zombiePoints, 100, 40);
+				textFont(f);
+				
+			} else {
+				fill(0);
+				textFont(gameStartFont);
+				text("GAME HAS NOT STARTED", 470*3/2, 40);
+				textFont(f);
+			}
 		
 
 			// Checks if a zombie is in range, attacks and decreases health of player if the
@@ -300,7 +348,7 @@ public class DrawingSurface extends PApplet {
 						+ p.getHealth();
 				byte[] data = cmd.getBytes();
 				g.getClient().send(data);
-				// Shoudl replace with isGameOver method but this is just a temp thing
+				// Should replace with isGameOver method but this is just a temp thing
 				// if(g.isGameStart())
 				// {
 				generateBlindSpot(p, w);
@@ -311,7 +359,7 @@ public class DrawingSurface extends PApplet {
 				generateBlindSpot(p, w6);
 				// }
 			} else {
-				// If the player died, then he can no longer move and is removed from the game
+				// If the player died, then he can no longer move 
 				if (p.getisAlive()) {
 					// Set isAlive false
 					p.setisAlive(false);
@@ -321,10 +369,23 @@ public class DrawingSurface extends PApplet {
 					// byte[] data = cmd.getBytes();
 					// g.getClient().send(data);
 
-					String cmd = "04," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + ","
-							+ p.getHealth();
+					String cmd = "04," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + p.getHealth();
 					byte[] data = cmd.getBytes();
 					g.getClient().send(data);
+					
+					if (p instanceof Survivor)
+					{
+						sPoints++;
+						String cmd2 = "08," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + sPoints;
+						byte[] data2 = cmd2.getBytes();
+						g.getClient().send(data2);
+					}
+					else {
+						zPoints++;
+						String cmd2 = "09," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + zPoints;
+						byte[] data2 = cmd2.getBytes();
+						g.getClient().send(data2);
+					}
 				}
 			}
 			
@@ -345,6 +406,20 @@ public class DrawingSurface extends PApplet {
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(255,255,255);
 				text("Tie Game " + "\n" + "(I don't know how you guys did this)", 0, 0 + 15);
+			}
+		}
+		else
+		{
+			//long minutes = totalTime / 1000 / 60;
+			//long seconds = (totalTime / 1000) % 60;
+			String time = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+			text(time, 470*3 - 100, 40);
+			String cmd = "07," + "(null)," + 0 + "," + 0 + "," + 0 + "," + endTime;
+			byte[] data= cmd.getBytes();
+			for (int i = 0; i < players.size(); i++)
+			{
+				Player p = players.get(i);
+				g.getServer().send(data, p.getIpAddress(), p.getPort());
 			}
 		}
 		
@@ -379,10 +454,36 @@ public class DrawingSurface extends PApplet {
 				p.setXVelocity(speed);
 			}
 			if (key == 'p') {
-				if (!p.getisAlive() && g.isGameInProgess()) {
+				if (!p.getisAlive() && g.isGameInProgess()) 
+				{
 					p.setisAlive(true);
 					p.setHealth(100);
 				}
+				/*
+				else if(!p.getisAlive() && g.isGameInProgess() && p instanceof Survivor)
+				{
+					
+					String tempName = p.getUsername();
+					int tempX = p.getX();
+					int tempY = p.getY();
+					float tempDir = p.getDir();
+					InetAddress tempIp = p.getIpAddress();
+					int tempPort = p.getPort();
+					
+					
+					
+					Survivor s = (Survivor) p;
+					p = s.becomeZombie()
+					
+					p = new Zombie(tempName, tempX, tempY, tempDir, tempIp, tempPort, ZOMBIE_IMAGE);
+					//p.setisAlive(true);
+					//p.setHealth(100);
+					
+					String cmd = "08," + p.getUsername() + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + ZOMBIE_IMAGE;
+					byte[] data = cmd.getBytes();
+					g.getClient().send(data);
+				}
+				*/
 			}
 		}
 
@@ -497,6 +598,39 @@ public class DrawingSurface extends PApplet {
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
+	
+	public void setTime(long timeMili)
+	{
+		endTime = timeMili;
+	}
+	
+	public void setEndTime(long endTime)
+	{
+		this.endTime = endTime;
+	}
+	
+	public void setSPoints(int points)
+	{
+		this.sPoints = points;
+	}
+	
+	public void setZPoints(int points)
+	{
+		this.zPoints = points;
+	}
+	
+	/*
+	public void setSurvivor(Zombie z)
+	{
+		for (int i = 0; i < players.size(); i++)
+		{
+			if (username.equals(z.getUsername()))
+			{
+				players.set(i, z);
+			}
+		}
+	}
+	*/
 
 	/**
 	 * Creates a shadow behind the Wall from the perspective of the Player

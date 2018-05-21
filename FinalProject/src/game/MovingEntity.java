@@ -93,7 +93,7 @@ public abstract class MovingEntity extends Entity{
 			int wY = w.getY() + w.getHeight()/2;
 			int sX = getX() + getWidth()/2;
 			int sY = getY() + getHeight()/2;
-			
+		
 			if(Math.abs(sX - wX) < w.getWidth()/2) // colliding vertically
 			{
 				if(sY - wY == 0)

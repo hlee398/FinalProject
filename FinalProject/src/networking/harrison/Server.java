@@ -157,7 +157,7 @@ public class Server{
 //		String test = "xx,SendingMessageToClient";
 //		byte[] dat = test.getBytes();
 //		send( dat, packet.getAddress(), packet.getPort() );
-		
+	
 		if (command.equals("00")) //Adding survivors
 		{
 			Survivor newSurvivor = new Survivor(username, x, y, dir, packet.getAddress(), packet.getPort(), "");
@@ -243,7 +243,7 @@ public class Server{
 					break;
 				}
 			}
-			
+		
 			//Sending information about removal to every other client
 			for (int j = 0; j < game.getDrawing().getPlayers().size(); j++)
 			{
@@ -275,5 +275,68 @@ public class Server{
 				}
 			}
 		}
+		/*
+		else if (command.equals("08"))
+		{
+			String img = dataArray[5];
+			Zombie newZom = new Zombie(username, x, y, dir, packet.getAddress(), packet.getPort(), img);
+			String cmd = "08," + newZom.getUsername() + "," + x + "," + y + "," + dir + "," + img;
+			byte[] data = cmd.getBytes();
+			
+			// Sends newplayer to everybody
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				Player p = game.getDrawing().getPlayers().get(i);
+				if (p.getUsername() != newZom.getUsername()) {
+					send(data, p.getIpAddress(), p.getPort());
+				}
+			}
+			
+			// Send everybody to newplayer
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				Player p = game.getDrawing().getPlayers().get(i);
+				String cmd2 = "08," + p.getUsername() + "," + p.getX() + "," + p.getY() + "," + p.getDir() + "," + img;
+				byte[] data2 = cmd2.getBytes();
+				send(data2, newZom.getIpAddress(), newZom.getPort());
+			}
+			
+			game.getDrawing().setSurvivor(newZom);
+		}
+		*/
+		
+		else if (command.equals("08"))
+		{
+			int sPoints = Integer.parseInt(dataArray[5]);
+			game.getDrawing().setSPoints(sPoints);
+			
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				Player p = game.getDrawing().getPlayers().get(i);
+				
+				if (packet.getAddress() != p.getIpAddress())
+				{
+					byte[] data = message.getBytes();
+					send(data, p.getIpAddress(), p.getPort());
+				}
+			}
+		}
+		else if (command.equals("09"))
+		{
+			int zPoints = Integer.parseInt(dataArray[5]);
+			game.getDrawing().setZPoints(zPoints);
+			
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				Player p = game.getDrawing().getPlayers().get(i);
+				
+				if (packet.getAddress() != p.getIpAddress())
+				{
+					byte[] data = message.getBytes();
+					send(data, p.getIpAddress(), p.getPort());
+				}
+			}
+		}
+		
 	}
 }

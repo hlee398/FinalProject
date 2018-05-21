@@ -52,7 +52,7 @@ public class Zombie extends Player{
 		}
 		return false;
 	}
-	
+
 	public boolean isHit(Line2D.Float shot)
 	{
 		if(getBounds().intersectsLine(shot))

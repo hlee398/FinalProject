@@ -9,6 +9,10 @@ import java.net.InetAddress;
 public class Survivor extends Player{
 	private int bullets,loadedBullets;
 	private final int MAX_LOADED = 8;
+	private String username, img;
+	private int xP, yP, port;
+	private float dir;
+	private InetAddress ipAddress;
 /**
  * Construct a Survivor at (xP, yP) with dimensions width and height
  * @param xP the x coordinate of the survivor
@@ -21,7 +25,7 @@ public class Survivor extends Player{
 		bullets = 5;
 		loadedBullets = MAX_LOADED;
 	}
-	 
+	
 	/**
 	 * @author Harrison
 	 * @param xP
@@ -33,7 +37,7 @@ public class Survivor extends Player{
 	 */
 	public Survivor(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
 		super(username, xP, yP, dir, ipAddress, port, img);
-		bullets = 5;
+		bullets = 10000;
 		loadedBullets = MAX_LOADED;
 	}
 	
@@ -83,5 +87,11 @@ public class Survivor extends Player{
 	public int getLoadedBullets()
 	{
 		return loadedBullets;
+	}
+	
+	public Zombie becomeZombie()
+	{
+		Zombie newZom = new Zombie(this.username, xP, yP, dir, this.ipAddress, this.port, this.img);
+		return newZom;
 	}
 }

@@ -25,6 +25,7 @@ import game.Zombie;
  * 04 = updating health
  * 05 = Checks win condition
  * 06 = Checks if the game has started
+ * 07 = interprets time
  * @author Harrison
  *
  */
@@ -211,7 +212,7 @@ public class Client {
 			process(packet);
 		}
 	}
-	
+
 	public void process(DatagramPacket packet)
 	{
 		String message = new String(packet.getData()).trim().substring(0, packet.getLength());
@@ -278,7 +279,7 @@ public class Client {
 					break;
 				}
 			}
-			
+		
 			if (game.getDrawing().getME().getUsername().equals(username))
 			{
 				Player p = game.getDrawing().getME();
@@ -307,6 +308,37 @@ public class Client {
 		else if (command.equals("06")) // checking if game has stared
 		{
 			game.setGameStart(true);
+		}
+		else if (command.equals("07")) //sets time on client side
+		{
+			long timeMili = Long.parseLong(dataArray[5]);
+			game.getDrawing().setEndTime(timeMili);
+		}
+		/*
+		else if (command.equals("08"))
+		{
+			String img = dataArray[5];
+			Zombie newZom = new Zombie(username, x, y, dir, packet.getAddress(), packet.getPort(), img);
+			
+			for (int i = 0; i < game.getDrawing().getPlayers().size(); i++)
+			{
+				Player p = game.getDrawing().getPlayers().get(i);
+				if (p.getUsername().equals(newZom.getUsername()))
+				{
+					game.getDrawing().setSurvivor(newZom);
+				}
+			}
+		}
+		*/
+		else if (command.equals("08"))
+		{
+			int sPoints = Integer.parseInt(dataArray[5]);
+			game.getDrawing().setSPoints(sPoints);
+		}
+		else if (command.equals("09"))
+		{
+			int zPoints = Integer.parseInt(dataArray[5]);
+			game.getDrawing().setZPoints(zPoints);
 		}
 	}
 }
