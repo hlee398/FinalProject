@@ -22,7 +22,7 @@ public class DrawingSurface extends PApplet {
 	private ArrayList<Player> players = new ArrayList<>();
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
 	private String username;
-	private PFont f;
+	private PFont f, gameStartFont;
 	private PImage background, gameOverImage, tempImage, background2;
 	private Game g;
 	public static final String SURVIVOR_IMAGE = "pics/survivor.png";
@@ -103,6 +103,8 @@ public class DrawingSurface extends PApplet {
 	public void setup() {
 		f = createFont("Arial", 20, true);
 		textFont(f);
+		gameStartFont = createFont("Arial", 30, true);
+		
 		background = loadImage(BACKGROUND_IMAGE2);
 		tempImage = loadImage(BACKGROUND_IMAGE);
 		gameOverImage = loadImage(GAME_OVER_IMAGE);
@@ -253,12 +255,16 @@ public class DrawingSurface extends PApplet {
 						p instanceof Survivor ? SURVIVOR_IMAGE : ZOMBIE_IMAGE);
 
 				if (g.isGameStart()) {
-					fill(0, 255, 0);
-					rect(0, 0, 50, 50);
+					fill(0);
+					textFont(gameStartFont);
+					text("GAME HAS STARTED!", 470*3/2, 40);
+					textFont(f);
+					
 				} else {
-					fill(255, 0, 0);
-					rect(0, 0, 50, 50);
-
+					fill(0);
+					textFont(gameStartFont);
+					text("GAME HAS NOT STARTED", 470*3/2, 40);
+					textFont(f);
 				}
 			} else {
 				// Draws a black screen with a game over message
