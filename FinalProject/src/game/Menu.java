@@ -32,7 +32,7 @@ public class Menu extends JPanel implements ActionListener{
 		
 		playerType = 0;
 		
-		title = new JLabel("Enter your information:");
+		//title = new JLabel("Enter your information:");
 		
 		JPanel userPanel = new JPanel(new GridLayout(1,2));
 		usernameLabel = new JLabel("Enter your username:");
@@ -71,7 +71,7 @@ public class Menu extends JPanel implements ActionListener{
 		
 		BorderLayout b = new BorderLayout();
 		this.setLayout(b);
-		this.add(title, BorderLayout.NORTH);
+		//this.add(title, BorderLayout.NORTH);
 		JPanel menuPanel = new JPanel(new GridLayout(3, 1));
 		menuPanel.add(userPanel);
 		menuPanel.add(ipPanel);
@@ -79,10 +79,12 @@ public class Menu extends JPanel implements ActionListener{
 		//this.add(radioPanel, BorderLayout.LINE_START);
 		this.add(menuPanel);
 		
-		doneButton = new JButton("Click when done");
+		doneButton = new JButton("Start Game!");
 		doneButton.addActionListener(this);
 		this.add(doneButton, BorderLayout.SOUTH);
+		
 		frame.setBounds(0, 0, 400, 200);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		//paintComponents(g);
 	}
