@@ -16,7 +16,7 @@ public class Menu extends JPanel implements ActionListener{
 	private JButton doneButton;
 	private JRadioButton survivorBut, zombieBut;
 	private ButtonGroup group;
-	private JLabel usernameLabel, title, selectButtons, ipLabel;
+	private JLabel usernameLabel, selectButtons, ipLabel;
 	private JTextField usernameInput, ipInput;
 	private int playerType;
 	private Graphics g;
