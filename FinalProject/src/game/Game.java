@@ -94,13 +94,19 @@ public class Game {
 		}
 	}
 	
-	public void done() {
+	public void done(String username, int playerType, String ipAddress) {
 
-		
+		/*
 		username = JOptionPane.showInputDialog("Enter a username", "");
 		int playertype = JOptionPane.showConfirmDialog(null, "Are you a player?");
 		this.isSurvivor = (playertype == 0);
 		ipAddressServer = JOptionPane.showInputDialog("Enter IP Address of server", "localhost");
+		*/
+		
+		this.username = username;
+		int playertype = playerType;
+		this.isSurvivor = (playertype == 0);
+		this.ipAddressServer = ipAddress;
 		
 		drawing = new DrawingSurface(this, isSurvivor);
 		PApplet.runSketch(new String[]{""}, drawing);
