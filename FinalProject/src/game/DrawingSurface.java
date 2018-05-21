@@ -33,7 +33,7 @@ public class DrawingSurface extends PApplet {
 	private boolean isSurvivor, clientInitialized, isReloading;
 	private long lastShot, reloadStart;
 
-	public static final int MAX_SHOT_DIST = 200; // The farthest a shot can travel by a survivor - Should be slightly
+	public static final int MAX_SHOT_DIST = 1000; // The farthest a shot can travel by a survivor - Should be slightly
 													// more than their vision limit
 	// Dimensions of image are 1024 x 640
 	public static final String BACKGROUND_IMAGE = "cbble.png";
@@ -255,7 +255,7 @@ public class DrawingSurface extends PApplet {
 					if (tempPlayer instanceof Zombie) {
 						Zombie tempZombie = (Zombie) tempPlayer;
 						if (tempZombie.canAttack(s)) {
-							s.damage(1);
+							s.damage(10);
 							survivorDamage = true;
 						}
 					}
@@ -299,22 +299,30 @@ public class DrawingSurface extends PApplet {
 			if (g.isPlayerWin()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
+				fill(0,0,150);
+				text("Survivors Win", 0, 0 + 15);
 			}
 			if (g.isZombieWin()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
+				fill(150,0,0);
+				text("Zombies Win", 0, 0 + 15);
 			}
 			if (g.isTie()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
+				fill(255,255,255);
+				text("Tie Game " + "\n" + "(I don't know how you guys did this)", 0, 0 + 15);
 			}
 		}
+		
+		
 	}
 
 	public void keyPressed() {
 		if(g.isPlayerWin() || g.isZombieWin() || g.isTie())
 		{
-			
+			// do nothing
 		}
 		else {
 			int speed = (p instanceof Survivor) ? (3) : (5);
