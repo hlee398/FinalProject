@@ -183,7 +183,7 @@ public class DrawingSurface extends PApplet {
 		// Moving the window code
 		if(!g.getisServer())
 		{
-			translate(this.width / 2 - p.getX(), this.height / 2 - p.getY());
+			translate(width / 2 - p.getX(), height / 2 - p.getY());
 		}
 		background(0);
 		// 1st column

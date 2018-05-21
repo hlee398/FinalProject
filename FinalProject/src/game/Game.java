@@ -57,7 +57,7 @@ public class Game {
 			window.setBounds(0, 0, screenWidth, screenHeight);
 			window.setMinimumSize(new Dimension(100,100));
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
+			window.setResizable(false);
 	
 			window.getHeight();
 			
@@ -88,7 +88,7 @@ public class Game {
 				e.printStackTrace();
 			}
 			*/
-
+			
 			
 			
 		}
@@ -115,8 +115,9 @@ public class Game {
 		JFrame window = (JFrame)canvas.getFrame();
 		window.setTitle(username);		
 		
+		//set to not resizable because glitches happen with the shadows if it resizes
 		window.setBounds(0, 0, screenWidth, screenHeight);
-		window.setMinimumSize(new Dimension(100,100));
+		window.setMinimumSize(new Dimension(screenWidth,screenHeight));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(true);
 
