@@ -23,7 +23,7 @@ public class DrawingSurface extends PApplet {
 	private ArrayList<StaticEntity> staticEntities = new ArrayList<>();
 	private String username;
 	private PFont f;
-	private PImage background, gameOverImage, tempImage;
+	private PImage background, gameOverImage, tempImage, background2;
 	private Game g;
 	public static final String SURVIVOR_IMAGE = "pics/survivor.png";
 	public static final String WALL_IMAGE = "pics/8TileWall.png";
@@ -39,6 +39,7 @@ public class DrawingSurface extends PApplet {
 	public static final String BACKGROUND_IMAGE = "cbble.png";
 	// Dimensions of image are 470 x 402
 	public static final String BACKGROUND_IMAGE2 = "cobble.png";
+	public static final String BACKGROUND_IMAGE3 = "cobble2.png";
 	public static final String GAME_OVER_IMAGE = "GameOverScreen.png";
 	public static final String MUZZLE_FLASH = "MuzzleFlash.png";
 	public final int TIME_BETWEEN_SHOTS = 300;
@@ -76,15 +77,23 @@ public class DrawingSurface extends PApplet {
 		staticEntities.add(w);
 		w2 = new Wall(600, 300, 200, 100);
 		staticEntities.add(w2);
-		
+		w3 = new Wall (800, 500, 200, 200);
+		staticEntities.add(w3);
+		w4 = new Wall (1500, 700, 200, 100);
+		staticEntities.add(w4);
+		w5 = new Wall (1630, 100, 200, 100);
+		staticEntities.add(w5);
+		w6 = new Wall (1400, 300, 200, 50);
+		staticEntities.add(w6);
+	
 		//Border walls
-		topWall = new Wall(0,0, 470*5, 50);
+		topWall = new Wall(0,0, 470*4, 50);
 		staticEntities.add(topWall);
-		leftWall = new Wall (0,0, 50, 402*3);
+		leftWall = new Wall (0,0, 50, 402*2+225);
 		staticEntities.add(leftWall);
-		rightWall = new Wall (470*5-50, 0, 50, 402*3);
+		rightWall = new Wall (470*4-50, 0, 50, 402*2+225);
 		staticEntities.add(rightWall);
-		bottomWall = new Wall (0, 403*3, 470*5, 50);
+		bottomWall = new Wall (0, 403*3 - 230, 470*4, 50);
 		staticEntities.add(bottomWall);
 
 		// testZ = new Zombie(50, 50, 30);
@@ -97,7 +106,7 @@ public class DrawingSurface extends PApplet {
 		background = loadImage(BACKGROUND_IMAGE2);
 		tempImage = loadImage(BACKGROUND_IMAGE);
 		gameOverImage = loadImage(GAME_OVER_IMAGE);
-		
+		background2 = loadImage(BACKGROUND_IMAGE3);
 	}
 
 	public void draw() // draws all objects in world
@@ -178,27 +187,27 @@ public class DrawingSurface extends PApplet {
 		// 1st column
 		image(background, 0, 0);
 		image(background, 0, 402);
-		image(background, 0, 402 * 2);
+		image(background2, 0, 402 * 2);
 
 		// 2nd column
 		image(background, 470, 0);
 		image(background, 470, 402);
-		image(background, 470, 402 * 2);
+		image(background2, 470, 402 * 2);
 
 		// 3rd column
 		image(background, 470 * 2, 0);
 		image(background, 470 * 2, 402);
-		image(background, 470 * 2, 402 * 2);
+		image(background2, 470 * 2, 402 * 2);
 
 		// 4th column
 		image(background, 470 * 3, 0);
 		image(background, 470 * 3, 402);
-		image(background, 470 * 3, 402 * 2);
+		image(background2, 470 * 3, 402 * 2);
 
 		// 4th column
-		image(background, 470 * 4, 0);
-		image(background, 470 * 4, 402);
-		image(background, 470 * 4, 402 * 2);
+		//image(background, 470 * 4, 0);
+		//image(background, 470 * 4, 402);
+		//image(background2, 470 * 4, 402 * 2);
 
 		// this.fill(255);
 
@@ -290,6 +299,10 @@ public class DrawingSurface extends PApplet {
 				// {
 				generateBlindSpot(p, w);
 				generateBlindSpot(p, w2);
+				generateBlindSpot(p, w3);
+				generateBlindSpot(p, w4);
+				generateBlindSpot(p, w5);
+				generateBlindSpot(p, w6);
 				// }
 			} else {
 				// If the player died, then he can no longer move and is removed from the game
