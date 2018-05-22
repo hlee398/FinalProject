@@ -392,7 +392,7 @@ public class DrawingSurface extends PApplet {
 			if (g.isPlayerWin()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
-				fill(0,0,150);
+				fill(30,200,50);
 				text("Survivors Win", 0, 0 + 15, 1000,30);
 			}
 			if (g.isZombieWin()) {
@@ -405,7 +405,7 @@ public class DrawingSurface extends PApplet {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(255,255,255);
-				text("Tie Game " + "\n" + "(I don't know how you guys did this)", 0, 0 + 15, 1000,30);
+				text("Tie Game", 0, 0 + 15, 1000,30);
 			}
 		}
 		else
@@ -422,6 +422,33 @@ public class DrawingSurface extends PApplet {
 				g.getServer().send(data, p.getIpAddress(), p.getPort());
 			}
 		}
+
+		
+		this.fill(25,25,150);
+		this.rect(p.getX() - width/2, p.getY() + height/2 - 50, width, 50);
+		
+		fill(0); // health bar
+		this.rect(p.getX() - width/2 + 10, p.getY() + height/2 - 40, 200, 30);
+		fill(140,10,10);
+		this.rect(p.getX() - width/2 + 10, p.getY() + height/2 - 40, p.getHealth() * 2, 30);
+		fill(255);
+		text(p.getHealth() + " / 100",p.getX() - width/2 + 70, p.getY() + height/2 - 18);
+		
+		
+		
+		if(p instanceof Survivor) // for gui/hud
+		{
+			//bullets
+			fill(50,200,200);
+			text(((Survivor)p).getLoadedBullets() + " / 20 : " + ((Survivor)p).getBullets() ,p.getX() - width/2 + 250, p.getY() + height/2 - 18);
+			if(isReloading)
+			{
+				fill(0);
+				rect(p.getX() - 50, p.getY() - 50, 150, 20);
+				fill(180,30,80);
+				rect(p.getX() - 50, p.getY() - 50, 150 * (System.currentTimeMillis() - reloadStart)/RELOAD_TIME, 20);
+			}
+		}
 		
 		
 	}
@@ -433,7 +460,7 @@ public class DrawingSurface extends PApplet {
 		}
 		else {
 			int speed = (p instanceof Survivor) ? (5) : (7);
-			if (speed == 5 && key == 'r') {
+			if (speed == 5 && key == 'r' && ((Survivor)p).getLoadedBullets() < 20) {
 				((Survivor) p).reload();
 
 				//System.out.println("RELOADING");
@@ -555,7 +582,6 @@ public class DrawingSurface extends PApplet {
 
 			}
 			// TODO REMOVE BELOW
-			line(sX, sY, x2, y2); // DRAWS SHOT TRAJECTORY TO BE REMOVED FOR FINAL GAME
 
 			//System.out.println("SHOOT");
 			//System.out.println(((Survivor) p).getLoadedBullets() + " / " + ((Survivor) p).getBullets());
