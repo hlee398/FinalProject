@@ -72,7 +72,6 @@ public class DrawingSurface extends PApplet {
 		try {
 			localhost = InetAddress.getByName("localhost");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -82,17 +81,17 @@ public class DrawingSurface extends PApplet {
 			p = new Zombie(username, 50, 50, 0, localhost, 4444, ZOMBIE_IMAGE);
 		}
 
-		w = new Wall(300, 350, 50, 300);
+		w = new Wall(400, 200, 50, 600);
 		staticEntities.add(w);
-		w2 = new Wall(600, 300, 200, 100);
+		w2 = new Wall(700, 400, 400, 50);
 		staticEntities.add(w2);
-		w3 = new Wall (800, 500, 200, 200);
+		w3 = new Wall (800, 600, 50, 400);
 		staticEntities.add(w3);
-		w4 = new Wall (1500, 700, 200, 100);
+		w4 = new Wall (1000, 50, 50, 200);
 		staticEntities.add(w4);
-		w5 = new Wall (1630, 100, 200, 100);
+		w5 = new Wall (1400, 400, 50, 450);
 		staticEntities.add(w5);
-		w6 = new Wall (1400, 300, 200, 50);
+		w6 = new Wall (1500, 300, 200, 50);
 		staticEntities.add(w6);
 	
 		//Border walls
@@ -581,7 +580,6 @@ public class DrawingSurface extends PApplet {
 				}
 
 			}
-			// TODO REMOVE BELOW
 
 			//System.out.println("SHOOT");
 			//System.out.println(((Survivor) p).getLoadedBullets() + " / " + ((Survivor) p).getBullets());
