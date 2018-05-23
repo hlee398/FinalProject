@@ -52,7 +52,7 @@ public class Game {
 			PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
 			PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
 			JFrame window = (JFrame)canvas.getFrame();
-			window.setTitle("Server");
+			window.setTitle("Shelby's Unknown Zombie Grounds Server");
 			
 			window.setBounds(0, 0, screenWidth, screenHeight);
 			window.setMinimumSize(new Dimension(100,100));
@@ -113,7 +113,7 @@ public class Game {
 		PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
 		PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
 		JFrame window = (JFrame)canvas.getFrame();
-		window.setTitle(username);		
+		window.setTitle("Shelby's Unknown Zombie Grounds");		
 		
 		//set to not resizable because glitches happen with the shadows if it resizes
 		window.setBounds(0, 0, screenWidth, screenHeight);

@@ -274,11 +274,17 @@ public class DrawingSurface extends PApplet {
 				Wall current = ((Wall) staticEntities.get(i));
 				p.checkWall(current);
 				current.draw(this, WALL_IMAGE);
-			} else if (staticEntities.get(i) instanceof Pickupable) // give health or bullets - need to check if p is
+				
+			} 
+			
+			//Pickupables class deleted since it is unused
+			/*
+			else if (staticEntities.get(i) instanceof Pickupable) // give health or bullets - need to check if p is
 																	// Survivor or Zombie
 			{
 
 			}
+			*/
 		}
 
 		// Checks if this is the server drawing surface
@@ -370,20 +376,23 @@ public class DrawingSurface extends PApplet {
 			if (g.isPlayerWin()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
-				fill(30,200,50);
+				fill(150,0,0);
 				text("Survivors Win", 0, 0 + 15, 1000,30);
+				textAlign(CENTER);
 			}
 			if (g.isZombieWin()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(150,0,0);
 				text("Zombies Win", 0, 0 + 15, 1000,30);
+				textAlign(CENTER);
 			}
 			if (g.isTie()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
-				fill(255,255,255);
+				fill(150,0,0);
 				text("Tie Game", 0, 0 + 15, 1000,30);
+				textAlign(CENTER);
 			}
 		}
 		else
@@ -481,7 +490,7 @@ public class DrawingSurface extends PApplet {
 			if (key == 'd') {
 				p.setXVelocity(speed);
 			}
-			if (key == 'p') {
+			if (key == ' ') {
 				if (!p.getisAlive() && g.isGameInProgess()) 
 				{
 					p.setisAlive(true);
