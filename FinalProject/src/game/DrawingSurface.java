@@ -63,9 +63,9 @@ public class DrawingSurface extends PApplet {
 		this.isSurvivor = isSurvivor;
 		this.clientInitialized = false;
 		timeStartCheck = true;
-		sTotalPoints = 5;
+		sTotalPoints = 20;
 		sPoints = 0;
-		zTotalPoints = 5;
+		zTotalPoints = 20;
 		zPoints = 0;
 		
 		InetAddress localhost = null;
@@ -78,7 +78,7 @@ public class DrawingSurface extends PApplet {
 		if (this.isSurvivor) {
 			p = new Survivor(username, 100, 100, 0, localhost, 4444, "SURVIVOR_IMAGE");
 		} else {
-			p = new Zombie(username, 50, 50, 0, localhost, 4444, ZOMBIE_IMAGE);
+			p = new Zombie(username, 1700, 600, 0, localhost, 4444, ZOMBIE_IMAGE);
 		}
 
 		w = new Wall(400, 200, 50, 600);
@@ -160,11 +160,11 @@ public class DrawingSurface extends PApplet {
 					{
 						startTime = System.currentTimeMillis();
 						//Sets end time to 3 minutes after the game has started
-						endTime = System.currentTimeMillis() + 180000;
+						endTime = System.currentTimeMillis() + 300000;
 						//totalTime = endTime - startTime;
 						timeStartCheck = false;
 					}
-					
+				
 					String cmd = "06," + "(null)," + 0 + "," + 0 + "," + 0;
 					byte[] data = cmd.getBytes();
 					for (int i = 0; i < players.size(); i++) {
@@ -253,14 +253,14 @@ public class DrawingSurface extends PApplet {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i) instanceof Survivor) {
 				Survivor sOther = (Survivor) players.get(i);
-				fill(255, 25, 0);
-				text(sOther.getUsername() + " " + sOther.getHealth(), sOther.getX(), sOther.getY() + 60);
+				fill(0, 225, 255);
+				text(sOther.getUsername() + " " + sOther.getHealth(), sOther.getX() - 5, sOther.getY() + 75);
 				fill(255);
 				sOther.draw(this, sOther.getDir(), SURVIVOR_IMAGE);
 			} else {
 				Zombie zOther = (Zombie) players.get(i);
-				fill(0);
-				text(zOther.getUsername() + " " + zOther.getHealth(), zOther.getX() + 15, zOther.getY() + 60);
+				fill(0, 225, 255);
+				text(zOther.getUsername() + " " + zOther.getHealth(), zOther.getX() - 5, zOther.getY() + 75);
 				fill(255);
 				zOther.draw(this, zOther.getDir(), ZOMBIE_IMAGE);
 			}
@@ -284,7 +284,7 @@ public class DrawingSurface extends PApplet {
 			// Drawing yourself if alive
 			if (p.getisAlive()) {
 				fill(0, 255, 216);
-				text(username + " " + p.getHealth(), p.getX(), p.getY() + 60);
+				text(username + " " + p.getHealth(), p.getX() - 5, p.getY() + 75);
 				fill(255);
 
 				p.draw(this, mouseX - (this.width / 2 - p.getX() + p.getWidth()/2), mouseY - (this.height / 2 - p.getY()) - p.getHeight()/2,
@@ -294,29 +294,6 @@ public class DrawingSurface extends PApplet {
 			} else {
 				//String time = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
 				//text(time, 470*3 - 100, 40);
-			}
-			
-			if (g.isGameStart()) {
-				fill(0);
-				textFont(gameStartFont);
-				text("GAME HAS STARTED!", 470*3/2, 40);
-				//long minutes = totalTime / 1000 / 60;
-				//long seconds = (totalTime / 1000) % 60;
-				String time = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-				text(time, 470*3 - 100, 40);
-				
-				String survivorPoints = sPoints + "/" + sTotalPoints;
-				text(survivorPoints, 50, 40);
-				
-				String zombiePoints = zPoints + "/" + zTotalPoints;
-				text(zombiePoints, 100, 40);
-				textFont(f);
-				
-			} else {
-				fill(0);
-				textFont(gameStartFont);
-				text("GAME HAS NOT STARTED", 470*3/2, 40);
-				textFont(f);
 			}
 		
 
@@ -422,9 +399,11 @@ public class DrawingSurface extends PApplet {
 			}
 		}
 
-		
-		this.fill(25,25,150);
-		this.rect(p.getX() - width/2, p.getY() + height/2 - 50, width, 50);
+		if (!g.getisServer())
+		{
+			this.fill(25,25,150);
+			this.rect(p.getX() - width/2, p.getY() + height/2 - 50, width, 50);
+		}
 		
 		fill(0); // health bar
 		this.rect(p.getX() - width/2 + 10, p.getY() + height/2 - 40, 200, 30);
@@ -433,7 +412,28 @@ public class DrawingSurface extends PApplet {
 		fill(255);
 		text(p.getHealth() + " / 100",p.getX() - width/2 + 70, p.getY() + height/2 - 18);
 		
-		
+		if (g.isGameStart()) {
+			fill(0,255,0);
+			textFont(gameStartFont);
+			text("GAME HAS STARTED!", p.getX() - width/2 + 600, p.getY() + height/2 - 10);
+			//long minutes = totalTime / 1000 / 60;
+			//long seconds = (totalTime / 1000) % 60;
+			String time = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+			text(time, p.getX() - width/2 + 1600, p.getY() + height/2 - 10);
+			
+			String survivorPoints = sPoints + "/" + sTotalPoints;
+			text("Zombie Kills " + survivorPoints, p.getX() - width/2 + 1000, p.getY() + height/2 - 10);
+			
+			String zombiePoints = zPoints + "/" + zTotalPoints;
+			text("Survivor Kills " + zombiePoints, p.getX() - width/2 + 1300, p.getY() + height/2 - 10);
+			textFont(f);
+			
+		} else {
+			fill(0,255,0);
+			textFont(gameStartFont);
+			text("GAME HAS NOT STARTED", p.getX() - width/2 + 600, p.getY() + height/2 - 10);
+			textFont(f);
+		}
 		
 		if(p instanceof Survivor) // for gui/hud
 		{
@@ -484,6 +484,16 @@ public class DrawingSurface extends PApplet {
 				{
 					p.setisAlive(true);
 					p.setHealth(100);
+					if (p instanceof Zombie)
+					{
+						p.setX(1700);
+						p.setY(600);
+					}
+					else if (p instanceof Survivor)
+					{
+						p.setX(100);
+						p.setY(100);
+					}
 				}
 				/*
 				else if(!p.getisAlive() && g.isGameInProgess() && p instanceof Survivor)

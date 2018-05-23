@@ -180,6 +180,14 @@ public class Server{
 				send(data2, newSurvivor.getIpAddress(), newSurvivor.getPort());
 			}
 			
+			//If the game has already started, send the game has started to the new player
+			if(game.isGameStart())
+			{
+				String cmd2 = "06," + "(null)," + 0 + "," + 0 + "," + 0;
+				byte[] data2 = cmd2.getBytes();
+				send(data2, newSurvivor.getIpAddress(), newSurvivor.getPort());
+			}
+			
 			//Adds new player to drawing surface
 			game.getDrawing().addSurvivor(newSurvivor);
 
@@ -225,6 +233,13 @@ public class Server{
 			{
 				Player p = game.getDrawing().getPlayers().get(i);
 				String cmd2 = (p instanceof Survivor ? "00," : "02,") + p.getUsername() + "," + p.getX() + "," + p.getY() + "," + p.getDir();
+				byte[] data2 = cmd2.getBytes();
+				send(data2, newZombie.getIpAddress(), newZombie.getPort());
+			}
+			
+			if(game.isGameStart())
+			{
+				String cmd2 = "06," + "(null)," + 0 + "," + 0 + "," + 0;
 				byte[] data2 = cmd2.getBytes();
 				send(data2, newZombie.getIpAddress(), newZombie.getPort());
 			}
