@@ -3,6 +3,8 @@ import java.net.InetAddress;
 
 /**
  * A MovingEntity that can interact with other Entities
+ * Survivors can attack zombies with a gun and have a certain number of bullets associated with them
+ * 
  * @author Will
  *
  */

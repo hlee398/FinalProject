@@ -1,6 +1,6 @@
 package game;
 /**
- * 
+ * A wall that can be created like the one on the border with the US and Mexico :D
  * @author Will
  *
  */

@@ -8,6 +8,11 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.*;
 
+/**
+ * Creates a menu that takes in a username, ip address, and sets whether you are a zombie or not
+ * @author Harrison
+ *
+ */
 public class Menu extends JPanel implements ActionListener{
 
 	private JFrame frame;
@@ -19,8 +24,11 @@ public class Menu extends JPanel implements ActionListener{
 	private JLabel usernameLabel, selectButtons, ipLabel;
 	private JTextField usernameInput, ipInput;
 	private int playerType;
-	private Graphics g;
 	
+	/**
+	 * Creates a menu by taking in a game object
+	 * @param m
+	 */
 	public Menu(Game m)
 	{
 		this.m = m;
@@ -95,6 +103,9 @@ public class Menu extends JPanel implements ActionListener{
 		repaint();
 	*/
 	
+	/**
+	 * closes the menu
+	 */
 	public void close()
 	{
 		username = usernameInput.getText();
@@ -143,8 +154,8 @@ public class Menu extends JPanel implements ActionListener{
 	
 	/**
 	 * @author Mat B from stackoverflow
-	 * @param ip
-	 * @return
+	 * @param ip ip address
+	 * @return a validIP address
 	 */
 	public static boolean validIP(String ip) {
 	    if (ip == null || ip.isEmpty()) return false;

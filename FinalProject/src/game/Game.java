@@ -15,7 +15,7 @@ import javax.swing.WindowConstants;
 
 /**
  * Creates a server, client and drawing surface
- * Checks if the game has started and contains the win conditions
+ * Also creates a menu for player inputs
  * @author Harrison
  *
  */

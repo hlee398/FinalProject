@@ -6,8 +6,8 @@ import java.net.InetAddress;
 
 /**
  * A MovingEntity that can interact with other Entities
+ * Zombies can attack survivors and damage them if they touch them
  * @author Will
- *
  */
 public class Zombie extends Player{
 

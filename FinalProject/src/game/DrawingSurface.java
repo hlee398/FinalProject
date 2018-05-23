@@ -13,6 +13,8 @@ import processing.core.PImage;
 
 /**
  * Draws all the things that will be displayed on the window
+ * UI, players, and map are drawn
+ * Draws a server window too
  * 
  * @author Harrison, Will
  *

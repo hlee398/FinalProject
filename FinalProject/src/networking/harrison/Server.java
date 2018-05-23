@@ -17,11 +17,15 @@ import game.Zombie;
 /**
  * Server class that will make a server and recieve and send messages to clients connected to it
  * All data that is passed into the server will be in the format 0n,username,x,y,dir where n is the command specified to do this task
+ * Additional parameters for commands may be added if a , and then the paramter is added
+ * Commands:
  * 00 = adding a new player
  * 01 = moving players 
  * 02 = adding a new zombie
  * 03 = disconnecting a player
  * 04 = updating health
+ * 08 = survivor kill points
+ * 09 = zombie kill points
  * @author Harrison
  *
  */

@@ -1,6 +1,9 @@
 package game;
 /**
  * A StaticEntity that can be picked up by MovingEntities
+ * 
+ * Unused as of the current build of the game due to time constraints
+ * 
  * @author wborlik179
  *
  */

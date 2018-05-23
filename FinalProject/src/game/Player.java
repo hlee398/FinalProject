@@ -3,7 +3,7 @@ package game;
 import java.net.InetAddress;
 
 /**
- * Represents a player and has survivor and zombie as a subclass
+ * Represents a player, a player can be either a surivor or zombie
  * @author hlee398
  *
  */
@@ -18,6 +18,15 @@ public abstract class Player extends MovingEntity{
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * @param username
+	 * @param xP
+	 * @param yP
+	 * @param dir
+	 * @param ipAddress
+	 * @param port
+	 * @param img
+	 */
 	public Player(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
 		super(xP, yP, 50); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
 		this.setUsername(username);
