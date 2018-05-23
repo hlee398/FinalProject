@@ -65,9 +65,9 @@ public class DrawingSurface extends PApplet {
 		this.isSurvivor = isSurvivor;
 		this.clientInitialized = false;
 		timeStartCheck = true;
-		sTotalPoints = 20;
+		sTotalPoints = 2;
 		sPoints = 0;
-		zTotalPoints = 20;
+		zTotalPoints = 2;
 		zPoints = 0;
 		
 		InetAddress localhost = null;
@@ -377,22 +377,27 @@ public class DrawingSurface extends PApplet {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(150,0,0);
-				text("Survivors Win", 0, 0 + 15, 1000,30);
-				textAlign(CENTER);
+				//textAlign(CENTER, CENTER);
+				//text("Zombies Win", 400, 400);
+				text("Survivors Win", p.getX(), p.getY());
+
 			}
-			if (g.isZombieWin()) {
+			else if (g.isZombieWin()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(150,0,0);
-				text("Zombies Win", 0, 0 + 15, 1000,30);
-				textAlign(CENTER);
+				//textAlign(CENTER, CENTER);
+				text("Zombies Win", p.getX(), p.getY());
+				//text("Survivors Win", 400, 400);
+
 			}
-			if (g.isTie()) {
+			else if (g.isTie()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(150,0,0);
-				text("Tie Game", 0, 0 + 15, 1000,30);
-				textAlign(CENTER);
+				//textAlign(CENTER, CENTER);
+				text("Tie Game", 400, 400);
+
 			}
 		}
 		else
