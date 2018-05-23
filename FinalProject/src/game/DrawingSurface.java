@@ -65,9 +65,9 @@ public class DrawingSurface extends PApplet {
 		this.isSurvivor = isSurvivor;
 		this.clientInitialized = false;
 		timeStartCheck = true;
-		sTotalPoints = 2;
+		sTotalPoints = 20;
 		sPoints = 0;
-		zTotalPoints = 2;
+		zTotalPoints = 20;
 		zPoints = 0;
 		
 		InetAddress localhost = null;
