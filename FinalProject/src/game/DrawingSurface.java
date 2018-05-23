@@ -377,8 +377,6 @@ public class DrawingSurface extends PApplet {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(150,0,0);
-				//textAlign(CENTER, CENTER);
-				//text("Zombies Win", 400, 400);
 				text("Survivors Win", p.getX(), p.getY());
 
 			}
@@ -386,17 +384,14 @@ public class DrawingSurface extends PApplet {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(150,0,0);
-				//textAlign(CENTER, CENTER);
 				text("Zombies Win", p.getX(), p.getY());
-				//text("Survivors Win", 400, 400);
 
 			}
 			else if (g.isTie()) {
 				// Draws a black screen with a game over message
 				image(gameOverImage, p.getX() - displayWidth/2,p.getY() - displayHeight/2, displayWidth, displayHeight);
 				fill(150,0,0);
-				//textAlign(CENTER, CENTER);
-				text("Tie Game", 400, 400);
+				text("Tie Game", p.getX(), p.getY());
 
 			}
 		}
