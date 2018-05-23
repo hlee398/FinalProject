@@ -132,6 +132,9 @@ public class Menu extends JPanel implements ActionListener{
 		m.done(username, playerType, ipAddress);
 	}
 
+	/**
+	 * checks if certain actions such as buttons being pressed are performed
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -153,6 +156,7 @@ public class Menu extends JPanel implements ActionListener{
 	}
 	
 	/**
+	 * Checks if the ip address passed in is a valid ip address
 	 * @author Mat B from stackoverflow
 	 * @param ip ip address
 	 * @return a validIP address

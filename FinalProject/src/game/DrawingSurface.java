@@ -57,7 +57,8 @@ public class DrawingSurface extends PApplet {
 	/**
 	 * Creates a drawing surface
 	 * 
-	 * @param game
+	 * @param game game object
+	 * @param isSurvivor is the client a survivor (true) or zombie (false)
 	 */
 	public DrawingSurface(Game game, boolean isSurvivor) {
 		g = game;
@@ -110,6 +111,9 @@ public class DrawingSurface extends PApplet {
 		// addZombie(testZ);
 	} 
 
+	/**
+	 * sets up the drawing surface
+	 */
 	public void setup() {
 		f = createFont("Arial", 20, true);
 		textFont(f);
@@ -121,6 +125,9 @@ public class DrawingSurface extends PApplet {
 		background2 = loadImage(BACKGROUND_IMAGE3);
 	}
 
+	/**
+	 * Draws all objects in the world
+	 */
 	public void draw() // draws all objects in world
 	{
 		
@@ -463,6 +470,9 @@ public class DrawingSurface extends PApplet {
 		
 	}
 
+	/**
+	 * Moves player as well as reloads guns and respawns them
+	 */
 	public void keyPressed() {
 		if(g.isPlayerWin() || g.isZombieWin() || g.isTie())
 		{
@@ -536,6 +546,9 @@ public class DrawingSurface extends PApplet {
 
 	}
 
+	/**
+	 * Changes velocity once key is released
+	 */
 	public void keyReleased() {
 		if (key == 'w') {
 			p.setYVelocity(0);
@@ -550,7 +563,10 @@ public class DrawingSurface extends PApplet {
 			p.setXVelocity(0);
 		}
 	}
-
+	
+	/**
+	 * shoots bullets if the mouse is pressed
+	 */
 	public void mousePressed() {
 		long currentTime = System.currentTimeMillis();
 
@@ -898,6 +914,9 @@ public class DrawingSurface extends PApplet {
 		}
 	}
 
+	/**
+	 * Removes a client from the server if they exit the program
+	 */
 	public void exit() {
 		if (!g.getisServer()) {
 			String cmd = "03," + username + "," + p.getX() + "," + p.getY() + "," + p.getDir();

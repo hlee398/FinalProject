@@ -39,6 +39,11 @@ public class Client {
 	 * Code snippets from TheChernoProject on his game making tutorials
 	 */
 	
+	/**
+	 * 
+	 * Error codes
+	 *
+	 */
 	public enum Error{
 		NONE, INVALID_HOST, SOCKET_EXCEPTION
 	}
@@ -65,6 +70,7 @@ public class Client {
 	*/
 	
 	/**
+	 * Client constructor
 	 * Example format: 191.168.1.1:5000
 	 * @param host the ip address of the host
 	 */
@@ -86,7 +92,7 @@ public class Client {
 	}
 	
 	/**
-	 * 
+	 * Client constructor
 	 * @param port Example: 192.168.1.1
 	 * @param host Example 5000
 	 */
@@ -97,7 +103,7 @@ public class Client {
 	}
 	
 	/**
-	 * 
+	 * Client constructor
 	 * @param port
 	 * @param host
 	 * @param username
@@ -165,7 +171,10 @@ public class Client {
 		return true;
 	}
 	
-	
+	/**
+	 * Sends message to server
+	 * @param data
+	 */
 	public void send(byte[] data)
 	{
 		//Checks if the socket exists
@@ -181,6 +190,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * gets error code
+	 * @return
+	 */
 	public Error getErrorCode()
 	{
 		return errorCode;
@@ -197,6 +210,9 @@ public class Client {
 		send(data);
 	}
 	
+	/**
+	 * listens for incoming messages
+	 */
 	public void listen() {
 		while (listening)
 		{
@@ -216,7 +232,11 @@ public class Client {
 			process(packet);
 		}
 	}
-
+	
+	/**
+	 * Interprets messages send by a server
+	 * @param packet DatagramPacket that contains valid data
+	 */
 	public void process(DatagramPacket packet)
 	{
 		String message = new String(packet.getData()).trim().substring(0, packet.getLength());

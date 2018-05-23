@@ -32,6 +32,9 @@ public class Game {
 	private String username, ipAddressServer;
 	private boolean isServer, isSurvivor, gameStart, zombieWin, playerWin, tie;
 	
+	/**
+	 * Creates the game
+	 */
 	public Game()
 	{
 		setGameStart(false);
@@ -94,6 +97,12 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * runs the game window after input from a menu
+	 * @param username username set by player
+	 * @param playerType integer that represents if the player is a zombie or survivor
+	 * @param ipAddress ip address of the server
+	 */
 	public void done(String username, int playerType, String ipAddress) {
 
 		/*

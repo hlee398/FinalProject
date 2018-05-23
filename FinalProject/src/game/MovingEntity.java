@@ -149,6 +149,10 @@ public abstract class MovingEntity extends Entity{
 		}
 	}
 	
+	/**
+	 * Reduces health of a player
+	 * @param dmg amount of damage
+	 */
 	public void damage(int dmg)
 	{
 		if (health > 0)

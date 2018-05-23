@@ -10,6 +10,10 @@ public class Main {
 	
 	private static Game game;
 	
+	/**
+	 * runs the game
+	 * @param args
+	 */
 	public static void main(String args[]) {
 		
 		/*

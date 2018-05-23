@@ -53,6 +53,11 @@ public class Zombie extends Player{
 		return false;
 	}
 
+	/**
+	 * checks if the player has been hit
+	 * @param shot Line directed at where the player shot
+	 * @return true if the lines intersect, false otherwise
+	 */
 	public boolean isHit(Line2D.Float shot)
 	{
 		if(getBounds().intersectsLine(shot))

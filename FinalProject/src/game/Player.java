@@ -4,7 +4,7 @@ import java.net.InetAddress;
 
 /**
  * Represents a player, a player can be either a surivor or zombie
- * @author hlee398
+ * @author Harrison
  *
  */
 public abstract class Player extends MovingEntity{
@@ -13,19 +13,26 @@ public abstract class Player extends MovingEntity{
 	protected InetAddress ipAddress;
 	protected int port;
 
+	/**
+	 * Default constructor
+	 * @param xP x position
+	 * @param yP y position
+	 * @param radius radius of the circle for the hitbox
+	 */
 	public Player(int xP, int yP, int radius) {
 		super(xP, yP, radius);
 		// TODO Auto-generated constructor stub
 	}
 	
 	/**
-	 * @param username
-	 * @param xP
-	 * @param yP
-	 * @param dir
-	 * @param ipAddress
-	 * @param port
-	 * @param img
+	 * Constructor for a player that has a username and ipAddress as well as port
+	 * @param username username of the player
+	 * @param xP x position
+	 * @param yP y position
+	 * @param dir direction player is facing
+	 * @param ipAddress ipAddress of the client hosting the player
+	 * @param port port of the client hosting the player
+	 * @param img string that contains a location for an image to represent a player
 	 */
 	public Player(String username, int xP, int yP, float dir, InetAddress ipAddress, int port, String img) {
 		super(xP, yP, 50); // HARDCODED RADIUS TO CHANGE HERE OR ALTER THIS CONSTRUCTOR
